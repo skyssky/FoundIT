@@ -1,6 +1,5 @@
 package au.edu.unsw.soacourse.server;
 
-// 
 public class JsonBean {
     private String val1;
     private String val2;
