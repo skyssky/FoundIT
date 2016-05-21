@@ -17,7 +17,7 @@ import au.edu.unsw.soacourse.model.User;
 
 @Path("/user")	// the URL path will be http://localhost:8080/FoundITServerCxfRest/hello
 public class UsersResource {
-
+ 
     @GET					// the method will handle GET request method on the said path
     @Path("/profile/{input}")	// this method will handle request paths http://localhost:8080/FoundITServerCxfRest/hello/echo/{some text input here}
     @Produces("application/xml")	// the response will contain text plain content. (Note: @Produces({MediaType.TEXT_PLAIN}) means the same)
