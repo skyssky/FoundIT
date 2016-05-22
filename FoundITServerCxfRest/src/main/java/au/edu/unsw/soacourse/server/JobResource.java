@@ -33,7 +33,7 @@ import au.edu.unsw.soacourse.model.Job;
 */
 
 @Path("/")	// the URL path will be http://localhost:8080/FoundITServerCxfRest/hello
-public class JobsResource {
+public class JobResource {
 	
 	final boolean debug = true;
 	final String path = System.getProperty("catalina.home") + "/webapps/server-database/job/";

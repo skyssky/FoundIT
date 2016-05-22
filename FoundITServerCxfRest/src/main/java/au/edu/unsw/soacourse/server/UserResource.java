@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 
 import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
@@ -25,7 +26,7 @@ import au.edu.unsw.soacourse.model.User;
 */
 
 @Path("/profile")	// the URL path will be http://localhost:8080/FoundITServerCxfRest/hello
-public class UsersResource {
+public class UserResource {
 	
 	final boolean debug = true;
 	final String path = System.getProperty("catalina.home") + "/webapps/server-database/user/";
@@ -109,6 +110,26 @@ public class UsersResource {
 			e.printStackTrace();
 		}
 		response = Response.status(Response.Status.ACCEPTED).entity("User profile for user '" + user.getUsername() + "' has been updated").build();
+		return response;
+	}
+	
+	@DELETE
+	@Path("/{username}")
+	public Response deleteUser(@PathParam("username") String username) throws IOException {
+		Response response;
+		String filename = path + username + ".xml";
+		File file = new File(filename);	// create the file if does not exist
+		if(!file.exists()) {
+			response = Response.status(Response.Status.NOT_FOUND).entity("User posting for user '" + username + "' is not found.").build();
+			return response;
+		}
+		File dfile = new File(path + "_" + username + ".xml");
+		boolean success = file.renameTo(dfile);
+		if (!success) {
+			response = Response.status(Response.Status.FORBIDDEN).entity("User posting for user '" + username + "' cannot be deleted.").build();
+			return response;
+		}
+		response = Response.status(Response.Status.OK).entity("User posting for user '" + username + "' has been deleted").build();
 		return response;
 	}
 }

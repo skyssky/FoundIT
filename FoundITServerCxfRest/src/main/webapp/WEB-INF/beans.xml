@@ -8,7 +8,7 @@
     <jaxrs:server id="userServices" address="/user">
         <jaxrs:serviceBeans>	
         	<!-- declare REST implementation class -->
-            <bean class="au.edu.unsw.soacourse.server.UsersResource"/>
+            <bean class="au.edu.unsw.soacourse.server.UserResource"/>
         </jaxrs:serviceBeans>
         <jaxrs:providers>		
         	<!-- JSON support class: so you can consume/produce JSON in your service -->
@@ -18,7 +18,27 @@
     <jaxrs:server id="jobServices" address="/job">
         <jaxrs:serviceBeans>	
         	<!-- declare REST implementation class -->
-            <bean class="au.edu.unsw.soacourse.server.JobsResource"/>
+            <bean class="au.edu.unsw.soacourse.server.JobResource"/>
+        </jaxrs:serviceBeans>
+        <jaxrs:providers>		
+        	<!-- JSON support class: so you can consume/produce JSON in your service -->
+            <bean class="org.codehaus.jackson.jaxrs.JacksonJsonProvider"/> 
+        </jaxrs:providers>
+    </jaxrs:server>
+	<jaxrs:server id="CompanyServices" address="/company">
+        <jaxrs:serviceBeans>	
+        	<!-- declare REST implementation class -->
+            <bean class="au.edu.unsw.soacourse.server.CompanyResource"/>
+        </jaxrs:serviceBeans>
+        <jaxrs:providers>		
+        	<!-- JSON support class: so you can consume/produce JSON in your service -->
+            <bean class="org.codehaus.jackson.jaxrs.JacksonJsonProvider"/> 
+        </jaxrs:providers>
+    </jaxrs:server>
+    <jaxrs:server id="ApplicationServices" address="/application">
+        <jaxrs:serviceBeans>	
+        	<!-- declare REST implementation class -->
+            <bean class="au.edu.unsw.soacourse.server.ApplicationResource"/>
         </jaxrs:serviceBeans>
         <jaxrs:providers>		
         	<!-- JSON support class: so you can consume/produce JSON in your service -->
