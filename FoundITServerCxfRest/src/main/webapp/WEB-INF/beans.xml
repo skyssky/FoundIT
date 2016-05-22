@@ -5,10 +5,20 @@
     <context:annotation-config/>
     <bean class="org.springframework.web.context.support.ServletContextPropertyPlaceholderConfigurer"/>
     <bean class="org.springframework.beans.factory.config.PreferencesPlaceholderConfigurer"/>
-    <jaxrs:server id="services" address="/">
+    <jaxrs:server id="userServices" address="/user">
         <jaxrs:serviceBeans>	
         	<!-- declare REST implementation class -->
             <bean class="au.edu.unsw.soacourse.server.UsersResource"/>
+        </jaxrs:serviceBeans>
+        <jaxrs:providers>		
+        	<!-- JSON support class: so you can consume/produce JSON in your service -->
+            <bean class="org.codehaus.jackson.jaxrs.JacksonJsonProvider"/> 
+        </jaxrs:providers>
+    </jaxrs:server>
+    <jaxrs:server id="jobServices" address="/job">
+        <jaxrs:serviceBeans>	
+        	<!-- declare REST implementation class -->
+            <bean class="au.edu.unsw.soacourse.server.JobsResource"/>
         </jaxrs:serviceBeans>
         <jaxrs:providers>		
         	<!-- JSON support class: so you can consume/produce JSON in your service -->

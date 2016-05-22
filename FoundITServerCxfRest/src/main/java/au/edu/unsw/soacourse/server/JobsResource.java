@@ -15,68 +15,68 @@ import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
 
-import au.edu.unsw.soacourse.model.User;
+import au.edu.unsw.soacourse.model.Job;
 
 /* NOTES: 
  * 
  * @Path can be applied to resource classes or methods.
 */
 
-@Path("/profile")	// the URL path will be http://localhost:8080/FoundITServerCxfRest/hello
-public class UsersResource {
+@Path("/posting")	// the URL path will be http://localhost:8080/FoundITServerCxfRest/hello
+public class JobsResource {
 	
 	final boolean debug = true;
-	final String path = System.getProperty("catalina.home") + "/webapps/server-database/user/";
+	final String path = System.getProperty("catalina.home") + "/webapps/server-database/job/";
  
     @GET																	// the method will handle GET request method on the said path
-    @Path("/{username}")											// this method will handle request paths http://localhost:8080/FoundITServerCxfRest/hello/echo/{some text input here}
+    @Path("/{jobId}")														// this method will handle request paths http://localhost:8080/FoundITServerCxfRest/hello/echo/{some text input here}
     @Produces(MediaType.APPLICATION_XML)									// the response will contain text plain content. (Note: @Produces({MediaType.TEXT_PLAIN}) means the same)
-    public User getUserProfile(@PathParam("username") String username) {	// map the path parameter text after /echo to String input.
-    	User user = null;
+    public Job getJobPosting(@PathParam("jobId") String jobId) {	// map the path parameter text after /echo to String input.
+    	Job job = null;
     	try {
-    		String filename = path + username + ".xml";
+    		String filename = path + jobId + ".xml";
 	    	File file = new File(filename);
 	    	// Bind XML to Java object
-	    	JAXBContext jaxbContext = JAXBContext.newInstance(User.class);
+	    	JAXBContext jaxbContext = JAXBContext.newInstance(Job.class);
     		Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();
-    		user = (User) jaxbUnmarshaller.unmarshal(file);
-    		if (debug) System.out.println("user is found: " + username);
+    		job = (Job) jaxbUnmarshaller.unmarshal(file);
+    		if (debug) System.out.println("Job posting is found: " + jobId);
     	} catch (JAXBException e) {
-    		// TODO throw Response/Exception: user profile for user 'username' does not exist
+    		// TODO throw Response/Exception: job posting for job 'jobId' does not exist
     		e.printStackTrace();
-    		if (debug) System.out.println("User profile for user '" + username + "' does not exist");
+    		if (debug) System.out.println("Job posting for job '" + jobId + "' does not exist");
     	}
-    	return user;
+    	return job;
     }
 
     @POST									// the method will handle POST request method on the said path
     @Produces(MediaType.APPLICATION_XML)	// the response will contain JSON
     @Consumes(MediaType.APPLICATION_XML)	// applies to the input parameter JsonBean input. map the POST body content (which will contain JSON) to JsonBean input
 //    @Path("/")								// this method will handle request paths http://localhost:8080/FoundITServerCxfRest/hello/jsonBean
-    public Response addUserProfile(User user) {
+    public Response addJobPosting(Job job) {
     	Response response;
     	try {
-    		String filename = path + user.getUsername() + ".xml";
+    		String filename = path + job.getJobId() + ".xml";
 	    	File file = new File(filename);	// create the file if does not exist
 	    	if(!file.exists()) {
 	    		file.createNewFile();
 	    	} else {						// return 'CONFLICT' response if file already exists
-	    		response = Response.status(Response.Status.CONFLICT).entity("User profile for user '" + user.getUsername() + "' already exists").build();
+	    		response = Response.status(Response.Status.CONFLICT).entity("Job posting for job '" + job.getJobId() + "' already exists").build();
 	    		return response;
 	    	}
 	    	if (debug) System.out.println("file: " + filename);
 	    	// Bind Java object to XML
-	    	JAXBContext jaxbContext = JAXBContext.newInstance(User.class);
+	    	JAXBContext jaxbContext = JAXBContext.newInstance(Job.class);
 			Marshaller jaxbMarshaller = jaxbContext.createMarshaller();
 			jaxbMarshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
-			jaxbMarshaller.marshal(user, file);
-			jaxbMarshaller.marshal(user, System.out);
+			jaxbMarshaller.marshal(job, file);
+			jaxbMarshaller.marshal(job, System.out);
     	} catch (JAXBException e) {
     		e.printStackTrace();
     	} catch (IOException e) {
 			e.printStackTrace();
 		}
-    	response = Response.status(Response.Status.CREATED).entity("User profile for user '" + user.getUsername() + "' has been created").build();
+    	response = Response.status(Response.Status.CREATED).entity("Job posting profile for job '" + job.getJobId() + "' has been created").build();
     	return response;
     }
 }
