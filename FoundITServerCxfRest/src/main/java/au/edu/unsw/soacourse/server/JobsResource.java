@@ -2,20 +2,28 @@ package au.edu.unsw.soacourse.server;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
 import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
+
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.filefilter.RegexFileFilter;
 
 import au.edu.unsw.soacourse.model.Job;
 
@@ -24,14 +32,38 @@ import au.edu.unsw.soacourse.model.Job;
  * @Path can be applied to resource classes or methods.
 */
 
-@Path("/posting")	// the URL path will be http://localhost:8080/FoundITServerCxfRest/hello
+@Path("/")	// the URL path will be http://localhost:8080/FoundITServerCxfRest/hello
 public class JobsResource {
 	
 	final boolean debug = true;
 	final String path = System.getProperty("catalina.home") + "/webapps/server-database/job/";
  
     @GET																	// the method will handle GET request method on the said path
-    @Path("/{jobId}")														// this method will handle request paths http://localhost:8080/FoundITServerCxfRest/hello/echo/{some text input here}
+    @Path("posting")														// this method will handle request paths http://localhost:8080/FoundITServerCxfRest/hello/echo/{some text input here}
+    @Produces(MediaType.APPLICATION_XML)									// the response will contain text plain content. (Note: @Produces({MediaType.TEXT_PLAIN}) means the same)
+    public List<Job> getJobPostings(@QueryParam("sort") String sort) {			// map the path parameter text after /echo to String input.
+    	// Get all jobs, sort by position ????
+    	List<Job> jobs = new ArrayList<Job>();
+    	Job job;
+    	Collection<File> files = getFiles(path);
+    	try {
+    		for (File file: files) {
+				// Bind XML to Java object
+		    	JAXBContext jaxbContext;
+				jaxbContext = JAXBContext.newInstance(Job.class);
+				Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();
+	    		job = (Job) jaxbUnmarshaller.unmarshal(file);
+	    		if (debug) System.out.println("Job posting is found: " + job.getJobId());
+    			jobs.add(job);
+    		}
+    	} catch (JAXBException e) {
+			e.printStackTrace();
+		}
+    	return jobs;
+    }
+    
+    @GET																	// the method will handle GET request method on the said path
+    @Path("posting/{jobId}")														// this method will handle request paths http://localhost:8080/FoundITServerCxfRest/hello/echo/{some text input here}
     @Produces(MediaType.APPLICATION_XML)									// the response will contain text plain content. (Note: @Produces({MediaType.TEXT_PLAIN}) means the same)
     public Job getJobPosting(@PathParam("jobId") String jobId) {	// map the path parameter text after /echo to String input.
     	Job job = null;
@@ -54,7 +86,7 @@ public class JobsResource {
     @POST									// the method will handle POST request method on the said path
     @Produces(MediaType.APPLICATION_XML)	// the response will contain JSON
     @Consumes(MediaType.APPLICATION_XML)	// applies to the input parameter JsonBean input. map the POST body content (which will contain JSON) to JsonBean input
-//    @Path("/")								// this method will handle request paths http://localhost:8080/FoundITServerCxfRest/hello/jsonBean
+    @Path("posting")								// this method will handle request paths http://localhost:8080/FoundITServerCxfRest/hello/jsonBean
     public Response addJobPosting(Job job) {
     	Response response;
     	try {
@@ -83,7 +115,7 @@ public class JobsResource {
     }
     
 	@PUT
-	@Path("/{jobId}")							// TODO seems to be useless. Just set path to "/" ????
+	@Path("posting/{jobId}")							// TODO seems to be useless. Just set path to "/" ????
 	@Produces(MediaType.APPLICATION_XML)
 	@Consumes(MediaType.APPLICATION_XML)
 	public Response putJob(Job job) {
@@ -110,6 +142,60 @@ public class JobsResource {
 		}
 		response = Response.status(Response.Status.ACCEPTED).entity("Job posting for job '" + job.getJobId() + "' has been updated").build();
 		return response;
+	}
+	
+	@DELETE
+	@Path("posting/{jobId}")
+	public Response deleteJob(@PathParam("jobId") String jobId) throws IOException {
+		Response response;
+		String filename = path + jobId + ".xml";
+		File file = new File(filename);	// create the file if does not exist
+		if(!file.exists()) {
+			response = Response.status(Response.Status.NOT_FOUND).entity("Job posting for job '" + jobId + "' is not found.").build();
+			return response;
+		}
+		File dfile = new File(path + "_" + jobId + ".xml");
+		boolean success = file.renameTo(dfile);
+		if (!success) {
+			response = Response.status(Response.Status.FORBIDDEN).entity("Job posting for job '" + jobId + "' cannot be deleted.").build();
+			return response;
+		}
+		response = Response.status(Response.Status.OK).entity("Job posting for job '" + jobId + "' has been deleted").build();
+		return response;
+	}
+	
+    @GET																	// the method will handle GET request method on the said path
+    @Path("search")														// this method will handle request paths http://localhost:8080/FoundITServerCxfRest/hello/echo/{some text input here}
+    @Produces(MediaType.APPLICATION_XML)									// the response will contain text plain content. (Note: @Produces({MediaType.TEXT_PLAIN}) means the same)
+    public List<Job> searchJobPosting(@QueryParam("keyword") String keyword, @QueryParam("sort") String sort) {			// map the path parameter text after /echo to String input.
+    	// Search with keyword, sort by position ????
+    	List<Job> jobs = new ArrayList<Job>();
+    	Job job;
+    	Collection<File> files = getFiles(path);
+    	try {
+    		for (File file: files) {
+    			System.out.println("In file: " + file.toString());
+				// Bind XML to Java object
+		    	JAXBContext jaxbContext;
+				jaxbContext = JAXBContext.newInstance(Job.class);
+				Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();
+	    		job = (Job) jaxbUnmarshaller.unmarshal(file);
+	    		if (debug) System.out.println("Job posting is found: " + job.getJobId());
+	    		if (job.getPosition().contains(keyword) || job.getDetail().contains(keyword)) {	// TODO lower all upper case? trim spaces?
+	    			jobs.add(job);
+	    		}
+    		}
+    	} catch (JAXBException e) {
+			e.printStackTrace();
+		}
+    	return jobs;
+    }
+    
+	Collection<File> getFiles(String directoryName) {
+		File directory = new File(directoryName);
+		Collection<File> files = FileUtils.listFiles(directory, new RegexFileFilter("^[^_][^.]*.xml"), null);
+		System.out.println("Get collections: size = " + files.size());
+		return files;
 	}
 }
 
