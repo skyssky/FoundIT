@@ -1,5 +1,6 @@
 package au.edu.unsw.soacourse.model;
 
+import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement
@@ -25,6 +26,8 @@ public class User {
 	public String getUsername() {
         return this.username;
     }
+	
+	@XmlElement
     public void setUsername(String username) {
         this.username = username;
     }
@@ -32,6 +35,8 @@ public class User {
     public String getProfileId() {
         return this.profileId;
     }
+    
+    @XmlElement
     public void setProfileId(String profileId) {
         this.profileId = profileId;
     }
@@ -39,6 +44,8 @@ public class User {
     public String getDetail() {
         return this.detail;
     }
+    
+    @XmlElement
     public void setDetail(String detail) {
         this.detail = detail;
     }
@@ -46,6 +53,8 @@ public class User {
     public String getSkill() {
         return this.skill;
     }
+    
+    @XmlElement
     public void setSkill(String skill) {
         this.skill = skill;
     }
@@ -53,6 +62,8 @@ public class User {
     public String getExperience() {
         return this.experience;
     }
+    
+    @XmlElement
     public void setExperience(String experience) {
         this.experience = experience;
     }
