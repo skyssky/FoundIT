@@ -8,7 +8,7 @@
     <jaxrs:server id="services" address="/">
         <jaxrs:serviceBeans>	
         	<!-- declare REST implementation class -->
-            <bean class="au.edu.unsw.soacourse.server.HelloWorld"/>
+            <bean class="au.edu.unsw.soacourse.server.UsersResource"/>
         </jaxrs:serviceBeans>
         <jaxrs:providers>		
         	<!-- JSON support class: so you can consume/produce JSON in your service -->
