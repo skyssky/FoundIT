@@ -2,3 +2,8 @@ FoundITServerCxfRest/target/
 FoundITServerCxfRest/.classpath
 FoundITServerCxfRest/.project
 FoundITServerCxfRest/.settings
+FoundITAppServer/target/
+FoundITAppServer/.classpath
+FoundITAppServer/.project
+FoundITAppServer/.settings
+FoundITAppServer/build/
