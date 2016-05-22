@@ -2,9 +2,11 @@ package au.edu.unsw.soacourse.server;
 
 import java.io.File;
 import java.io.IOException;
+
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
@@ -79,5 +81,35 @@ public class JobsResource {
     	response = Response.status(Response.Status.CREATED).entity("Job posting profile for job '" + job.getJobId() + "' has been created").build();
     	return response;
     }
+    
+	@PUT
+	@Path("/{jobId}")
+	@Produces(MediaType.APPLICATION_XML)
+	@Consumes(MediaType.APPLICATION_XML)
+	public Response putJob(Job job) {
+		Response response;
+		try {
+			String filename = path + job.getJobId() + ".xml";
+	    	File file = new File(filename);	// create the file if does not exist
+	    	if(!file.exists()) {
+	    		file.createNewFile();
+	    		response = Response.status(Response.Status.NOT_FOUND).entity("Job posting for job '" + job.getJobId() + "' is not found.").build();
+	    		return response;
+	    	}
+	    	if (debug) System.out.println("file: " + filename);
+	    	// Bind Java object to XML
+	    	JAXBContext jaxbContext = JAXBContext.newInstance(Job.class);
+			Marshaller jaxbMarshaller = jaxbContext.createMarshaller();
+			jaxbMarshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
+			jaxbMarshaller.marshal(job, file);
+			jaxbMarshaller.marshal(job, System.out);
+		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (JAXBException e) {
+			e.printStackTrace();
+		}
+		response = Response.status(Response.Status.ACCEPTED).entity("Job posting for job '" + job.getJobId() + "' has been updated").build();
+		return response;
+	}
 }
 
