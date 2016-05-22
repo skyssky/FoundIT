@@ -83,7 +83,7 @@ public class UsersResource {
     }
     
 	@PUT
-	@Path("/{username}")
+	@Path("/{username}")						// TODO seems to be useless. Just set path to "/" ????
 	@Produces(MediaType.APPLICATION_XML)
 	@Consumes(MediaType.APPLICATION_XML)
 	public Response putUser(User user) {

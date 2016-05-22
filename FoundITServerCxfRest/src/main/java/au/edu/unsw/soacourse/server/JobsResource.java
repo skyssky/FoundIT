@@ -83,7 +83,7 @@ public class JobsResource {
     }
     
 	@PUT
-	@Path("/{jobId}")
+	@Path("/{jobId}")							// TODO seems to be useless. Just set path to "/" ????
 	@Produces(MediaType.APPLICATION_XML)
 	@Consumes(MediaType.APPLICATION_XML)
 	public Response putJob(Job job) {
