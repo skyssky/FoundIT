@@ -6,7 +6,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement
 public class Job {
 	
-	public enum Status { CREATED, OPEN, INREVIEW, PROCESSED, SENTINVITATION };	// status of this job posting
+	public enum JobStatus { CREATED, OPEN, INREVIEW, PROCESSED, SENTINVITATION };	// status of this job posting
 	
 	private String jobId;		// job id
 	private String link;		// a link to company profile
@@ -14,13 +14,13 @@ public class Job {
 	private String position;	// position type
 	private String location;	// location
 	private String detail;	// job details/detail
-	private Status status;
+	private JobStatus status;
 
 	public Job() {
 		
     }
 	
-	public Job(String jobId, String link, int salary, String position, String location, String detail, Status status) {
+	public Job(String jobId, String link, int salary, String position, String location, String detail, JobStatus status) {
 		this.jobId = jobId;
 		this.link = link;
 		this.salary = salary;
@@ -84,12 +84,12 @@ public class Job {
         this.detail = detail;
     }
     
-    public Status getStatus() {
+    public JobStatus getStatus() {
         return this.status;
     }
     
     @XmlElement
-    public void setStatus(Status status) {
+    public void setStatus(JobStatus status) {
         this.status = status;
     }
 }

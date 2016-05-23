@@ -25,7 +25,7 @@ import au.edu.unsw.soacourse.model.User;
  * @Path can be applied to resource classes or methods.
 */
 
-@Path("/profile")	// the URL path will be http://localhost:8080/FoundITServerCxfRest/hello
+//@Path("/profile")	// the URL path will be http://localhost:8080/FoundITServerCxfRest/hello
 public class UserResource {
 	
 	final boolean debug = true;

@@ -6,19 +6,21 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement
 public class Application {
 	
-	public enum Status { CREATED, OPEN, INREVIEW, PROCESSED, SENTINVITATION };	// status of this job posting
+	public enum AppStatus { CREATED, OPEN, INREVIEW, PROCESSED, SENTINVITATION };	// status of this job posting
 	
-	private String appId;		// job id
+	private String appId;		// application id
+	private String jobId;		// job id
 	private String link;		// a link to user profile
 	private String cover;		// cover letter
-	private Status status;
+	private AppStatus status;
 
 	public Application() {
 		
     }
 	
-	public Application(String appId, String link, String cover, Status status) {
+	public Application(String appId, String jobId, String link, String cover, AppStatus status) {
 		this.appId = appId;
+		this.jobId = jobId;
 		this.link = link;		// TODO should be URI link to user profile
 		this.cover = cover;
 		this.status = status;
@@ -31,6 +33,15 @@ public class Application {
     @XmlElement
     public void setAppId(String appId) {
         this.appId = appId;
+    }
+    
+    public String getJobId() {
+        return this.jobId;
+    }
+    
+    @XmlElement
+    public void setJobId(String jobId) {
+        this.jobId = jobId;
     }
     
     public String getLink() {
@@ -51,12 +62,12 @@ public class Application {
         this.cover = cover;
     }
     
-    public Status getStatus() {
+    public AppStatus getStatus() {
         return this.status;
     }
     
     @XmlElement
-    public void setStatus(Status status) {
+    public void setStatus(AppStatus status) {
         this.status = status;
     }
 }

@@ -32,14 +32,14 @@ import au.edu.unsw.soacourse.model.Job;
  * @Path can be applied to resource classes or methods.
 */
 
-@Path("/")	// the URL path will be http://localhost:8080/FoundITServerCxfRest/hello
+//@Path("/")	// the URL path will be http://localhost:8080/FoundITServerCxfRest/hello
 public class JobResource {
 	
 	final boolean debug = true;
 	final String path = System.getProperty("catalina.home") + "/webapps/server-database/job/";
  
     @GET																	// the method will handle GET request method on the said path
-    @Path("posting")														// this method will handle request paths http://localhost:8080/FoundITServerCxfRest/hello/echo/{some text input here}
+//    @Path("posting")														// this method will handle request paths http://localhost:8080/FoundITServerCxfRest/hello/echo/{some text input here}
     @Produces(MediaType.APPLICATION_XML)									// the response will contain text plain content. (Note: @Produces({MediaType.TEXT_PLAIN}) means the same)
     public List<Job> getJobPostings(@QueryParam("sort") String sort) {			// map the path parameter text after /echo to String input.
     	// Get all jobs, sort by position ????
@@ -63,7 +63,7 @@ public class JobResource {
     }
     
     @GET																	// the method will handle GET request method on the said path
-    @Path("posting/{jobId}")														// this method will handle request paths http://localhost:8080/FoundITServerCxfRest/hello/echo/{some text input here}
+    @Path("{jobId}")														// this method will handle request paths http://localhost:8080/FoundITServerCxfRest/hello/echo/{some text input here}
     @Produces(MediaType.APPLICATION_XML)									// the response will contain text plain content. (Note: @Produces({MediaType.TEXT_PLAIN}) means the same)
     public Job getJobPosting(@PathParam("jobId") String jobId) {	// map the path parameter text after /echo to String input.
     	Job job = null;
@@ -86,7 +86,7 @@ public class JobResource {
     @POST									// the method will handle POST request method on the said path
     @Produces(MediaType.APPLICATION_XML)	// the response will contain JSON
     @Consumes(MediaType.APPLICATION_XML)	// applies to the input parameter JsonBean input. map the POST body content (which will contain JSON) to JsonBean input
-    @Path("posting")								// this method will handle request paths http://localhost:8080/FoundITServerCxfRest/hello/jsonBean
+//    @Path("posting")								// this method will handle request paths http://localhost:8080/FoundITServerCxfRest/hello/jsonBean
     public Response addJobPosting(Job job) {
     	Response response;
     	try {
@@ -115,7 +115,7 @@ public class JobResource {
     }
     
 	@PUT
-	@Path("posting/{jobId}")							// TODO seems to be useless. Just set path to "/" ????
+	@Path("{jobId}")							// TODO seems to be useless. Just set path to "/" ????
 	@Produces(MediaType.APPLICATION_XML)
 	@Consumes(MediaType.APPLICATION_XML)
 	public Response putJob(Job job) {
@@ -145,7 +145,7 @@ public class JobResource {
 	}
 	
 	@DELETE
-	@Path("posting/{jobId}")
+	@Path("{jobId}")
 	public Response deleteJob(@PathParam("jobId") String jobId) throws IOException {
 		Response response;
 		String filename = path + jobId + ".xml";
@@ -165,7 +165,7 @@ public class JobResource {
 	}
 	
     @GET																	// the method will handle GET request method on the said path
-    @Path("search")														// this method will handle request paths http://localhost:8080/FoundITServerCxfRest/hello/echo/{some text input here}
+//    @Path("search")														// this method will handle request paths http://localhost:8080/FoundITServerCxfRest/hello/echo/{some text input here}
     @Produces(MediaType.APPLICATION_XML)									// the response will contain text plain content. (Note: @Produces({MediaType.TEXT_PLAIN}) means the same)
     public List<Job> searchJobPosting(@QueryParam("keyword") String keyword, @QueryParam("sort") String sort) {			// map the path parameter text after /echo to String input.
     	// Search with keyword, sort by position ????

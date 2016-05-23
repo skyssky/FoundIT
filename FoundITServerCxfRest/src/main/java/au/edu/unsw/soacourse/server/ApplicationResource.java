@@ -25,6 +25,8 @@ import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.filefilter.RegexFileFilter;
 
 import au.edu.unsw.soacourse.model.Application;
+import au.edu.unsw.soacourse.model.Job;
+import au.edu.unsw.soacourse.model.Job.JobStatus;
 
 /* NOTES: 
  * 
@@ -35,28 +37,25 @@ import au.edu.unsw.soacourse.model.Application;
 public class ApplicationResource {
 	
 	final boolean debug = true;
-	final String path = System.getProperty("catalina.home") + "/webapps/server-database/application/";
+	final String appPath = System.getProperty("catalina.home") + "/webapps/server-database/application/";
+	final String jobPath = System.getProperty("catalina.home") + "/webapps/server-database/job/";
  
     @GET																	// the method will handle GET request method on the said path
 //    @Path("")														// this method will handle request paths http://localhost:8080/FoundITServerCxfRest/hello/echo/{some text input here}
     @Produces(MediaType.APPLICATION_XML)									// the response will contain text plain content. (Note: @Produces({MediaType.TEXT_PLAIN}) means the same)
-    public List<Application> getApplications() {			// map the path parameter text after /echo to String input.
+    public List<Application> getApplications() throws JAXBException {			// map the path parameter text after /echo to String input.
     	// Get all applications
     	List<Application> applications = new ArrayList<Application>();
     	Application application;
-    	Collection<File> files = getFiles(path);
-    	try {
-    		for (File file: files) {
-				// Bind XML to Java object
-		    	JAXBContext jaxbContext;
-				jaxbContext = JAXBContext.newInstance(Application.class);
-				Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();
-				application = (Application) jaxbUnmarshaller.unmarshal(file);
-	    		if (debug) System.out.println("Application is found: " + application.getAppId());
-	    		applications.add(application);
-    		}
-    	} catch (JAXBException e) {
-			e.printStackTrace();
+    	Collection<File> files = getFiles(appPath);
+		for (File file: files) {
+			// Bind XML to Java object
+	    	JAXBContext jaxbContext;
+			jaxbContext = JAXBContext.newInstance(Application.class);
+			Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();
+			application = (Application) jaxbUnmarshaller.unmarshal(file);
+    		if (debug) System.out.println("Application is found: " + application.getAppId());
+    		applications.add(application);
 		}
     	return applications;
     }
@@ -64,96 +63,97 @@ public class ApplicationResource {
     @GET																	// the method will handle GET request method on the said path
     @Path("{appId}")														// this method will handle request paths http://localhost:8080/FoundITServerCxfRest/hello/echo/{some text input here}
     @Produces(MediaType.APPLICATION_XML)									// the response will contain text plain content. (Note: @Produces({MediaType.TEXT_PLAIN}) means the same)
-    public Application getApplication(@PathParam("appId") String appId) {	// map the path parameter text after /echo to String input.
+    public Response getApplication(@PathParam("appId") String appId) throws JAXBException {	// map the path parameter text after /echo to String input.
     	Application application = null;
-    	try {
-    		String filename = path + appId + ".xml";
-	    	File file = new File(filename);
-	    	// Bind XML to Java object
-	    	JAXBContext jaxbContext = JAXBContext.newInstance(Application.class);
-    		Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();
-    		application = (Application) jaxbUnmarshaller.unmarshal(file);
-    		if (debug) System.out.println("Application is found: " + appId);
-    	} catch (JAXBException e) {
-    		// TODO throw Response/Exception: application 'appId' does not exist
-    		e.printStackTrace();
-    		if (debug) System.out.println("Application '" + appId + "' does not exist");
+		String filename = appPath + appId + ".xml";
+    	File file = new File(filename);
+    	if (!file.exists()) {
+    		return Response.status(Response.Status.NOT_FOUND).entity("Application '" + appId + "' is not found.").build();
     	}
-    	return application;
+    	// Bind XML to Java object
+    	JAXBContext jaxbContext = JAXBContext.newInstance(Application.class);
+		Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();
+		application = (Application) jaxbUnmarshaller.unmarshal(file);
+		if (debug) System.out.println("Application is found: " + appId);
+		return Response.ok(application, MediaType.APPLICATION_XML).build();
     }
 
     @POST									// the method will handle POST request method on the said path
     @Produces(MediaType.APPLICATION_XML)	// the response will contain JSON
     @Consumes(MediaType.APPLICATION_XML)	// applies to the input parameter JsonBean input. map the POST body content (which will contain JSON) to JsonBean input
 //    @Path("")								// this method will handle request paths http://localhost:8080/FoundITServerCxfRest/hello/jsonBean
-    public Response addApplication(Application application) {
+    public Response addApplication(Application application) throws JAXBException, IOException {
     	Response response;
-    	try {
-    		String filename = path + application.getAppId() + ".xml";
-	    	File file = new File(filename);	// create the file if does not exist
-	    	if(!file.exists()) {
-	    		file.createNewFile();
-	    	} else {						// return 'CONFLICT' response if file already exists
-	    		response = Response.status(Response.Status.CONFLICT).entity("Application '" + application.getAppId() + "' already exists").build();
-	    		return response;
-	    	}
-	    	if (debug) System.out.println("file: " + filename);
-	    	// Bind Java object to XML
-	    	JAXBContext jaxbContext = JAXBContext.newInstance(Application.class);
-			Marshaller jaxbMarshaller = jaxbContext.createMarshaller();
-			jaxbMarshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
-			jaxbMarshaller.marshal(application, file);
-			jaxbMarshaller.marshal(application, System.out);
-    	} catch (JAXBException e) {
-    		e.printStackTrace();
-    	} catch (IOException e) {
-			e.printStackTrace();
-		}
+    	// An application can be created iff the job posting is opening
+    	if (!jobIsOpening(application)) {
+    		response = Response.status(Response.Status.FORBIDDEN).entity("Application '" + application.getAppId() + "' cannot be made because the job posting is not opening or does not exist.").build();
+    		return response;
+    	}
+    	// Once the job posting is opening, create the application.
+		String filename = appPath + application.getAppId() + ".xml";
+    	File file = new File(filename);			// create the file if does not exist
+    	if(!file.exists()) {
+    		file.createNewFile();
+    	} else {								// return 'CONFLICT' response if file already exists
+    		response = Response.status(Response.Status.CONFLICT).entity("Application '" + application.getAppId() + "' already exists").build();
+    		return response;
+    	}
+    	if (debug) System.out.println("file: " + filename);
+    	// Bind Java object to XML
+    	JAXBContext jaxbContext = JAXBContext.newInstance(Application.class);
+    	Marshaller jaxbMarshaller = jaxbContext.createMarshaller();
+		jaxbMarshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
+		jaxbMarshaller.marshal(application, file);
+		jaxbMarshaller.marshal(application, System.out);
     	response = Response.status(Response.Status.CREATED).entity("Application '" + application.getAppId() + "' has been created").build();
     	return response;
     }
     
 	@PUT
-	@Path("{appId}")							// TODO seems to be useless. Just set path to "/" ????
+	@Path("{appId}")							
 	@Produces(MediaType.APPLICATION_XML)
 	@Consumes(MediaType.APPLICATION_XML)
-	public Response putApplication(Application application) {
+	public Response putApplication(Application application) throws JAXBException, IOException {
 		Response response;
-		try {
-			String filename = path + application.getAppId() + ".xml";
-	    	File file = new File(filename);	// create the file if does not exist
-	    	if(!file.exists()) {
-	    		file.createNewFile();
-	    		response = Response.status(Response.Status.NOT_FOUND).entity("Application '" + application.getAppId() + "' is not found.").build();
-	    		return response;
-	    	}
-	    	if (debug) System.out.println("file: " + filename);
-	    	// Bind Java object to XML
-	    	JAXBContext jaxbContext = JAXBContext.newInstance(Application.class);
-			Marshaller jaxbMarshaller = jaxbContext.createMarshaller();
-			jaxbMarshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
-			jaxbMarshaller.marshal(application, file);
-			jaxbMarshaller.marshal(application, System.out);
-		} catch (IOException e) {
-			e.printStackTrace();
-		} catch (JAXBException e) {
-			e.printStackTrace();
-		}
+		// An application can be updated iff the job posting is opening
+    	if (!jobIsOpening(application)) {
+    		response = Response.status(Response.Status.FORBIDDEN).entity("Application '" + application.getAppId() + "' cannot be updated because the job posting is not opening or does not exist.").build();
+    		return response;
+    	}
+		String filename = appPath + application.getAppId() + ".xml";
+    	File file = new File(filename);	// create the file if does not exist
+    	if(!file.exists()) {
+    		file.createNewFile();
+    		response = Response.status(Response.Status.NOT_FOUND).entity("Application '" + application.getAppId() + "' is not found.").build();
+    		return response;
+    	}
+    	if (debug) System.out.println("file: " + filename);
+    	// Bind Java object to XML
+    	JAXBContext jaxbContext = JAXBContext.newInstance(Application.class);
+		Marshaller jaxbMarshaller = jaxbContext.createMarshaller();
+		jaxbMarshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
+		jaxbMarshaller.marshal(application, file);
+		jaxbMarshaller.marshal(application, System.out);
 		response = Response.status(Response.Status.ACCEPTED).entity("Application '" + application.getAppId() + "' has been updated").build();
 		return response;
 	}
 	
 	@DELETE
-	@Path("{jobId}")
-	public Response deleteApplication(@PathParam("appId") String appId) throws IOException {
+	@Path("{appId}")
+	public Response deleteApplication(@PathParam("appId") String appId) throws IOException, JAXBException {
 		Response response;
-		String filename = path + appId + ".xml";
+		// An application can be deleted iff the job posting is opening
+		if (!jobIsOpening(appId)) {
+    		response = Response.status(Response.Status.FORBIDDEN).entity("Application '" + appId + "' cannot be deleted because the job posting is not opening or does not exist.").build();
+    		return response;
+    	}
+		String filename = appPath + appId + ".xml";
 		File file = new File(filename);	// create the file if does not exist
 		if(!file.exists()) {
 			response = Response.status(Response.Status.NOT_FOUND).entity("Application '" + appId + "' is not found.").build();
 			return response;
 		}
-		File dfile = new File(path + "_" + appId + ".xml");
+		File dfile = new File(appPath + "_" + appId + ".xml");
 		boolean success = file.renameTo(dfile);
 		if (!success) {
 			response = Response.status(Response.Status.FORBIDDEN).entity("Application '" + appId + "' cannot be deleted.").build();
@@ -168,6 +168,38 @@ public class ApplicationResource {
 		Collection<File> files = FileUtils.listFiles(directory, new RegexFileFilter("^[^_][^.]*.xml"), null);
 		System.out.println("Get collections: size = " + files.size());
 		return files;
+	}
+	
+	boolean jobIsOpening(Application application) throws JAXBException {
+		Job job = null;
+    	String filename = jobPath + application.getJobId() + ".xml";
+    	File file = new File(filename);	// create the file if does not exist
+    	if(!file.exists()) {
+    		if (debug) System.out.println("Job '" + application.getJobId() + "' is not found, so cannot confirm your application.");
+    		return false;
+    	}
+    	if (debug) System.out.println("file: " + filename);
+    	// Bind XML to Java object
+    	JAXBContext jaxbContext = JAXBContext.newInstance(Job.class);
+		Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();
+		job = (Job) jaxbUnmarshaller.unmarshal(file);
+		// A new application can be created iff the job posting is opening.
+    	if (job.getStatus() != JobStatus.OPEN) {
+    		if (debug) System.out.println("Application '" + application.getAppId() + "' cannot be made because the job posting is not opening.");
+			return false;
+    	}
+    	return true;
+	}
+	
+	boolean jobIsOpening(String appId) throws JAXBException {
+		Application application = null;
+		String filename = appPath + appId + ".xml";
+    	File file = new File(filename);
+    	// Bind XML to Java object
+    	JAXBContext jaxbContext = JAXBContext.newInstance(Application.class);
+		Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();
+		application = (Application) jaxbUnmarshaller.unmarshal(file);
+		return jobIsOpening(application);
 	}
 }
 
