@@ -6,6 +6,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement
 public class Company {
 	private String profileId;
+	private String managerId;
 	private String name;
 	private String type;
 	private String detail;

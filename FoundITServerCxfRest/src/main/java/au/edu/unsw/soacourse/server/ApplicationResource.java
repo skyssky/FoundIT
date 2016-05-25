@@ -25,6 +25,7 @@ import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.filefilter.RegexFileFilter;
 
 import au.edu.unsw.soacourse.model.Application;
+import au.edu.unsw.soacourse.model.Application.AppStatus;
 import au.edu.unsw.soacourse.model.Job;
 import au.edu.unsw.soacourse.model.Job.JobStatus;
 
@@ -123,7 +124,7 @@ public class ApplicationResource {
 		String filename = appPath + application.getAppId() + ".xml";
     	File file = new File(filename);	// create the file if does not exist
     	if(!file.exists()) {
-    		file.createNewFile();
+//    		file.createNewFile();
     		response = Response.status(Response.Status.NOT_FOUND).entity("Application '" + application.getAppId() + "' is not found.").build();
     		return response;
     	}
@@ -143,8 +144,8 @@ public class ApplicationResource {
 	public Response deleteApplication(@PathParam("appId") String appId) throws IOException, JAXBException {
 		Response response;
 		// An application can be deleted iff the job posting is opening
-		if (!jobIsOpening(appId)) {
-    		response = Response.status(Response.Status.FORBIDDEN).entity("Application '" + appId + "' cannot be deleted because the job posting is not opening or does not exist.").build();
+		if (!jobIsOpening(appId) && !appIsProcessed(appId)) {
+    		response = Response.status(Response.Status.FORBIDDEN).entity("Application '" + appId + "' cannot be deleted or archived because its processing has not been finished.").build();
     		return response;
     	}
 		String filename = appPath + appId + ".xml";
@@ -201,5 +202,24 @@ public class ApplicationResource {
 		application = (Application) jaxbUnmarshaller.unmarshal(file);
 		return jobIsOpening(application);
 	}
+	
+	boolean appIsProcessed(String appId) throws JAXBException {		
+		Application application = null;
+		String filename = appPath + appId + ".xml";
+    	File file = new File(filename);
+    	if(!file.exists()) {
+    		if (debug) System.out.println("Application '" + appId + "' is not found, so cannot check its status.");
+    		return false;
+    	}
+    	// Bind XML to Java object
+    	JAXBContext jaxbContext = JAXBContext.newInstance(Application.class);
+		Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();
+		application = (Application) jaxbUnmarshaller.unmarshal(file);
+		if (application.getStatus() != AppStatus.PROCESSED) {
+			return false;
+		}
+		return true;
+	}
+
 }
 

@@ -5,7 +5,7 @@
     <context:annotation-config/>
     <bean class="org.springframework.web.context.support.ServletContextPropertyPlaceholderConfigurer"/>
     <bean class="org.springframework.beans.factory.config.PreferencesPlaceholderConfigurer"/>
-    <jaxrs:server id="userServices" address="/user">
+    <jaxrs:server id="userServices" address="/users">
         <jaxrs:serviceBeans>	
         	<!-- declare REST implementation class -->
             <bean class="au.edu.unsw.soacourse.server.UserResource"/>
@@ -15,7 +15,7 @@
             <bean class="org.codehaus.jackson.jaxrs.JacksonJsonProvider"/> 
         </jaxrs:providers>
     </jaxrs:server>
-    <jaxrs:server id="jobServices" address="/job">
+    <jaxrs:server id="jobServices" address="/jobs">
         <jaxrs:serviceBeans>	
         	<!-- declare REST implementation class -->
             <bean class="au.edu.unsw.soacourse.server.JobResource"/>
@@ -25,7 +25,7 @@
             <bean class="org.codehaus.jackson.jaxrs.JacksonJsonProvider"/> 
         </jaxrs:providers>
     </jaxrs:server>
-	<jaxrs:server id="CompanyServices" address="/company">
+	<jaxrs:server id="CompanyServices" address="/companys">
         <jaxrs:serviceBeans>	
         	<!-- declare REST implementation class -->
             <bean class="au.edu.unsw.soacourse.server.CompanyResource"/>
@@ -35,7 +35,7 @@
             <bean class="org.codehaus.jackson.jaxrs.JacksonJsonProvider"/> 
         </jaxrs:providers>
     </jaxrs:server>
-    <jaxrs:server id="ApplicationServices" address="/application">
+    <jaxrs:server id="ApplicationServices" address="/applications">
         <jaxrs:serviceBeans>	
         	<!-- declare REST implementation class -->
             <bean class="au.edu.unsw.soacourse.server.ApplicationResource"/>
@@ -45,10 +45,20 @@
             <bean class="org.codehaus.jackson.jaxrs.JacksonJsonProvider"/> 
         </jaxrs:providers>
     </jaxrs:server>
-	<jaxrs:server id="ReviewServices" address="/review">
+	<jaxrs:server id="ReviewServices" address="/reviews">
         <jaxrs:serviceBeans>	
         	<!-- declare REST implementation class -->
             <bean class="au.edu.unsw.soacourse.server.ReviewResource"/>
+        </jaxrs:serviceBeans>
+        <jaxrs:providers>		
+        	<!-- JSON support class: so you can consume/produce JSON in your service -->
+            <bean class="org.codehaus.jackson.jaxrs.JacksonJsonProvider"/> 
+        </jaxrs:providers>
+    </jaxrs:server>
+   	<jaxrs:server id="HiringTeamServices" address="/teams">
+        <jaxrs:serviceBeans>	
+        	<!-- declare REST implementation class -->
+            <bean class="au.edu.unsw.soacourse.server.HiringTeamResource"/>
         </jaxrs:serviceBeans>
         <jaxrs:providers>		
         	<!-- JSON support class: so you can consume/produce JSON in your service -->

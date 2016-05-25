@@ -34,22 +34,19 @@ public class CompanyResource {
     @GET																	// the method will handle GET request method on the said path
     @Path("/{profileId}")											// this method will handle request paths http://localhost:8080/FoundITServerCxfRest/hello/echo/{some text input here}
     @Produces(MediaType.APPLICATION_XML)									// the response will contain text plain content. (Note: @Produces({MediaType.TEXT_PLAIN}) means the same)
-    public Company getCompanyProfile(@PathParam("profileId") String profileId) {	// map the path parameter text after /echo to String input.
+    public Response getCompanyProfile(@PathParam("profileId") String profileId) throws JAXBException {	// map the path parameter text after /echo to String input.
     	Company company = null;
-    	try {
-    		String filename = path + profileId + ".xml";
-	    	File file = new File(filename);
-	    	// Bind XML to Java object
-	    	JAXBContext jaxbContext = JAXBContext.newInstance(Company.class);
-    		Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();
-    		company = (Company) jaxbUnmarshaller.unmarshal(file);
-    		if (debug) System.out.println("company is found: " + profileId);
-    	} catch (JAXBException e) {
-    		// TODO throw Response/Exception: company profile for company 'profileId' does not exist
-    		e.printStackTrace();
-    		if (debug) System.out.println("Company profile for company '" + profileId + "' does not exist");
+		String filename = path + profileId + ".xml";
+    	File file = new File(filename);
+    	if (!file.exists()) {
+    		return Response.status(Response.Status.NOT_FOUND).entity("Company profile '" + profileId + "' is not found.").build();
     	}
-    	return company;
+    	// Bind XML to Java object
+    	JAXBContext jaxbContext = JAXBContext.newInstance(Company.class);
+		Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();
+		company = (Company) jaxbUnmarshaller.unmarshal(file);
+		if (debug) System.out.println("company is found: " + profileId);
+    	return Response.ok(company, MediaType.APPLICATION_XML).build();
     }
 
     @POST									// the method will handle POST request method on the said path
@@ -87,30 +84,23 @@ public class CompanyResource {
 	@Path("/{profileId}")						// TODO seems to be useless. Just set path to "/" ????
 	@Produces(MediaType.APPLICATION_XML)
 	@Consumes(MediaType.APPLICATION_XML)
-	public Response putCompany(Company company) {
-		Response response;
-		try {
-			String filename = path + company.getProfileId() + ".xml";
-	    	File file = new File(filename);	// create the file if does not exist
-	    	if(!file.exists()) {
-	    		file.createNewFile();
-	    		response = Response.status(Response.Status.NOT_FOUND).entity("Company profile for company '" + company.getProfileId() + "' is not found.").build();
-	    		return response;
-	    	}
-	    	if (debug) System.out.println("file: " + filename);
-	    	// Bind Java object to XML
-	    	JAXBContext jaxbContext = JAXBContext.newInstance(Company.class);
-			Marshaller jaxbMarshaller = jaxbContext.createMarshaller();
-			jaxbMarshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
-			jaxbMarshaller.marshal(company, file);
-			jaxbMarshaller.marshal(company, System.out);
-		} catch (IOException e) {
-			e.printStackTrace();
-		} catch (JAXBException e) {
-			e.printStackTrace();
-		}
-		response = Response.status(Response.Status.ACCEPTED).entity("Company profile for company '" + company.getProfileId() + "' has been updated").build();
-		return response;
+	public Response putCompany(Company company) throws JAXBException {
+
+		String filename = path + company.getProfileId() + ".xml";
+    	File file = new File(filename);	// create the file if does not exist
+    	if(!file.exists()) {
+//	    		file.createNewFile();
+    		return Response.status(Response.Status.NOT_FOUND).entity("Company profile for company '" + company.getProfileId() + "' is not found.").build();
+    	}
+    	if (debug) System.out.println("file: " + filename);
+    	// Bind Java object to XML
+    	JAXBContext jaxbContext = JAXBContext.newInstance(Company.class);
+		Marshaller jaxbMarshaller = jaxbContext.createMarshaller();
+		jaxbMarshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
+		jaxbMarshaller.marshal(company, file);
+		jaxbMarshaller.marshal(company, System.out);
+
+		return Response.status(Response.Status.ACCEPTED).entity("Company profile for company '" + company.getProfileId() + "' has been updated").build();
 	}
 	
 	@DELETE

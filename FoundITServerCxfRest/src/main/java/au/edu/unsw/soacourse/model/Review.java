@@ -5,17 +5,20 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement
 public class Review {
+	
+	public enum ReviewDecision {YES, NO};	// shortlist or not
+	
 	private String reviewId;
 	private String appId;
 	private String reviewerId;
 	private String comment;
-	private String decision;
+	private ReviewDecision decision;
 	
 	public Review() {
 		
     }
 
-	public Review(String reviewId, String appId, String reviewerId, String comment, String decision) {
+	public Review(String reviewId, String appId, String reviewerId, String comment, ReviewDecision decision) {
 		this.reviewId = reviewId;
 		this.appId = appId;
 		this.reviewerId = reviewerId;
@@ -59,12 +62,12 @@ public class Review {
         this.comment = comment;
     }
     
-    public String getDecision() {
+    public ReviewDecision getDecision() {
         return this.decision;
     }
     
     @XmlElement
-    public void setDecision(String decision) {
+    public void setDecision(ReviewDecision decision) {
         this.decision = decision;
     }
 }
