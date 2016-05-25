@@ -33,7 +33,7 @@ public class UserResource {
  
     @GET																	// the method will handle GET request method on the said path
     @Path("/{username}")											// this method will handle request paths http://localhost:8080/FoundITServerCxfRest/hello/echo/{some text input here}
-    @Produces(MediaType.APPLICATION_XML)									// the response will contain text plain content. (Note: @Produces({MediaType.TEXT_PLAIN}) means the same)
+    @Produces({MediaType.APPLICATION_XML,MediaType.APPLICATION_JSON})									// the response will contain text plain content. (Note: @Produces({MediaType.TEXT_PLAIN}) means the same)
     public User getUserProfile(@PathParam("username") String username) {	// map the path parameter text after /echo to String input.
     	User user = null;
     	try {
