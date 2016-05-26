@@ -2,13 +2,16 @@ package au.edu.unsw.soacourse.auxiliary;
 
 public class Paths {
 	
-	private final String root = System.getProperty("catalina.home") + "/webapps/server-database/";
-	private final String appPath = root + "application/";
-	private final String teamPath = root + "team/";
-	private final String jobPath = root + "job/";
-	private final String companyPath = root + "company/";
-	private final String reviewPath = root + "review/";
-	private final String userPath = root + "user/";
+	private final String rootRestServer = System.getProperty("catalina.home") + "/webapps/ROOT/FoundIT/RestServer/";
+	private final String appPath = rootRestServer + "application/";
+	private final String teamPath = rootRestServer + "team/";
+	private final String jobPath = rootRestServer + "job/";
+	private final String companyPath = rootRestServer + "company/";
+	private final String reviewPath = rootRestServer + "review/";
+	private final String userPath = rootRestServer + "user/";
+	
+	private final String rootDataService = System.getProperty("catalina.home") + "/webapps/ROOT/FoundIT/DataService/";
+	private final String jobalertPath = rootDataService;
     
 	public Paths() {
 		
@@ -36,5 +39,9 @@ public class Paths {
     
     public String getUserPath() {
         return this.userPath;
+    }
+    
+    public String getJobalertPath() {
+        return this.jobalertPath;
     }
 }

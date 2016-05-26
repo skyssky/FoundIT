@@ -65,4 +65,14 @@
             <bean class="org.codehaus.jackson.jaxrs.JacksonJsonProvider"/> 
         </jaxrs:providers>
     </jaxrs:server>
+    <jaxrs:server id="DataServices" address="/jobalerts">
+        <jaxrs:serviceBeans>	
+        	<!-- declare REST implementation class -->
+            <bean class="au.edu.unsw.soacourse.dataservice.DataService"/>
+        </jaxrs:serviceBeans>
+        <jaxrs:providers>		
+        	<!-- JSON support class: so you can consume/produce JSON in your service -->
+            <bean class="org.codehaus.jackson.jaxrs.JacksonJsonProvider"/> 
+        </jaxrs:providers>
+    </jaxrs:server>
 </beans>
