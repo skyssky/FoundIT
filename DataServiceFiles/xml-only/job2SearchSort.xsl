@@ -25,6 +25,9 @@
   <jobAlert>
   <position><xsl:value-of select="position"/></position>
   <detail><xsl:value-of select="detail"/></detail>
+  <guid><xsl:value-of select="guid"/></guid>
+  <link><xsl:value-of select="link"/></link>
+  <pubDate><xsl:value-of select="pubDate"/></pubDate>
   </jobAlert>
 </xsl:template>
 

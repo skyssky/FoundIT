@@ -9,7 +9,8 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlAccessorType(XmlAccessType.FIELD)
 public class JobAlert {
 	
-//	private String guid;		// job id
+	@XmlElement(name = "guid")
+	private String guid;		// job id
 	
 	@XmlElement(name = "position")
 	private String position;		// position type
@@ -17,16 +18,22 @@ public class JobAlert {
 	@XmlElement(name = "detail")
 	private String detail;	// job details/detail
 
-//	private String link;
-//	private String pubDate;
+	@XmlElement(name = "link")
+	private String link;
+	
+	@XmlElement(name = "pubDate")
+	private String pubDate;
 
 	public JobAlert() {
 		
     }
 	
-	public JobAlert(String position, String detail) {
+	public JobAlert(String position, String detail, String guid, String link, String pubDate) {
 		this.position = position;
 		this.detail = detail;
+		this.guid = guid;
+		this.link = link;
+		this.pubDate = pubDate; 
     }
     
     public String getPosition() {
@@ -45,4 +52,27 @@ public class JobAlert {
         this.detail = detail;
     }
  
+    public String getGuid() {
+        return this.guid;
+    }
+    
+    public void setGuid(String guid) {
+        this.position = guid;
+    }
+    
+    public String getLink() {
+        return this.link;
+    }
+    
+    public void setLink(String link) {
+        this.link = link;
+    }
+    
+    public String getPubDate() {
+        return this.pubDate;
+    }
+    
+    public void setPubDate(String pubDate) {
+        this.pubDate = pubDate;
+    }
 }

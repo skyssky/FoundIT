@@ -13,9 +13,9 @@
       <jobAlert>
         <position><xsl:value-of select="title"/></position>
         <detail><xsl:value-of select="description"/></detail>
-        <!-- <link><xsl:value-of select="link"/></link> -->
-        <!-- <guid><xsl:value-of select="guid"/></guid> -->
-        <!-- <pubDate><xsl:value-of select="pubDate"/></pubDate> -->
+        <link><xsl:value-of select="link"/></link>
+        <guid><xsl:value-of select="guid"/></guid>
+        <pubDate><xsl:value-of select="pubDate"/></pubDate>
       </jobAlert>
     </xsl:for-each>
   </jobAlerts>

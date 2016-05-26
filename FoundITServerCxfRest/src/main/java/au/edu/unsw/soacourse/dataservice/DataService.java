@@ -45,15 +45,15 @@ public class DataService {
     		
     	} else if (sort_by == null && keyword != null) {
     		// search by keyword
-    		stylesheet = new File(path.getJobalertPath() + "job2Search.xsl");
-    	    datafile = new File(path.getJobalertPath() + "joblist2.xml");
-    	    outFile = new File(path.getJobalertPath() + "job2SearchResult.xml");
+    		stylesheet = new File(path.getJobalertPath() + "job2RssSearch.xsl");
+    	    datafile = new File(path.getJobalertPath() + "rssquery.xml");
+    	    outFile = new File(path.getJobalertPath() + "job2RssSearchResult.xml");
     	    
     	} else if (sort_by != null && keyword != null && sort_by.equals("jobtitle")) {
     		// search by keyword and sort by jobtitle
-    		stylesheet = new File(path.getJobalertPath() + "job2SearchSort.xsl");
-    	    datafile = new File(path.getJobalertPath() + "joblist2.xml");
-    	    outFile = new File(path.getJobalertPath() + "job2SearchSortResult.xml");
+    		stylesheet = new File(path.getJobalertPath() + "job2RssSearchSort.xsl");
+    	    datafile = new File(path.getJobalertPath() + "rssquery.xml");
+    	    outFile = new File(path.getJobalertPath() + "job2RssSearchSortResult.xml");
     	    
     	} else {
     		// bad request: illegal keyword
@@ -68,12 +68,12 @@ public class DataService {
 	    StreamResult out = new StreamResult(outFile);
 	    transformer.transform(in, out);
 	    
-//	    JAXBContext jaxbContext = JAXBContext.newInstance(new Class[] {JobAlert.class, JobAlerts.class});
-	    JAXBContext jaxbContext = JAXBContext.newInstance(JobAlerts.class);
-	    Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();
-	    JobAlerts jobalerts = (JobAlerts) jaxbUnmarshaller.unmarshal(outFile);
+////	    JAXBContext jaxbContext = JAXBContext.newInstance(new Class[] {JobAlert.class, JobAlerts.class});
+//	    JAXBContext jaxbContext = JAXBContext.newInstance(JobAlerts.class);
+//	    Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();
+//	    JobAlerts jobalerts = (JobAlerts) jaxbUnmarshaller.unmarshal(outFile);
 	    
-		return Response.ok(jobalerts, MediaType.APPLICATION_XML).build();
+		return Response.ok(outFile, MediaType.APPLICATION_XML).build();
 	}
 }
 
