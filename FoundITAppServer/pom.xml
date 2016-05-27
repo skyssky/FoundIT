@@ -59,67 +59,6 @@
           <target>1.8</target>
         </configuration>
       </plugin>
-      <!-- MAY added: plugins for SOAP service -->
-      	<plugin>
-		   <groupId>org.apache.maven.plugins</groupId>
-		   <artifactId>maven-eclipse-plugin</artifactId>
-			<configuration>
-			    <projectNameTemplate>[artifactId]-[version]</projectNameTemplate>
-			    <wtpmanifest>true</wtpmanifest>
-			    <wtpapplicationxml>true</wtpapplicationxml>
-			    <wtpversion>2.0</wtpversion>
-			</configuration>
-		</plugin>
-		<plugin>
-			<!-- mvn clean install tomcat:run-war to deploy
-			Look for "Running war on http://xxx" and
-			"Setting the server's publish address to be /yyy"
-			in console output; WSDL browser address will be
-			concatenation of the two: http://xxx/yyy?wsdl
-			-->
-			<groupId>org.apache.tomcat.maven</groupId>
-			<artifactId>tomcat7-maven-plugin</artifactId>		<!-- change to tomcat8 ????? -->
-			<version>2.0</version>
-			<executions>
-			    <execution>
-			        <id>start-tomcat</id>
-			        <goals>
-			            <goal>run-war</goal>
-			        </goals>
-			        <phase>pre-integration-test</phase>
-			        <configuration>
-			            <port>${test.server.port}</port>
-			            <path>/webservice</path>
-			            <fork>true</fork>
-			            <useSeparateTomcatClassLoader>true</useSeparateTomcatClassLoader>
-			        </configuration>
-			    </execution>
-			</executions>
-		</plugin>
-		
-		<plugin>
-			<groupId>org.apache.cxf</groupId>
-			<artifactId>cxf-codegen-plugin</artifactId>
-			<version>3.0.4</version>
-			<executions>
-				<execution>
-					<id>generate-sources</id>
-					<phase>generate-sources</phase>
-					<configuration>
-			    		<sourceRoot>src/main/java-generated</sourceRoot>
-			   			<wsdlOptions>
-				        	<wsdlOption>
-				            	<wsdl>${basedir}/src/main/resources/wsdl/founditappserver.wsdl</wsdl>              
-				        	</wsdlOption>
-			    		</wsdlOptions>
-					</configuration>
-					<goals>
-					    <goal>wsdl2java</goal>
-					</goals>
-				</execution>
-			</executions>
-		</plugin>
-		
     </plugins>
   </build>
 </project>
