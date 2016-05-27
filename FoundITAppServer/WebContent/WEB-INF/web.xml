@@ -20,7 +20,7 @@
     <servlet-name>RegisterServlet</servlet-name>
     <url-pattern>/register</url-pattern>
   </servlet-mapping>
-   <servlet-mapping>
+  <servlet-mapping>
     <servlet-name>RegisterServlet</servlet-name>
     <url-pattern>/register.action</url-pattern>
   </servlet-mapping>
@@ -48,8 +48,8 @@
     <servlet-name>JobAlertServlet</servlet-name>
     <url-pattern>/jobalert</url-pattern>
   </servlet-mapping>
-  <context-param>  
-  	<param-name>DBPath</param-name>
-  	<param-value>${catalina.base}/webapps/ROOT/FoundIT/FoundITApp/DB/</param-value>  
+  <context-param>
+    <param-name>DBPath</param-name>
+    <param-value>${catalina.base}/webapps/ROOT/FoundIT/FoundITApp/DB/</param-value>
   </context-param>
 </web-app>
