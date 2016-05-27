@@ -15,11 +15,12 @@ public class Company {
 		
     }
 	
-	public Company(String profileId, String name, String type, String detail) {
+	public Company(String profileId, String name, String type, String detail, String managerId) {
 		this.profileId = profileId;
 		this.name = name;
 		this.type = type;
 		this.detail = detail;
+		this.managerId = managerId;
     }
 	
 	public String getName() {
@@ -38,6 +39,15 @@ public class Company {
     @XmlElement
     public void setProfileId(String profileId) {
         this.profileId = profileId;
+    }
+    
+    public String getManagerId() {
+        return this.managerId;
+    }
+    
+    @XmlElement
+    public void setManagerId(String managerId) {
+        this.managerId = managerId;
     }
     
     public String getDetail() {

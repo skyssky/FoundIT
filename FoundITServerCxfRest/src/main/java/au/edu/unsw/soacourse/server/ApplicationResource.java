@@ -24,7 +24,10 @@ import javax.xml.bind.Unmarshaller;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.filefilter.RegexFileFilter;
 
+import au.edu.unsw.soacourse.auxiliary.IdGenerator;
+import au.edu.unsw.soacourse.auxiliary.Paths;
 import au.edu.unsw.soacourse.model.Application;
+import au.edu.unsw.soacourse.model.IdCounter;
 import au.edu.unsw.soacourse.model.Application.AppStatus;
 import au.edu.unsw.soacourse.model.Job;
 import au.edu.unsw.soacourse.model.Job.JobStatus;
@@ -38,8 +41,9 @@ import au.edu.unsw.soacourse.model.Job.JobStatus;
 public class ApplicationResource {
 	
 	final boolean debug = true;
-	final String appPath = System.getProperty("catalina.home") + "/webapps/server-database/application/";
-	final String jobPath = System.getProperty("catalina.home") + "/webapps/server-database/job/";
+//	final String appPath = System.getProperty("catalina.home") + "/webapps/server-database/application/";
+//	final String jobPath = System.getProperty("catalina.home") + "/webapps/server-database/job/";
+	Paths path = new Paths();
  
     @GET																	// the method will handle GET request method on the said path
 //    @Path("")														// this method will handle request paths http://localhost:8080/FoundITServerCxfRest/hello/echo/{some text input here}
@@ -48,7 +52,7 @@ public class ApplicationResource {
     	// Get all applications
     	List<Application> applications = new ArrayList<Application>();
     	Application application;
-    	Collection<File> files = getFiles(appPath);
+    	Collection<File> files = getFiles(path.getAppPath());
 		for (File file: files) {
 			// Bind XML to Java object
 	    	JAXBContext jaxbContext;
@@ -66,7 +70,7 @@ public class ApplicationResource {
     @Produces(MediaType.APPLICATION_XML)									// the response will contain text plain content. (Note: @Produces({MediaType.TEXT_PLAIN}) means the same)
     public Response getApplication(@PathParam("appId") String appId) throws JAXBException {	// map the path parameter text after /echo to String input.
     	Application application = null;
-		String filename = appPath + appId + ".xml";
+		String filename = path.getAppPath() + appId + ".xml";
     	File file = new File(filename);
     	if (!file.exists()) {
     		return Response.status(Response.Status.NOT_FOUND).entity("Application '" + appId + "' is not found.").build();
@@ -84,6 +88,13 @@ public class ApplicationResource {
     @Consumes(MediaType.APPLICATION_XML)	// applies to the input parameter JsonBean input. map the POST body content (which will contain JSON) to JsonBean input
 //    @Path("")								// this method will handle request paths http://localhost:8080/FoundITServerCxfRest/hello/jsonBean
     public Response addApplication(Application application) throws JAXBException, IOException {
+    	
+    	// Get next Id to use
+    	IdGenerator idGenerator = new IdGenerator(); 
+    	IdCounter idCounter = idGenerator.getCounter(path.getAppPath());
+    	application.setAppId("app" + idCounter.getId());
+    	idGenerator.updateCounter(path.getAppPath(), idCounter);
+		
     	Response response;
     	// An application can be created iff the job posting is opening
     	if (!jobIsOpening(application)) {
@@ -91,7 +102,7 @@ public class ApplicationResource {
     		return response;
     	}
     	// Once the job posting is opening, create the application.
-		String filename = appPath + application.getAppId() + ".xml";
+		String filename = path.getAppPath() + application.getAppId() + ".xml";
     	File file = new File(filename);			// create the file if does not exist
     	if(!file.exists()) {
     		file.createNewFile();
@@ -121,7 +132,7 @@ public class ApplicationResource {
     		response = Response.status(Response.Status.FORBIDDEN).entity("Application '" + application.getAppId() + "' cannot be updated because the job posting is not opening or does not exist.").build();
     		return response;
     	}
-		String filename = appPath + application.getAppId() + ".xml";
+		String filename = path.getAppPath() + application.getAppId() + ".xml";
     	File file = new File(filename);	// create the file if does not exist
     	if(!file.exists()) {
 //    		file.createNewFile();
@@ -148,13 +159,13 @@ public class ApplicationResource {
     		response = Response.status(Response.Status.FORBIDDEN).entity("Application '" + appId + "' cannot be deleted or archived because its processing has not been finished.").build();
     		return response;
     	}
-		String filename = appPath + appId + ".xml";
+		String filename = path.getAppPath() + appId + ".xml";
 		File file = new File(filename);	// create the file if does not exist
 		if(!file.exists()) {
 			response = Response.status(Response.Status.NOT_FOUND).entity("Application '" + appId + "' is not found.").build();
 			return response;
 		}
-		File dfile = new File(appPath + "_" + appId + ".xml");
+		File dfile = new File(path.getAppPath() + "_" + appId + ".xml");
 		boolean success = file.renameTo(dfile);
 		if (!success) {
 			response = Response.status(Response.Status.FORBIDDEN).entity("Application '" + appId + "' cannot be deleted.").build();
@@ -173,7 +184,7 @@ public class ApplicationResource {
 	
 	boolean jobIsOpening(Application application) throws JAXBException {
 		Job job = null;
-    	String filename = jobPath + application.getJobId() + ".xml";
+    	String filename = path.getAppPath() + application.getJobId() + ".xml";
     	File file = new File(filename);	// create the file if does not exist
     	if(!file.exists()) {
     		if (debug) System.out.println("Job '" + application.getJobId() + "' is not found, so cannot confirm your application.");
@@ -194,7 +205,7 @@ public class ApplicationResource {
 	
 	boolean jobIsOpening(String appId) throws JAXBException {
 		Application application = null;
-		String filename = appPath + appId + ".xml";
+		String filename = path.getAppPath() + appId + ".xml";
     	File file = new File(filename);
     	// Bind XML to Java object
     	JAXBContext jaxbContext = JAXBContext.newInstance(Application.class);
@@ -205,7 +216,7 @@ public class ApplicationResource {
 	
 	boolean appIsProcessed(String appId) throws JAXBException {		
 		Application application = null;
-		String filename = appPath + appId + ".xml";
+		String filename = path.getAppPath() + appId + ".xml";
     	File file = new File(filename);
     	if(!file.exists()) {
     		if (debug) System.out.println("Application '" + appId + "' is not found, so cannot check its status.");

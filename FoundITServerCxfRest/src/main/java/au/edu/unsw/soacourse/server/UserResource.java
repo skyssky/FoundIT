@@ -18,6 +18,9 @@ import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
 
+import au.edu.unsw.soacourse.auxiliary.IdGenerator;
+import au.edu.unsw.soacourse.auxiliary.Paths;
+import au.edu.unsw.soacourse.model.IdCounter;
 import au.edu.unsw.soacourse.model.User;
 
 /* NOTES: 
@@ -29,7 +32,8 @@ import au.edu.unsw.soacourse.model.User;
 public class UserResource {
 	
 	final boolean debug = true;
-	final String path = System.getProperty("catalina.home") + "/webapps/server-database/user/";
+//	final String path = System.getProperty("catalina.home") + "/webapps/server-database/user/";
+	Paths path = new Paths();
  
     @GET																	// the method will handle GET request method on the said path
     @Path("/{username}")											// this method will handle request paths http://localhost:8080/FoundITServerCxfRest/hello/echo/{some text input here}
@@ -37,7 +41,7 @@ public class UserResource {
     public User getUserProfile(@PathParam("username") String username) {	// map the path parameter text after /echo to String input.
     	User user = null;
     	try {
-    		String filename = path + username + ".xml";
+    		String filename = path.getUserPath() + username + ".xml";
 	    	File file = new File(filename);
 	    	// Bind XML to Java object
 	    	JAXBContext jaxbContext = JAXBContext.newInstance(User.class);
@@ -56,29 +60,31 @@ public class UserResource {
     @Produces(MediaType.APPLICATION_XML)	// the response will contain JSON
     @Consumes(MediaType.APPLICATION_XML)	// applies to the input parameter JsonBean input. map the POST body content (which will contain JSON) to JsonBean input
 //    @Path("/")								// this method will handle request paths http://localhost:8080/FoundITServerCxfRest/hello/jsonBean
-    public Response addUserProfile(User user) {
+    public Response addUserProfile(User user) throws JAXBException, IOException {
+    	
+    	// Get next Id to use
+    	IdGenerator idGenerator = new IdGenerator(); 
+    	IdCounter idCounter = idGenerator.getCounter(path.getUserPath());
+    	user.setUsername("user" + idCounter.getId());
+    	idGenerator.updateCounter(path.getUserPath(), idCounter);
+    	
     	Response response;
-    	try {
-    		String filename = path + user.getUsername() + ".xml";
-	    	File file = new File(filename);	// create the file if does not exist
-	    	if(!file.exists()) {
-	    		file.createNewFile();
-	    	} else {						// return 'CONFLICT' response if file already exists
-	    		response = Response.status(Response.Status.CONFLICT).entity("User profile for user '" + user.getUsername() + "' already exists").build();
-	    		return response;
-	    	}
-	    	if (debug) System.out.println("file: " + filename);
-	    	// Bind Java object to XML
-	    	JAXBContext jaxbContext = JAXBContext.newInstance(User.class);
-			Marshaller jaxbMarshaller = jaxbContext.createMarshaller();
-			jaxbMarshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
-			jaxbMarshaller.marshal(user, file);
-			jaxbMarshaller.marshal(user, System.out);
-    	} catch (JAXBException e) {
-    		e.printStackTrace();
-    	} catch (IOException e) {
-			e.printStackTrace();
-		}
+		String filename = path.getUserPath() + user.getUsername() + ".xml";
+    	File file = new File(filename);	// create the file if does not exist
+    	if(!file.exists()) {
+    		file.createNewFile();
+    	} else {						// return 'CONFLICT' response if file already exists
+    		response = Response.status(Response.Status.CONFLICT).entity("User profile for user '" + user.getUsername() + "' already exists").build();
+    		return response;
+    	}
+    	if (debug) System.out.println("file: " + filename);
+    	// Bind Java object to XML
+    	JAXBContext jaxbContext = JAXBContext.newInstance(User.class);
+		Marshaller jaxbMarshaller = jaxbContext.createMarshaller();
+		jaxbMarshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
+		jaxbMarshaller.marshal(user, file);
+		jaxbMarshaller.marshal(user, System.out);
+
     	response = Response.status(Response.Status.CREATED).entity("User profile for user '" + user.getUsername() + "' has been created").build();
     	return response;
     }
@@ -90,7 +96,7 @@ public class UserResource {
 	public Response putUser(User user) {
 		Response response;
 		try {
-			String filename = path + user.getUsername() + ".xml";
+			String filename = path.getUserPath() + user.getUsername() + ".xml";
 	    	File file = new File(filename);	// create the file if does not exist
 	    	if(!file.exists()) {
 	    		file.createNewFile();
@@ -117,13 +123,13 @@ public class UserResource {
 	@Path("/{username}")
 	public Response deleteUser(@PathParam("username") String username) throws IOException {
 		Response response;
-		String filename = path + username + ".xml";
+		String filename = path.getUserPath() + username + ".xml";
 		File file = new File(filename);	// create the file if does not exist
 		if(!file.exists()) {
 			response = Response.status(Response.Status.NOT_FOUND).entity("User posting for user '" + username + "' is not found.").build();
 			return response;
 		}
-		File dfile = new File(path + "_" + username + ".xml");
+		File dfile = new File(path.getUserPath() + "_" + username + ".xml");
 		boolean success = file.renameTo(dfile);
 		if (!success) {
 			response = Response.status(Response.Status.FORBIDDEN).entity("User posting for user '" + username + "' cannot be deleted.").build();

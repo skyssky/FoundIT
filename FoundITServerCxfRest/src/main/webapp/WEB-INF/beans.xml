@@ -25,7 +25,7 @@
             <bean class="org.codehaus.jackson.jaxrs.JacksonJsonProvider"/> 
         </jaxrs:providers>
     </jaxrs:server>
-	<jaxrs:server id="CompanyServices" address="/companys">
+	<jaxrs:server id="CompanyServices" address="/companies">
         <jaxrs:serviceBeans>	
         	<!-- declare REST implementation class -->
             <bean class="au.edu.unsw.soacourse.server.CompanyResource"/>

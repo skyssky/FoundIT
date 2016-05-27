@@ -14,6 +14,7 @@ import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.xml.bind.JAXBContext;
@@ -22,9 +23,12 @@ import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
 
 import au.edu.unsw.soacourse.auxiliary.FileOperations;
+import au.edu.unsw.soacourse.auxiliary.IdGenerator;
 import au.edu.unsw.soacourse.auxiliary.Paths;
 import au.edu.unsw.soacourse.model.Application;
 import au.edu.unsw.soacourse.model.HiringTeam;
+import au.edu.unsw.soacourse.model.IdCounter;
+import au.edu.unsw.soacourse.model.Review.ReviewDecision;
 
 /* TODO 
  * 
@@ -57,6 +61,38 @@ public class HiringTeamResource {
     }
     
     @GET																	// the method will handle GET request method on the said path
+//    @Path("/{appId}")											// this method will handle request paths http://localhost:8080/FoundITServerCxfRest/hello/echo/{some text input here}
+    @Produces(MediaType.APPLICATION_XML)									// the response will contain text plain content. (Note: @Produces({MediaType.TEXT_PLAIN}) means the same)
+    public Response getHiringTeamByApp(@QueryParam("appId") String appId) throws JAXBException {	// map the path parameter text after /echo to String input.
+    	Application application = null;
+    	HiringTeam team = null;
+    	String reviewId1 = null, reviewId2 = null;
+    	
+    	Collection<File> files = fop.getFiles(path.getTeamPath());
+		for (File file: files) {
+			// Bind XML to Java object
+	    	JAXBContext jaxbContext;
+			jaxbContext = JAXBContext.newInstance(HiringTeam.class);
+			Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();
+			team = (HiringTeam) jaxbUnmarshaller.unmarshal(file);
+			if (team.getAppId().equals(appId)) {
+				reviewId1 = team.getReviewId1();
+	    		reviewId2 = team.getReviewId2();
+	    		// check decision of each review, if all YES, add it to teams
+	    		// TODO check status of APPLICATION, if processed, then check review decision
+	    		ReviewResource reviewResource = new ReviewResource();
+	    		// TODO status: YES, NO, WAITING (shall return resources which is not WAITING to APP, the app shall collate the result)
+	    		if (reviewResource.isSpecificDecisionByReview(reviewId1, ReviewDecision.YES) && reviewResource.isSpecificDecisionByReview(reviewId2, ReviewDecision.YES)) {
+	    			return Response.ok(true, MediaType.APPLICATION_XML).build();
+	    		} else {
+	    			return Response.ok(false, MediaType.APPLICATION_XML).build();
+	    		}
+			}
+		}
+		return Response.status(Response.Status.NOT_FOUND).entity("Hiring team for application '" + appId + "' is not found.").build();
+    }
+    
+    @GET																	// the method will handle GET request method on the said path
     @Path("/finished")											// this method will handle request paths http://localhost:8080/FoundITServerCxfRest/hello/echo/{some text input here}
     @Produces(MediaType.APPLICATION_XML)									// the response will contain text plain content. (Note: @Produces({MediaType.TEXT_PLAIN}) means the same)
     public List<HiringTeam> getFinishedHiringTeam() throws JAXBException {	// map the path parameter text after /echo to String input.
@@ -75,8 +111,9 @@ public class HiringTeamResource {
     		reviewId2 = team.getReviewId2();
     		// check decision of each review, if all YES, add it to teams
     		// TODO check status of APPLICATION, if processed, then check review decision
+    		// TODO shall return finished for specific managerId
     		ReviewResource reviewResource = new ReviewResource();
-    		if (reviewResource.isYesDecisionByReview(reviewId1) && reviewResource.isYesDecisionByReview(reviewId2)) {
+    		if (reviewResource.isSpecificDecisionByReview(reviewId1, ReviewDecision.YES) && reviewResource.isSpecificDecisionByReview(reviewId2, ReviewDecision.YES)) {
     			teams.add(team);
     		}
 		}
@@ -89,6 +126,13 @@ public class HiringTeamResource {
     @Consumes(MediaType.APPLICATION_XML)	// applies to the input parameter JsonBean input. map the POST body content (which will contain JSON) to JsonBean input
 //    @Path("/")								// this method will handle request paths http://localhost:8080/FoundITServerCxfRest/hello/jsonBean
     public Response addHiringTeam(HiringTeam team) throws JAXBException, IOException {
+    	
+    	// Get next Id to use
+    	IdGenerator idGenerator = new IdGenerator(); 
+    	IdCounter idCounter = idGenerator.getCounter(path.getTeamPath());
+    	team.setTeamId("team" + idCounter.getId());
+    	idGenerator.updateCounter(path.getTeamPath(), idCounter);
+    	
 		String filename = path.getTeamPath() + team.getTeamId() + ".xml";
 		File file = new File(filename);	// create the file if does not exist
 		if(!file.exists()) {

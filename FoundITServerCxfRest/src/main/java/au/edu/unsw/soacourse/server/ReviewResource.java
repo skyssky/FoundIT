@@ -27,8 +27,10 @@ import org.apache.commons.io.filefilter.RegexFileFilter;
 
 import au.edu.unsw.soacourse.auxiliary.CheckStatus;
 import au.edu.unsw.soacourse.auxiliary.FileOperations;
+import au.edu.unsw.soacourse.auxiliary.IdGenerator;
 import au.edu.unsw.soacourse.auxiliary.Paths;
 import au.edu.unsw.soacourse.model.Application;
+import au.edu.unsw.soacourse.model.IdCounter;
 import au.edu.unsw.soacourse.model.Review;
 import au.edu.unsw.soacourse.model.Application.AppStatus;
 import au.edu.unsw.soacourse.model.Review.ReviewDecision;
@@ -124,6 +126,13 @@ public class ReviewResource {
     @Consumes(MediaType.APPLICATION_XML)	// applies to the input parameter JsonBean input. map the POST body content (which will contain JSON) to JsonBean input
 //    @Path("")								// this method will handle request paths http://localhost:8080/FoundITServerCxfRest/hello/jsonBean
     public Response addReview(Review review) throws IOException, JAXBException {
+    	
+    	// Get next Id to use
+    	IdGenerator idGenerator = new IdGenerator(); 
+    	IdCounter idCounter = idGenerator.getCounter(path.getReviewPath());
+    	review.setReviewId("review" + idCounter.getId());
+    	idGenerator.updateCounter(path.getReviewPath(), idCounter);
+    	
     	if (!status.appStatus(review.getAppId(), AppStatus.INREVIEW)) {
     		return Response.status(Response.Status.FORBIDDEN).entity("Application '" + review.getAppId() + "' is not INREVIEW").build();
     	}
@@ -188,11 +197,11 @@ public class ReviewResource {
 		return response;
 	}
     
-	public boolean isYesDecisionByReview(String reviewId) {
+	public boolean isSpecificDecisionByReview(String reviewId, ReviewDecision decision) {
 		List<Review> reviews = getReviews();
 		for (Review review: reviews) {
 			if (review.getReviewId().equals(reviewId)) {
-				if (review.getDecision() == ReviewDecision.YES) {
+				if (review.getDecision() == decision) {
 					return true;
 				} else {
 					return false;

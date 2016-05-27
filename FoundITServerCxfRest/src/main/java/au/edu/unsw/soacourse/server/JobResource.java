@@ -25,6 +25,10 @@ import javax.xml.bind.Unmarshaller;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.filefilter.RegexFileFilter;
 
+import au.edu.unsw.soacourse.auxiliary.FileOperations;
+import au.edu.unsw.soacourse.auxiliary.IdGenerator;
+import au.edu.unsw.soacourse.auxiliary.Paths;
+import au.edu.unsw.soacourse.model.IdCounter;
 import au.edu.unsw.soacourse.model.Job;
 
 /* NOTES: 
@@ -36,7 +40,9 @@ import au.edu.unsw.soacourse.model.Job;
 public class JobResource {
 	
 	final boolean debug = true;
-	final String path = System.getProperty("catalina.home") + "/webapps/server-database/job/";
+//	final String path = System.getProperty("catalina.home") + "/webapps/server-database/job/";
+	Paths path = new Paths();
+	FileOperations fop = new FileOperations();
  
     @GET																	// the method will handle GET request method on the said path
 //    @Path("posting")														// this method will handle request paths http://localhost:8080/FoundITServerCxfRest/hello/echo/{some text input here}
@@ -45,7 +51,7 @@ public class JobResource {
     	// Get all jobs, sort by position ????
     	List<Job> jobs = new ArrayList<Job>();
     	Job job;
-    	Collection<File> files = getFiles(path);
+    	Collection<File> files = fop.getFiles(path.getJobPath());
     	try {
     		for (File file: files) {
 				// Bind XML to Java object
@@ -68,7 +74,7 @@ public class JobResource {
     public Job getJobPosting(@PathParam("jobId") String jobId) {	// map the path parameter text after /echo to String input.
     	Job job = null;
     	try {
-    		String filename = path + jobId + ".xml";
+    		String filename = path.getJobPath() + jobId + ".xml";
 	    	File file = new File(filename);
 	    	// Bind XML to Java object
 	    	JAXBContext jaxbContext = JAXBContext.newInstance(Job.class);
@@ -87,29 +93,31 @@ public class JobResource {
     @Produces(MediaType.APPLICATION_XML)	// the response will contain JSON
     @Consumes(MediaType.APPLICATION_XML)	// applies to the input parameter JsonBean input. map the POST body content (which will contain JSON) to JsonBean input
 //    @Path("posting")								// this method will handle request paths http://localhost:8080/FoundITServerCxfRest/hello/jsonBean
-    public Response addJobPosting(Job job) {
+    public Response addJobPosting(Job job) throws IOException, JAXBException {
+    	
+    	// Get next Id to use
+    	IdGenerator idGenerator = new IdGenerator(); 
+    	IdCounter idCounter = idGenerator.getCounter(path.getJobPath());
+    	job.setJobId("job" + idCounter.getId());
+    	idGenerator.updateCounter(path.getJobPath(), idCounter);
+    	
     	Response response;
-    	try {
-    		String filename = path + job.getJobId() + ".xml";
-	    	File file = new File(filename);	// create the file if does not exist
-	    	if(!file.exists()) {
-	    		file.createNewFile();
-	    	} else {						// return 'CONFLICT' response if file already exists
-	    		response = Response.status(Response.Status.CONFLICT).entity("Job posting for job '" + job.getJobId() + "' already exists").build();
-	    		return response;
-	    	}
-	    	if (debug) System.out.println("file: " + filename);
-	    	// Bind Java object to XML
-	    	JAXBContext jaxbContext = JAXBContext.newInstance(Job.class);
-			Marshaller jaxbMarshaller = jaxbContext.createMarshaller();
-			jaxbMarshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
-			jaxbMarshaller.marshal(job, file);
-			jaxbMarshaller.marshal(job, System.out);
-    	} catch (JAXBException e) {
-    		e.printStackTrace();
-    	} catch (IOException e) {
-			e.printStackTrace();
-		}
+		String filename = path.getJobPath() + job.getJobId() + ".xml";
+    	File file = new File(filename);	// create the file if does not exist
+    	if(!file.exists()) {
+    		file.createNewFile();
+    	} else {						// return 'CONFLICT' response if file already exists
+    		response = Response.status(Response.Status.CONFLICT).entity("Job posting for job '" + job.getJobId() + "' already exists").build();
+    		return response;
+    	}
+    	if (debug) System.out.println("file: " + filename);
+    	// Bind Java object to XML
+    	JAXBContext jaxbContext = JAXBContext.newInstance(Job.class);
+		Marshaller jaxbMarshaller = jaxbContext.createMarshaller();
+		jaxbMarshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
+		jaxbMarshaller.marshal(job, file);
+		jaxbMarshaller.marshal(job, System.out);
+
     	response = Response.status(Response.Status.CREATED).entity("Job posting profile for job '" + job.getJobId() + "' has been created").build();
     	return response;
     }
@@ -121,7 +129,7 @@ public class JobResource {
 	public Response putJob(Job job) {
 		Response response;
 		try {
-			String filename = path + job.getJobId() + ".xml";
+			String filename = path.getJobPath() + job.getJobId() + ".xml";
 	    	File file = new File(filename);	// create the file if does not exist
 	    	if(!file.exists()) {
 	    		file.createNewFile();
@@ -148,13 +156,13 @@ public class JobResource {
 	@Path("{jobId}")
 	public Response deleteJob(@PathParam("jobId") String jobId) throws IOException {
 		Response response;
-		String filename = path + jobId + ".xml";
+		String filename = path.getJobPath() + jobId + ".xml";
 		File file = new File(filename);	// create the file if does not exist
 		if(!file.exists()) {
 			response = Response.status(Response.Status.NOT_FOUND).entity("Job posting for job '" + jobId + "' is not found.").build();
 			return response;
 		}
-		File dfile = new File(path + "_" + jobId + ".xml");
+		File dfile = new File(path.getJobPath() + "_" + jobId + ".xml");
 		boolean success = file.renameTo(dfile);
 		if (!success) {
 			response = Response.status(Response.Status.FORBIDDEN).entity("Job posting for job '" + jobId + "' cannot be deleted.").build();
@@ -171,7 +179,7 @@ public class JobResource {
     	// Search with keyword, sort by position ????
     	List<Job> jobs = new ArrayList<Job>();
     	Job job;
-    	Collection<File> files = getFiles(path);
+    	Collection<File> files = fop.getFiles(path.getJobPath());
     	try {
     		for (File file: files) {
     			System.out.println("In file: " + file.toString());
@@ -190,12 +198,6 @@ public class JobResource {
 		}
     	return jobs;
     }
-    
-	Collection<File> getFiles(String directoryName) {
-		File directory = new File(directoryName);
-		Collection<File> files = FileUtils.listFiles(directory, new RegexFileFilter("^[^_][^.]*.xml"), null);
-		System.out.println("Get collections: size = " + files.size());
-		return files;
-	}
+
 }
 

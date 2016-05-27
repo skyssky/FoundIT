@@ -9,6 +9,7 @@ public class Paths {
 	private final String companyPath = rootRestServer + "company/";
 	private final String reviewPath = rootRestServer + "review/";
 	private final String userPath = rootRestServer + "user/";
+	private final String idcounterPath = rootRestServer + "idCounter/";
 	
 	private final String rootDataService = System.getProperty("catalina.home") + "/webapps/ROOT/FoundIT/DataService/";
 	private final String jobalertPath = rootDataService;
@@ -44,4 +45,9 @@ public class Paths {
     public String getJobalertPath() {
         return this.jobalertPath;
     }
+    
+    public String getIdcounterPath() {
+        return this.idcounterPath;
+    }
+
 }
