@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<job>
+    <detail>Use Swift to develop an iOS app.</detail>
+    <jobId>job2</jobId>
+    <link>http://www.baidu.com</link>
+    <location>Sydney</location>
+    <position>Java Developer</position>
+    <salary>5000</salary>
+    <status>OPEN</status>
+</job>
