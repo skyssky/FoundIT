@@ -211,7 +211,7 @@ public class JobResource {
 		    		if (debug) System.out.println("Job posting is found: " + job.getJobId());
 		    		if (keywordIsSpecified) {
 		    			System.out.println("==> " + "Java Developer".contains(keyword));
-		    			if (job.getPosition().toLowerCase().contains(keyword) || job.getDetail().toLowerCase().contains(keyword)) {
+		    			if (job.getPosition() != null && (job.getPosition().toLowerCase().contains(keyword) || job.getDetail().toLowerCase().contains(keyword))) {
 		    				System.out.println("keyword match => add a job");
 		    				jobs.add(job);
 		    			}
@@ -225,7 +225,7 @@ public class JobResource {
 	  	
 	  	for (Job j: jobs) {
 	  		if (skillIsSpecified) {
-	  			if (!j.getSkill().toLowerCase().contains(skill)) {
+	  			if (j.getSkill() != null && !j.getSkill().toLowerCase().contains(skill)) {
 	  				System.out.println("skill NOT match => delete a job");
 	  				jobs.remove(j);
 	  			}
@@ -234,7 +234,7 @@ public class JobResource {
 	  	
 	  	for (Job j: jobs) {
 	  		if (statusIsSpecified) {
-	  			if (!j.getStatus().equals(status)) {
+	  			if (j.getStatus() != null && !j.getStatus().equals(status)) {
 	  				System.out.println("status NOT match => delete a job");
 	  				jobs.remove(j);
 	  			}
