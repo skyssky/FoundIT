@@ -19,7 +19,7 @@ public class FileOperations {
 	
 	public Collection<File> getFiles(String directoryName) {
 		File directory = new File(directoryName);
-		Collection<File> files = FileUtils.listFiles(directory, new RegexFileFilter("^[^_][^.]*.xml"), null);
+		Collection<File> files = FileUtils.listFiles(directory, new RegexFileFilter("^[^_i][^.d]*.xml"), null);
 		if (debug) System.out.println("Get collections: size = " + files.size());
 		return files;
 	}

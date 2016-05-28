@@ -62,11 +62,11 @@ public class UserResource {
 //    @Path("/")								// this method will handle request paths http://localhost:8080/FoundITServerCxfRest/hello/jsonBean
     public Response addUserProfile(User user) throws JAXBException, IOException {
     	
-    	// Get next Id to use
-    	IdGenerator idGenerator = new IdGenerator(); 
-    	IdCounter idCounter = idGenerator.getCounter(path.getUserPath());
-    	user.setUsername("user" + idCounter.getId());
-    	idGenerator.updateCounter(path.getUserPath(), idCounter);
+//    	// Get next Id to use
+//    	IdGenerator idGenerator = new IdGenerator(); 
+//    	IdCounter idCounter = idGenerator.getCounter(path.getUserPath());
+//    	user.setUsername("user" + idCounter.getId());
+//    	idGenerator.updateCounter(path.getUserPath(), idCounter);
     	
     	Response response;
 		String filename = path.getUserPath() + user.getUsername() + ".xml";

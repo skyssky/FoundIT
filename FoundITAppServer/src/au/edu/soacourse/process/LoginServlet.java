@@ -12,7 +12,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import au.edu.soacourse.dao.LoginDAO;
-import au.edu.soacourse.dao.RegisterDAO;
 
 /**
  * Servlet implementation class LoginServlet

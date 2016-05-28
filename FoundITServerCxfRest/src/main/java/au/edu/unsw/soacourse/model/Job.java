@@ -15,6 +15,7 @@ public class Job {
 	private String location;	// location
 	private String detail;	// job details/detail
 	private JobStatus status;
+	private String skill;
 
 	public Job() {
 		
@@ -91,5 +92,14 @@ public class Job {
     @XmlElement
     public void setStatus(JobStatus status) {
         this.status = status;
+    }
+    
+    public String getSkill() {
+        return this.skill;
+    }
+    
+    @XmlElement
+    public void setSkill(String skill) {
+        this.skill = skill;
     }
 }

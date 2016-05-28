@@ -171,33 +171,77 @@ public class JobResource {
 		response = Response.status(Response.Status.OK).entity("Job posting for job '" + jobId + "' has been deleted").build();
 		return response;
 	}
-	
-    @GET																	// the method will handle GET request method on the said path
-//    @Path("search")														// this method will handle request paths http://localhost:8080/FoundITServerCxfRest/hello/echo/{some text input here}
-    @Produces(MediaType.APPLICATION_XML)									// the response will contain text plain content. (Note: @Produces({MediaType.TEXT_PLAIN}) means the same)
-    public List<Job> searchJobPosting(@QueryParam("keyword") String keyword, @QueryParam("sort") String sort) {			// map the path parameter text after /echo to String input.
-    	// Search with keyword, sort by position ????
-    	List<Job> jobs = new ArrayList<Job>();
-    	Job job;
-    	Collection<File> files = fop.getFiles(path.getJobPath());
-    	try {
-    		for (File file: files) {
-    			System.out.println("In file: " + file.toString());
-				// Bind XML to Java object
-		    	JAXBContext jaxbContext;
-				jaxbContext = JAXBContext.newInstance(Job.class);
-				Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();
-	    		job = (Job) jaxbUnmarshaller.unmarshal(file);
-	    		if (debug) System.out.println("Job posting is found: " + job.getJobId());
-	    		if (job.getPosition().contains(keyword) || job.getDetail().contains(keyword)) {	// TODO lower all upper case? trim spaces?
-	    			jobs.add(job);
-	    		}
-    		}
-    	} catch (JAXBException e) {
+
+    // keyword, skill, status
+	@GET																	// the method will handle GET request method on the said path
+	@Path("search")														// this method will handle request paths http://localhost:8080/FoundITServerCxfRest/hello/echo/{some text input here}
+	@Produces(MediaType.APPLICATION_XML)									// the response will contain text plain content. (Note: @Produces({MediaType.TEXT_PLAIN}) means the same)
+	public List<Job> searchJobPostingByKSS(@QueryParam("keyword") String keyword, @QueryParam("skill") String skill, @QueryParam("status") String status) {			// map the path parameter text after /echo to String input.
+	  	// Search with keyword, sort by position ????
+		boolean keywordIsSpecified = true;
+		if (keyword == null) {
+			keyword = "";
+			keywordIsSpecified = false;
+		}
+		boolean skillIsSpecified = true;
+		if (skill == null) {
+			skill = "";
+			skillIsSpecified = false;
+		}
+		boolean statusIsSpecified = true;
+		if (status == null) {
+			status = "";
+			statusIsSpecified = false;
+		}
+
+	  	keyword = keyword.toLowerCase();
+	  	skill = skill.toLowerCase();
+	    List<Job> jobs = new ArrayList<Job>();
+	  	Job job;
+	  	Collection<File> files = fop.getFiles(path.getJobPath());
+	  	try {
+	  		for (File file: files) {
+	  			System.out.println("In file: " + file.toString());
+					// Bind XML to Java object
+			    	JAXBContext jaxbContext;
+					jaxbContext = JAXBContext.newInstance(Job.class);
+					Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();
+					System.out.println("filename = *" + file.toString() + "*");
+		    		job = (Job) jaxbUnmarshaller.unmarshal(file);
+		    		if (debug) System.out.println("Job posting is found: " + job.getJobId());
+		    		if (keywordIsSpecified) {
+		    			System.out.println("==> " + "Java Developer".contains(keyword));
+		    			if (job.getPosition().toLowerCase().contains(keyword) || job.getDetail().toLowerCase().contains(keyword)) {
+		    				System.out.println("keyword match => add a job");
+		    				jobs.add(job);
+		    			}
+		    		} else {
+		    			jobs.add(job);
+		    		}
+	  		}
+		} catch (JAXBException e) {
 			e.printStackTrace();
 		}
-    	return jobs;
-    }
-
+	  	
+	  	for (Job j: jobs) {
+	  		if (skillIsSpecified) {
+	  			if (!j.getSkill().toLowerCase().contains(skill)) {
+	  				System.out.println("skill NOT match => delete a job");
+	  				jobs.remove(j);
+	  			}
+	  		} 
+	  	}
+	  	
+	  	for (Job j: jobs) {
+	  		if (statusIsSpecified) {
+	  			if (!j.getStatus().equals(status)) {
+	  				System.out.println("status NOT match => delete a job");
+	  				jobs.remove(j);
+	  			}
+	  		}
+	  	}
+	  	
+	  	return jobs;
+	}
 }
 
