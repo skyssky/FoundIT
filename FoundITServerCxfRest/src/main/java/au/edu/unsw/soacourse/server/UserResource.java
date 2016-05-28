@@ -2,6 +2,9 @@ package au.edu.unsw.soacourse.server;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
@@ -11,6 +14,8 @@ import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
+import javax.ws.rs.core.Application;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.xml.bind.JAXBContext;
@@ -18,9 +23,11 @@ import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
 
+import au.edu.unsw.soacourse.auxiliary.FileOperations;
 import au.edu.unsw.soacourse.auxiliary.IdGenerator;
 import au.edu.unsw.soacourse.auxiliary.Paths;
 import au.edu.unsw.soacourse.model.IdCounter;
+import au.edu.unsw.soacourse.model.Job;
 import au.edu.unsw.soacourse.model.User;
 
 /* NOTES: 
@@ -32,8 +39,8 @@ import au.edu.unsw.soacourse.model.User;
 public class UserResource {
 	
 	final boolean debug = true;
-//	final String path = System.getProperty("catalina.home") + "/webapps/server-database/user/";
 	Paths path = new Paths();
+	FileOperations fop = new FileOperations();
  
     @GET																	// the method will handle GET request method on the said path
     @Path("/{userId}")											// this method will handle request paths http://localhost:8080/FoundITServerCxfRest/hello/echo/{some text input here}
@@ -54,6 +61,32 @@ public class UserResource {
     		if (debug) System.out.println("User profile for user '" + userId + "' does not exist");
     	}
     	return user;
+    }
+    
+    @GET																	// the method will handle GET request method on the said path
+    // Get user profile by appId
+    @Produces({MediaType.APPLICATION_XML,MediaType.APPLICATION_JSON})									// the response will contain text plain content. (Note: @Produces({MediaType.TEXT_PLAIN}) means the same)
+    public Response getUserByApp(@QueryParam("appId") String appId) throws JAXBException {	// map the path parameter text after /echo to String input.
+    	// Get all applications
+    	ApplicationResource appResource = new ApplicationResource();
+    	List<au.edu.unsw.soacourse.model.Application> apps = appResource.getApplications();
+    	// Find userId by appId
+	  	String userId = null;
+	  	for (au.edu.unsw.soacourse.model.Application app: apps) {
+	  		if (app.getAppId().equals(appId)) {
+	  			if (debug) System.out.println("Application is found: " + appId);
+	  			userId = app.getUserId();
+	  			break;
+	  		}
+		}
+	  	if (userId == null) {
+	  		return Response.status(Response.Status.NOT_FOUND).entity("User profile for user '" + userId + "' is not found.").build();
+	  	}
+	  	User user = getUserProfile(userId);
+	  	if (user == null) {
+	  		return Response.status(Response.Status.NOT_FOUND).entity("User profile for user '" + userId + "' is not found.").build();
+	  	}
+	  	return Response.ok(user, MediaType.APPLICATION_XML).build();
     }
 
     @POST									// the method will handle POST request method on the said path

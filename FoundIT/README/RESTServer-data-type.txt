@@ -14,6 +14,7 @@ jobalerts?keyword=X&sort_by=jobtitle
 GET
 applications			- get all applications
 applications/{appId}		- get specific application
+applications/{userId}		- get applications by userId
 
 POST
 applications			- create a new application
@@ -98,6 +99,7 @@ reviews/{reviewId}		- delete the review
 
 GET
 users/{userId}			- get the user
+users?appId=X			- get user profile by appId
 
 POST
 users				- create a user

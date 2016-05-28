@@ -10,7 +10,7 @@ public class Application {
 	
 	private String appId;		// application id
 	private String jobId;		// job id
-	private String username;	// a link to user profile
+	private String userId;	// a link to user profile
 	private String cover;		// cover letter
 	private AppStatus status;
 
@@ -18,10 +18,10 @@ public class Application {
 		
     }
 	
-	public Application(String appId, String jobId, String username, String cover, AppStatus status) {
+	public Application(String appId, String jobId, String userId, String cover, AppStatus status) {
 		this.appId = appId;
 		this.jobId = jobId;
-		this.username = username;		// TODO should be URI link to user profile
+		this.userId = userId;		// TODO should be URI link to user profile
 		this.cover = cover;
 		this.status = status;
     }
@@ -44,13 +44,13 @@ public class Application {
         this.jobId = jobId;
     }
     
-    public String getUsername() {
-        return this.username;
+    public String getUserId() {
+        return this.userId;
     }
     
     @XmlElement
-    public void setUsername(String username) {
-        this.username = username;
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
     
     public String getCover() {

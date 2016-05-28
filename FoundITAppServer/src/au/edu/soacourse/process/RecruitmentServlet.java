@@ -37,17 +37,25 @@ public class RecruitmentServlet extends HttpServlet {
 		String managerId = request.getParameter("managerId");
 		String uri = getServletContext().getInitParameter("RestfulURL") + "jobs?manager=" + managerId;
 		HttpResponse hresponse = reqOp.makeGetRequest(uri);
-		// TODO display list of jobs to client 
+		// TODO display list of jobs to client, finally close the response connection by close()
+		
 		
 		// Step2. Get job profile and update its status to "INREVIEW"
 		String jobId = request.getParameter("jobId");
-		String uri2 = getServletContext().getInitParameter("RestfulURL") + "jobs?jobId=" + jobId;
-		HttpResponse hresponse2 = reqOp.makeGetRequest(uri2);
-		// TODO display the job profile to client
+		uri = getServletContext().getInitParameter("RestfulURL") + "jobs?jobId=" + jobId;
+		HttpResponse hresponse2 = reqOp.makeGetRequest(uri);
+		// TODO display the job profile to client, finally close the response connection by close()
 		
 		// Step3. Get list of applications by jobId
+		uri = getServletContext().getInitParameter("RestfulURL") + "apps?jobId=" + jobId;
+		HttpResponse hresponse3 = reqOp.makeGetRequest(uri);
 		
-		
+		// Step4. Get list of candidates' profiles by list of appIds
+//		TODO for () {
+			String appId = "";
+			uri = getServletContext().getInitParameter("RestfulURL") + "users?appId=" + appId;
+			HttpResponse hresponse4 = reqOp.makeGetRequest(uri);
+//		}
 		
 		
 	}

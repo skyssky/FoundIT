@@ -22,13 +22,9 @@ import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
 
-import org.apache.commons.io.FileUtils;
-import org.apache.commons.io.filefilter.RegexFileFilter;
-
 import au.edu.unsw.soacourse.auxiliary.FileOperations;
 import au.edu.unsw.soacourse.auxiliary.IdGenerator;
 import au.edu.unsw.soacourse.auxiliary.Paths;
-import au.edu.unsw.soacourse.model.Company;
 import au.edu.unsw.soacourse.model.IdCounter;
 import au.edu.unsw.soacourse.model.Job;
 
@@ -41,7 +37,6 @@ import au.edu.unsw.soacourse.model.Job;
 public class JobResource {
 	
 	final boolean debug = true;
-//	final String path = System.getProperty("catalina.home") + "/webapps/server-database/job/";
 	Paths path = new Paths();
 	FileOperations fop = new FileOperations();
  
@@ -109,7 +104,7 @@ public class JobResource {
 	  		}
 		}
 	  	return jobs;
-  }
+    }
 
 
     @POST									// the method will handle POST request method on the said path
