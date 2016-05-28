@@ -198,49 +198,64 @@ public class JobResource {
 	  	skill = skill.toLowerCase();
 	    List<Job> jobs = new ArrayList<Job>();
 	  	Job job;
+	  	boolean addFlag = true;
+	  	String jobPosition = null;
+	  	String jobDetail = null;
 	  	Collection<File> files = fop.getFiles(path.getJobPath());
 	  	try {
 	  		for (File file: files) {
-	  			System.out.println("In file: " + file.toString());
-					// Bind XML to Java object
-			    	JAXBContext jaxbContext;
-					jaxbContext = JAXBContext.newInstance(Job.class);
-					Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();
-					System.out.println("filename = *" + file.toString() + "*");
-		    		job = (Job) jaxbUnmarshaller.unmarshal(file);
-		    		if (debug) System.out.println("Job posting is found: " + job.getJobId());
-		    		if (keywordIsSpecified) {
-		    			System.out.println("==> " + "Java Developer".contains(keyword));
-		    			if (job.getPosition() != null && (job.getPosition().toLowerCase().contains(keyword) || job.getDetail().toLowerCase().contains(keyword))) {
-		    				System.out.println("keyword match => add a job");
-		    				jobs.add(job);
-		    			}
-		    		} else {
-		    			jobs.add(job);
-		    		}
+	  			if (debug) System.out.println("In file: " + file.toString());
+				// Bind XML to Java object
+		    	JAXBContext jaxbContext;
+				jaxbContext = JAXBContext.newInstance(Job.class);
+				Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();
+	    		job = (Job) jaxbUnmarshaller.unmarshal(file);
+	    		if (debug) System.out.println("Job posting is found: " + job.getJobId());
+	    		addFlag = true;
+	    		if (keywordIsSpecified) {
+	    			jobPosition = job.getPosition();
+	    			if (jobPosition == null) {
+	    				jobPosition = "";
+	    			} else {
+	    				jobPosition = jobPosition.toLowerCase();
+	    			}
+	    			jobDetail = job.getDetail();
+	    			if (jobDetail == null) {
+	    				jobDetail = "";
+	    			} else {
+	    				jobDetail = jobDetail.toLowerCase();
+	    			}
+	    			if (!jobPosition.contains(keyword) && !jobDetail.contains(keyword)) {
+	    				addFlag = false;
+	    			}
+	    		} else {
+	    			addFlag = true;
+	    		}
+	    		
+	    		if (job.getSkill() == null) {
+	    			addFlag = false;
+		  		} else if (skillIsSpecified) {
+		  			if (!job.getSkill().toLowerCase().contains(skill)) {
+		  				addFlag = false;
+		  			}
+		  		} 
+	    		
+	    		if (job.getStatus() == null) {
+	    			addFlag = false;
+		  		} else if (statusIsSpecified) {
+		  			status = status.toLowerCase();
+		  			if (!job.getStatus().toString().toLowerCase().equals(status)) {
+		  				addFlag = false;
+		  			}
+		  		}
+	    		
+	    		if (addFlag) { 
+	    			jobs.add(job); 
+    			}
 	  		}
 		} catch (JAXBException e) {
 			e.printStackTrace();
 		}
-	  	
-	  	for (Job j: jobs) {
-	  		if (skillIsSpecified) {
-	  			if (j.getSkill() != null || !j.getSkill().toLowerCase().contains(skill)) {
-	  				System.out.println("skill NOT match => delete a job");
-	  				jobs.remove(j);
-	  			}
-	  		} 
-	  	}
-	  	
-	  	for (Job j: jobs) {
-	  		if (statusIsSpecified) {
-	  			if (j.getStatus() != null || !j.getStatus().equals(status)) {
-	  				System.out.println("status NOT match => delete a job");
-	  				jobs.remove(j);
-	  			}
-	  		}
-	  	}
-	  	
 	  	return jobs;
 	}
 }
