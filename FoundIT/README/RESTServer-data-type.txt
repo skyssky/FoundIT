@@ -1,0 +1,205 @@
+
+################################
+########   Resources    ########
+################################
+
+#### DataService
+
+GET
+jobalerts?keyword=X&sort_by=jobtitle	
+				- get job alerts sorted by keyword (and jobtitle)
+
+#### ApplicationResource
+
+GET
+applications			- get all applications
+applications/{appId}		- get specific application
+
+POST
+applications			- create a new application
+
+PUT
+applications/{appId}		- update an application
+
+DELETE
+applications/{appId}		- delete an application
+
+
+#### CompanyResource
+
+GET
+companies			- get all company profiles
+companies/{profileId}		- get specific company profiles
+
+POST
+companies			- create a new company profile
+
+PUT
+companies/{profileId}		- update a company profile
+
+DELETE
+companies/{profileId}		- delete a company profile
+
+
+#### HiringTeamResource
+
+GET
+teams/{teamId}			- get specific team
+teams?appId=X			- get team by appId
+* teams/finished			- get all finished teams, i.e., teams whose review decisions are all YES
+
+POST
+teams				- create a new hiring team
+
+PUT
+teams/{teamId}			- update a hiring team
+
+DELETE
+teams/{teamId}			- delete a hiring team
+
+
+#### JobResource
+
+GET
+jobs/				- get all jobs
+jobs/{jobId}			- get specific job
+jobs/search?keyword=X&skill=X&status=X
+				- search jobs by keyword,skill,status
+
+POST
+jobs				- create a new job
+
+PUT
+jobs/{jobId}			- update an existing job
+
+DELETE
+jobs/{jobId}			- delete/archive a job
+
+
+#### ReviewResource
+
+GET
+reviews				- get all reviews
+reviews/{reviewId}		- get specific review
+reviews/search?reviewerId=X	- get reviews by reviewerId
+
+POST
+reviews				- create a new Review
+
+PUT
+reviews/{reviewId}		- update the review
+
+DELETE
+reviews/{reviewId}		- delete the review
+
+
+#### UserResource
+
+GET
+users/{userId}			- get the user
+
+POST
+users				- create a user
+
+PUT
+users/{userId}			- update the user
+
+DELETE
+users/{userId}			- delete the user
+
+
+################################
+########   Data Type    ########
+################################
+
+#### Application
+	private String appId;		// application id
+	private String jobId;		// job id
+	private String username;	// a link to user profile
+	private String cover;		// cover letter
+	private AppStatus status;
+	public enum AppStatus { CREATED, OPEN, INREVIEW, PROCESSED, SENTINVITATION };
+
+
+#### Company
+	private String profileId;
+	private String managerId;
+	private String name;
+	private String type;
+	private String detail;
+
+#### HiringTeam
+	private String teamId;
+	private String appId;
+	private String reviewId1;
+	private String reviewId2;
+
+#### IdCounter
+	private int id;
+
+#### Job
+	private String jobId;		// job id
+	private String link;		// a link to company profile
+	private int salary;		// salary rate
+	private String position;	// position type
+	private String location;	// location
+	private String detail;		// job details/detail
+	private JobStatus status;
+	private String skill;
+	public enum JobStatus { CREATED, OPEN, INREVIEW, PROCESSED, SENTINVITATION };
+
+#### JobAlert
+	private String guid;		// job id
+	private String position;	// position type
+	private String detail;		// job details/detail
+	private String link;
+	private String pubDate;
+
+#### JobAlerts
+	 private List<JobAlert> jobAlerts = new ArrayList<JobAlert>();
+
+#### Review
+	public enum ReviewDecision {YES, NO};	// shortlist or not
+	private String reviewId;
+	private String appId;
+	private String reviewerId;
+	private String comment;
+	private ReviewDecision decision;
+
+#### User
+	private String username;
+	private String profileId;
+	private String detail;
+	private String skill;
+	private String experience;
+
+
+
+################################
+########   Auxiliary    ########
+################################
+
+#### CheckStatus
+boolean appStatus(String appId, AppStatus status)
+
+#### FileOperations
+Collection<File> getFiles(String directoryName)
+
+#### IdGenerator
+IdCounter getCounter(String path)
+void updateCounter(String path, IdCounter idCounter)
+
+#### Paths
+	private final String rootRestServer = System.getProperty("catalina.home") + "/webapps/FoundIT/RestServer/";
+	private final String appPath = rootRestServer + "application/";
+	private final String teamPath = rootRestServer + "team/";
+	private final String jobPath = rootRestServer + "job/";
+	private final String companyPath = rootRestServer + "company/";
+	private final String reviewPath = rootRestServer + "review/";
+	private final String userPath = rootRestServer + "user/";
+	private final String idcounterPath = rootRestServer + "idCounter/";
+	
+	private final String rootDataService = System.getProperty("catalina.home") + "/webapps/FoundIT/DataService/";
+	private final String jobalertPath = rootDataService;
+
+
