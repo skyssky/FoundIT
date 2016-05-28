@@ -1,7 +1,10 @@
 package au.edu.soacourse.process;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.URL;
+import java.net.URLConnection;
+import java.util.Scanner;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -61,9 +64,14 @@ public class SearchJobsServlet extends HttpServlet {
 			}
 		}
 		//System.out.println(serviceURLString);
-		
-		
-		
+		URL serviceURL = new URL(serviceURLString);
+		URLConnection connection = serviceURL.openConnection();
+		//connection.setRequestProperty("Accept", "application/json");
+		InputStream serviceResponse = connection.getInputStream();
+		try (Scanner scanner = new Scanner(serviceResponse)) {
+		    String responseBody = scanner.useDelimiter("\\A").next();
+		    System.out.println(responseBody);
+		}
 		
 	}
 }

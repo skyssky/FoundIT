@@ -41,15 +41,16 @@
 	</div>
 	<script>
 		//$("#search").ajaxForm({url: '/FoundITAppServer/search.action', type: 'post'})
-		$("#search-button").click(function(){       
+		$("#search-button").click(function(e){       
 	        $.ajax({
+	          type: "post",
 	          url: "/FoundITAppServer/search.action",
-	          contentType: 'application/x-www-form-urlencoded',
-	          type: "POST",
+	          contentType: 'application/x-www-form-urlencoded',	          
 	          data: $("#search").serializeArray(),
 	          success:function(data) {  },
 	          error: function(xhr,status,error) {}
 	        });
+	        e.preventDefault();
       });
 	</script>
 </body>
