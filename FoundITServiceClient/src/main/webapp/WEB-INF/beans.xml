@@ -14,13 +14,23 @@
 		<!-- Spring's component scan for identifying beans to be managed by the container. -->
 		<context:component-scan base-package="au.edu.unsw.soacourse.founditappdefinitions"/>
 		
-		<jaxws:endpoint id="FoundITService" 
+<!-- 		<jaxws:endpoint id="FoundITService" 
 						implementor="au.edu.unsw.soacourse.founditappserver.FoundITAppPTImpl" 
-						address="/founditappserver"/>
+						address="/founditappserver"/> -->
 						
 <!-- 		<jaxws:endpoint id="TopDownOne" 
 						implementor="au.edu.unsw.soacourse.topdown.TopDownSimpleServiceImpl" 
 						address="/TopDownSimpleService"/> -->
+						
+		<!-- Spring's component scan for identifying beans to be managed by the container. -->
+		<context:component-scan base-package="au.edu.unsw.soacourse.loanapprover" />
+		<context:component-scan base-package="au.edu.unsw.soacourse.loandefinitions" />		
+
+        <jaxws:endpoint 
+          id="laonapprover" 
+          implementor="au.edu.unsw.soacourse.loanapprover.LoanApprovalPTImpl" 
+          address="/loanapprover" />
+          
 </beans>
 
 

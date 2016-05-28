@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+	targetNamespace="http://soacourse.unsw.edu.au/loandefinitions"
+	xmlns:tns="http://soacourse.unsw.edu.au/loandefinitions"
+	elementFormDefault="qualified">
+
+	<xsd:complexType name="loanInputType">
+		<xsd:sequence>
+			<xsd:element name="firstName" type="xsd:string" />
+			<xsd:element name="name" type="xsd:string" />
+			<xsd:element name="amount" type="xsd:integer" />
+<!-- 			<xsd:element name="license" type="xsd:string"/>
+      		<xsd:element name="address" type="xsd:string"/> -->
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<xsd:complexType name="approvalType">
+		<xsd:sequence>
+			<xsd:element name="accept" type="xsd:string" />
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<xsd:complexType name="riskType">
+		<xsd:sequence>
+			<xsd:element name="risk" type="xsd:string" />
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<xsd:element name="creditInformationMessage" type="tns:loanInputType" />
+	<xsd:element name="approvalMessage" type="tns:approvalType" />
+	<xsd:element name="riskAssessmentMessage" type="tns:riskType" />
+
+</xsd:schema>

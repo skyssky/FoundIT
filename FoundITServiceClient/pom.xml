@@ -58,7 +58,7 @@
 						<wsdlOptions>
 							<wsdlOption>
 								<wsdl>
-									${basedir}/src/main/resources/wsdl/founditappserver.wsdl
+									${basedir}/src/main/resources/wsdl/loanapprover.wsdl
 									<!-- http://localhost:8080/FoundITServiceClient/founditappserver?wsdl -->
 								</wsdl>
 							</wsdlOption>
