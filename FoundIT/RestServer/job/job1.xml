@@ -4,7 +4,8 @@
     <jobId>job1</jobId>
     <link>http://www.baidu.com</link>
     <location>Sydney</location>
-    <position>Java Developer</position>
+    <skill>Swift</skill>
+    <position>iOS Developer</position>
     <salary>5000</salary>
     <status>CREATED</status>
 </job>

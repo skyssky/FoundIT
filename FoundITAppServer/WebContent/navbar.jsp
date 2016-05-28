@@ -31,6 +31,7 @@
         //For candidates
         if(session.getAttribute("role") != null && session.getAttribute("role").equals("candidate")){
         	out.print("<li><a href=\"search\">Search Jobs</a></li>");
+        	out.print("<li><a href=\"profile\">Edit Profile</a></li>");
         }        
         %>        
       
