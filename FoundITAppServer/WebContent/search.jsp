@@ -33,25 +33,34 @@
 				</div>	
 				<button type="submit" id="search-button" class="btn btn-primary btn-submit">Search</button>
 			</form>
-		</div>
-		
+		</div>		
 		<div id="search-results">
 		
 		</div>
 	</div>
 	<script>
-		//$("#search").ajaxForm({url: '/FoundITAppServer/search.action', type: 'post'})
 		$("#search-button").click(function(e){       
-	        $.ajax({
-	          type: "post",
-	          url: "/FoundITAppServer/search.action",
-	          contentType: 'application/x-www-form-urlencoded',         
-	          data: $("#search").serializeArray(),
-	          success:function(data) {  },
-	          error: function(xhr,status,error) {}
-	        });
-	        e.preventDefault();
-      });
+			e.preventDefault();
+		    $.ajax({
+		      type: "post",
+		      url: "/FoundITAppServer/search.action",
+		      contentType: 'application/x-www-form-urlencoded',         
+		      data: $("#search").serializeArray(),
+		      success:function(data) { updateSearchResult(data); },
+		      error: function(xhr,status,error) {}
+		    });
+		});
+		function updateSearchResult(data){
+			$("#search-results").html("");
+			var content = "<table class=\"table\">";
+			content += "<th>Job detail</th><th>Desire skill</th><th>Salary</th><th>Location</th><th>Apply</th>";
+			$.each(data,function(index, element) {
+    			//alert('detail: ' + element.detail + ', location: ' + element.location);
+    			content += '<tr><td>' + element.detail + "</td><td>" +  element.skill + "</td><td>" +  element.salary + "</td><td>" +  element.location + "</td><td>" +  "<a href=\"#\"><button type=\"button\" class=\"btn btn-primary\">Apply</button></a>" + '</td></tr>';				
+			});
+			content += "</table>";
+			$("#search-results").html(content);
+		}
 	</script>
 </body>
 </html>

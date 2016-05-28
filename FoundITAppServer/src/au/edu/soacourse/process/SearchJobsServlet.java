@@ -68,10 +68,15 @@ public class SearchJobsServlet extends HttpServlet {
 		URLConnection connection = serviceURL.openConnection();
 		connection.setRequestProperty("Accept", "application/json");
 		InputStream serviceResponse = connection.getInputStream();
+		String responseBody = "";
 		try (Scanner scanner = new Scanner(serviceResponse)) {
-		    String responseBody = scanner.useDelimiter("\\A").next();
-		    System.out.println(responseBody);
+		    responseBody = scanner.useDelimiter("\\A").next();
+		    //System.out.println(responseBody);
 		}
-		
+		response.setContentType("application/json");
+		java.io.PrintWriter out = response.getWriter( );
+		out.print(responseBody);
+		out.flush();
+		out.close();		
 	}
 }
