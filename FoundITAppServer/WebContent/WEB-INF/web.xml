@@ -64,7 +64,6 @@
     <servlet-name>SearchJobsServlet</servlet-name>
     <url-pattern>/search.action</url-pattern>
   </servlet-mapping>
-  
   <servlet>
     <servlet-name>CandidateProfileServlet</servlet-name>
     <servlet-class>au.edu.soacourse.process.CandidateProfileServlet</servlet-class>
@@ -77,6 +76,15 @@
     <servlet-name>CandidateProfileServlet</servlet-name>
     <url-pattern>/profile.action</url-pattern>
   </servlet-mapping>
+  
+  <servlet>
+    <servlet-name>LoadProfileServlet</servlet-name>
+    <servlet-class>au.edu.soacourse.process.LoadProfileServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>LoadProfileServlet</servlet-name>
+    <url-pattern>/loadProfile</url-pattern>
+  </servlet-mapping>  
   
   <context-param>
     <param-name>DBPath</param-name>
