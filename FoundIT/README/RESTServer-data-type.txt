@@ -206,3 +206,14 @@ void updateCounter(String path, IdCounter idCounter)
 	private final String jobalertPath = rootDataService;
 
 
+
+################################
+########   Test Email   ########
+################################
+
+String host = "smtp.live.com";
+String port = "25";	// 25 or 465
+String mailFrom = "skysskyTest@hotmail.com";
+String password = "!Q@W#E$R";
+
+
