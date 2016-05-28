@@ -11,7 +11,8 @@
 	<jsp:include page="navbar.jsp" flush="true" />
 	<div id="content">	
 		<div class="profile-form">
-			<h3>Search For Jobs</h3>
+			<h3>Edit Your Profile</h3>
+			<div class="alert alert-success " role="alert" id="info" style="display:none;"></div>
 			<form role="form" id="profile">
 			 	<input type="hidden" name="userID" id="userID" />
 				<div class="form-group">
@@ -25,6 +26,10 @@
 				<div class="form-group">
 					<label for="experience">Past Experience</label> <input type="text"
 						class="form-control" name="experience" id="experience" placeholder="Past Experience"/>
+				</div>
+				<div class="form-group">
+					<label for="education">Education</label> <input type="text"
+						class="form-control" name="education" id="education" placeholder="Education"/>
 				</div>
 				<div class="form-group">
 					<label for="skill">Professional Skill</label> <input type="text"
@@ -52,13 +57,27 @@
 			if(data === "{}"){
 				//alert(data);
 			}else{
-				$("#userID").val();
-				$("#name").val();
-				$("#position").val();
-				$("#experience").val();
-				$("#skill").val();
+				//alert(JSON.stringify(data));
+				$("#userID").val(data.userId);
+				$("#name").val(data.name);
+				$("#position").val(data.position);
+				$("#education").val(data.education);
+				$("#experience").val(data.experience);
+				$("#skill").val(data.skill);
 			}
 		}
+		
+		$("#save-button").click(function(e){
+			e.preventDefault();
+			$.ajax({
+			      type: "post",
+			      url: "/FoundITAppServer/profile.action",
+			      contentType: 'application/x-www-form-urlencoded',         
+			      data: $("#profile").serializeArray(),
+			      success:function(data) { $("#info").html(data); $("#info").show();},
+			      error: function(xhr,status,error) {}
+			    });
+		});
 	</script>
 </body>
 </html>

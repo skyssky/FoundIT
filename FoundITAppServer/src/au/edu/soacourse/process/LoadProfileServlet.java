@@ -47,7 +47,7 @@ public class LoadProfileServlet extends HttpServlet {
 			String responseBody = "";		
 			try (Scanner scanner = new Scanner(serviceResponse)) {
 			    responseBody = scanner.useDelimiter("\\A").next();
-			    System.out.println(responseBody);
+			    //System.out.println(responseBody);
 			}
 			response.setContentType("application/json");
 			java.io.PrintWriter out = response.getWriter( );

@@ -22,5 +22,11 @@
         "userName": "abc4@gmail.com",
         "pwd": "123",
         "userID": "3161364e-b575-4a7d-b41b-f6ec6818bf9f"
+    },
+    {
+        "role": "candidate",
+        "userName": "abc5@gmail.com",
+        "pwd": "123",
+        "userID": "052a2e06-c5d2-465e-9816-114a523206df"
     }
 ]}
