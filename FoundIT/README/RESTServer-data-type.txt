@@ -146,6 +146,7 @@ users/{userId}			- delete the user
 	private String detail;		// job details/detail
 	private JobStatus status;
 	private String skill;
+	private String managerId;
 	public enum JobStatus { CREATED, OPEN, INREVIEW, PROCESSED, SENTINVITATION };
 
 #### JobAlert
