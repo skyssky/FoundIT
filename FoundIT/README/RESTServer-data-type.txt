@@ -28,8 +28,8 @@ applications/{appId}		- delete an application
 #### CompanyResource
 
 GET
-companies			- get all company profiles
 companies/{profileId}		- get specific company profiles
+companies?managerId=X		- get company profiles by managerId
 
 POST
 companies			- create a new company profile
@@ -167,11 +167,13 @@ users/{userId}			- delete the user
 	private ReviewDecision decision;
 
 #### User
-	private String username;
+	private String userId;
 	private String profileId;
-	private String detail;
 	private String skill;
 	private String experience;
+	private String name;
+	private String position;
+	private String education;
 
 
 
