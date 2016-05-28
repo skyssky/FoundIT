@@ -46,7 +46,7 @@ public class JobResource {
  
     @GET																	// the method will handle GET request method on the said path
 //    @Path("posting")														// this method will handle request paths http://localhost:8080/FoundITServerCxfRest/hello/echo/{some text input here}
-    @Produces(MediaType.APPLICATION_XML)									// the response will contain text plain content. (Note: @Produces({MediaType.TEXT_PLAIN}) means the same)
+    @Produces({MediaType.APPLICATION_XML,MediaType.APPLICATION_JSON})									// the response will contain text plain content. (Note: @Produces({MediaType.TEXT_PLAIN}) means the same)
     public List<Job> getJobPostings(@QueryParam("sort") String sort) {			// map the path parameter text after /echo to String input.
     	// Get all jobs, sort by position ????
     	List<Job> jobs = new ArrayList<Job>();
@@ -70,7 +70,7 @@ public class JobResource {
     
     @GET																	// the method will handle GET request method on the said path
     @Path("{jobId}")														// this method will handle request paths http://localhost:8080/FoundITServerCxfRest/hello/echo/{some text input here}
-    @Produces(MediaType.APPLICATION_XML)									// the response will contain text plain content. (Note: @Produces({MediaType.TEXT_PLAIN}) means the same)
+    @Produces({MediaType.APPLICATION_XML,MediaType.APPLICATION_JSON})									// the response will contain text plain content. (Note: @Produces({MediaType.TEXT_PLAIN}) means the same)
     public Job getJobPosting(@PathParam("jobId") String jobId) {	// map the path parameter text after /echo to String input.
     	Job job = null;
     	try {
@@ -90,7 +90,7 @@ public class JobResource {
     }
 
     @POST									// the method will handle POST request method on the said path
-    @Produces(MediaType.APPLICATION_XML)	// the response will contain JSON
+    @Produces({MediaType.APPLICATION_XML,MediaType.APPLICATION_JSON})	// the response will contain JSON
     @Consumes(MediaType.APPLICATION_XML)	// applies to the input parameter JsonBean input. map the POST body content (which will contain JSON) to JsonBean input
 //    @Path("posting")								// this method will handle request paths http://localhost:8080/FoundITServerCxfRest/hello/jsonBean
     public Response addJobPosting(Job job) throws IOException, JAXBException {
@@ -124,7 +124,7 @@ public class JobResource {
     
 	@PUT
 	@Path("{jobId}")							// TODO seems to be useless. Just set path to "/" ????
-	@Produces(MediaType.APPLICATION_XML)
+	@Produces({MediaType.APPLICATION_XML,MediaType.APPLICATION_JSON})
 	@Consumes(MediaType.APPLICATION_XML)
 	public Response putJob(Job job) {
 		Response response;
@@ -175,7 +175,7 @@ public class JobResource {
     // keyword, skill, status
 	@GET																	// the method will handle GET request method on the said path
 	@Path("search")														// this method will handle request paths http://localhost:8080/FoundITServerCxfRest/hello/echo/{some text input here}
-	@Produces(MediaType.APPLICATION_XML)									// the response will contain text plain content. (Note: @Produces({MediaType.TEXT_PLAIN}) means the same)
+	@Produces({MediaType.APPLICATION_XML,MediaType.APPLICATION_JSON})									// the response will contain text plain content. (Note: @Produces({MediaType.TEXT_PLAIN}) means the same)
 	public List<Job> searchJobPostingByKSS(@QueryParam("keyword") String keyword, @QueryParam("skill") String skill, @QueryParam("status") String status) {			// map the path parameter text after /echo to String input.
 	  	// Search with keyword, sort by position ????
 		boolean keywordIsSpecified = true;

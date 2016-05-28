@@ -44,7 +44,7 @@ public class HiringTeamResource {
  
     @GET																	// the method will handle GET request method on the said path
     @Path("/{teamId}")											// this method will handle request paths http://localhost:8080/FoundITServerCxfRest/hello/echo/{some text input here}
-    @Produces(MediaType.APPLICATION_XML)									// the response will contain text plain content. (Note: @Produces({MediaType.TEXT_PLAIN}) means the same)
+    @Produces({MediaType.APPLICATION_XML,MediaType.APPLICATION_JSON})									// the response will contain text plain content. (Note: @Produces({MediaType.TEXT_PLAIN}) means the same)
     public Response getHiringTeam(@PathParam("teamId") String teamId) throws JAXBException {	// map the path parameter text after /echo to String input.
     	HiringTeam team = null;
 		String filename = path.getTeamPath() + teamId + ".xml";
@@ -62,7 +62,7 @@ public class HiringTeamResource {
     
     @GET																	// the method will handle GET request method on the said path
 //    @Path("/{appId}")											// this method will handle request paths http://localhost:8080/FoundITServerCxfRest/hello/echo/{some text input here}
-    @Produces(MediaType.APPLICATION_XML)									// the response will contain text plain content. (Note: @Produces({MediaType.TEXT_PLAIN}) means the same)
+    @Produces({MediaType.APPLICATION_XML,MediaType.APPLICATION_JSON})									// the response will contain text plain content. (Note: @Produces({MediaType.TEXT_PLAIN}) means the same)
     public Response getHiringTeamByApp(@QueryParam("appId") String appId) throws JAXBException {	// map the path parameter text after /echo to String input.
     	Application application = null;
     	HiringTeam team = null;
@@ -94,7 +94,7 @@ public class HiringTeamResource {
     
     @GET																	// the method will handle GET request method on the said path
     @Path("/finished")											// this method will handle request paths http://localhost:8080/FoundITServerCxfRest/hello/echo/{some text input here}
-    @Produces(MediaType.APPLICATION_XML)									// the response will contain text plain content. (Note: @Produces({MediaType.TEXT_PLAIN}) means the same)
+    @Produces({MediaType.APPLICATION_XML,MediaType.APPLICATION_JSON})									// the response will contain text plain content. (Note: @Produces({MediaType.TEXT_PLAIN}) means the same)
     public List<HiringTeam> getFinishedHiringTeam() throws JAXBException {	// map the path parameter text after /echo to String input.
     	List<HiringTeam> teams = new ArrayList<HiringTeam>();
     	HiringTeam team = null;
@@ -122,7 +122,7 @@ public class HiringTeamResource {
     }
 
     @POST									// the method will handle POST request method on the said path
-    @Produces(MediaType.APPLICATION_XML)	// the response will contain JSON
+    @Produces({MediaType.APPLICATION_XML,MediaType.APPLICATION_JSON})	// the response will contain JSON
     @Consumes(MediaType.APPLICATION_XML)	// applies to the input parameter JsonBean input. map the POST body content (which will contain JSON) to JsonBean input
 //    @Path("/")								// this method will handle request paths http://localhost:8080/FoundITServerCxfRest/hello/jsonBean
     public Response addHiringTeam(HiringTeam team) throws JAXBException, IOException {
@@ -152,7 +152,7 @@ public class HiringTeamResource {
     
 	@PUT
 	@Path("/{teamId}")						
-	@Produces(MediaType.APPLICATION_XML)
+	@Produces({MediaType.APPLICATION_XML,MediaType.APPLICATION_JSON})
 	@Consumes(MediaType.APPLICATION_XML)
 	public Response putHiringTeam(HiringTeam team) throws JAXBException {
 		String filename = path.getTeamPath() + team.getTeamId() + ".xml";

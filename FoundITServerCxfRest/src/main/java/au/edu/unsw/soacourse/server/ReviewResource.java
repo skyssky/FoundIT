@@ -52,7 +52,7 @@ public class ReviewResource {
  
     @GET																	// the method will handle GET request method on the said path
 //    @Path("")														// this method will handle request paths http://localhost:8080/FoundITServerCxfRest/hello/echo/{some text input here}
-    @Produces(MediaType.APPLICATION_XML)									// the response will contain text plain content. (Note: @Produces({MediaType.TEXT_PLAIN}) means the same)
+    @Produces({MediaType.APPLICATION_XML,MediaType.APPLICATION_JSON})									// the response will contain text plain content. (Note: @Produces({MediaType.TEXT_PLAIN}) means the same)
     public List<Review> getReviews() {			// map the path parameter text after /echo to String input.
     	// Get all jobs, sort by position ????
     	List<Review> reviews = new ArrayList<Review>();
@@ -76,7 +76,7 @@ public class ReviewResource {
     
     @GET																	// the method will handle GET request method on the said path
     @Path("{reviewId}")														// this method will handle request paths http://localhost:8080/FoundITServerCxfRest/hello/echo/{some text input here}
-    @Produces(MediaType.APPLICATION_XML)									// the response will contain text plain content. (Note: @Produces({MediaType.TEXT_PLAIN}) means the same)
+    @Produces({MediaType.APPLICATION_XML,MediaType.APPLICATION_JSON})									// the response will contain text plain content. (Note: @Produces({MediaType.TEXT_PLAIN}) means the same)
     public Review getReview(@PathParam("reviewId") String reviewId) {	// map the path parameter text after /echo to String input.
     	Review review = null;
     	try {
@@ -97,7 +97,7 @@ public class ReviewResource {
     
     @GET																	// the method will handle GET request method on the said path
     @Path("search")														// this method will handle request paths http://localhost:8080/FoundITServerCxfRest/hello/echo/{some text input here}
-    @Produces(MediaType.APPLICATION_XML)									// the response will contain text plain content. (Note: @Produces({MediaType.TEXT_PLAIN}) means the same)
+    @Produces({MediaType.APPLICATION_XML,MediaType.APPLICATION_JSON})									// the response will contain text plain content. (Note: @Produces({MediaType.TEXT_PLAIN}) means the same)
     public List<Review> getReviewsByReviewer(@QueryParam("reviewerId") String reviewerId) throws JAXBException {	// map the path parameter text after /echo to String input.
     	List<Review> reviews = new ArrayList<Review>();
     	Review review = null;
@@ -122,7 +122,7 @@ public class ReviewResource {
     
 
     @POST									// the method will handle POST request method on the said path
-    @Produces(MediaType.APPLICATION_XML)	// the response will contain JSON
+    @Produces({MediaType.APPLICATION_XML,MediaType.APPLICATION_JSON})	// the response will contain JSON
     @Consumes(MediaType.APPLICATION_XML)	// applies to the input parameter JsonBean input. map the POST body content (which will contain JSON) to JsonBean input
 //    @Path("")								// this method will handle request paths http://localhost:8080/FoundITServerCxfRest/hello/jsonBean
     public Response addReview(Review review) throws IOException, JAXBException {
@@ -155,7 +155,7 @@ public class ReviewResource {
 
 	@PUT
 	@Path("{reviewId}")							// TODO seems to be useless. Just set path to "/" ????
-	@Produces(MediaType.APPLICATION_XML)
+	@Produces({MediaType.APPLICATION_XML,MediaType.APPLICATION_JSON})
 	@Consumes(MediaType.APPLICATION_XML)
 	public Response putReview(Review review) throws JAXBException {
 		Response response;
