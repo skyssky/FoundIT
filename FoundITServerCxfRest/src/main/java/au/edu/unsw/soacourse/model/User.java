@@ -7,7 +7,6 @@ import javax.xml.bind.annotation.XmlRootElement;
 public class User {
 	
 	private String userId;
-	private String profileId;
 	private String skill;
 	private String experience;
 	private String name;
@@ -18,9 +17,8 @@ public class User {
 		
     }
 	
-	public User(String userId, String profileId, String skill, String experience, String name, String position, String education) {
+	public User(String userId, String skill, String experience, String name, String position, String education) {
 		this.userId = userId;
-		this.profileId = profileId;
 		this.skill = skill;
 		this.experience = experience;
 		this.name = name;
@@ -35,15 +33,6 @@ public class User {
 	@XmlElement
     public void setUserId(String userId) {
         this.userId = userId;
-    }
-    
-    public String getProfileId() {
-        return this.profileId;
-    }
-    
-    @XmlElement
-    public void setProfileId(String profileId) {
-        this.profileId = profileId;
     }
     
     public String getSkill() {

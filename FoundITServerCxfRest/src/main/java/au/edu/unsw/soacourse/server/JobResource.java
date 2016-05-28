@@ -28,6 +28,7 @@ import org.apache.commons.io.filefilter.RegexFileFilter;
 import au.edu.unsw.soacourse.auxiliary.FileOperations;
 import au.edu.unsw.soacourse.auxiliary.IdGenerator;
 import au.edu.unsw.soacourse.auxiliary.Paths;
+import au.edu.unsw.soacourse.model.Company;
 import au.edu.unsw.soacourse.model.IdCounter;
 import au.edu.unsw.soacourse.model.Job;
 
@@ -88,6 +89,28 @@ public class JobResource {
     	}
     	return job;
     }
+    
+    @GET																	// the method will handle GET request method on the said path
+    // Get jobs by managerId
+    @Produces({MediaType.APPLICATION_XML,MediaType.APPLICATION_JSON})									// the response will contain text plain content. (Note: @Produces({MediaType.TEXT_PLAIN}) means the same)
+    public List<Job> getJobsProfileByManager(@QueryParam("managerId") String managerId) throws JAXBException {	// map the path parameter text after /echo to String input.
+    	List<Job> jobs = new ArrayList<Job>();
+	  	Job job = null;
+	  	Collection<File> files = fop.getFiles(path.getJobPath());
+	  	for (File file: files) {
+			// Bind XML to Java object
+	    	JAXBContext jaxbContext;
+			jaxbContext = JAXBContext.newInstance(Job.class);
+			Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();
+			job = (Job) jaxbUnmarshaller.unmarshal(file);
+	  		if (debug) System.out.println("Job profile is found: " + job.getJobId());
+	  		if (job.getManagerId().equals(managerId)) {
+	  			jobs.add(job);
+	  		}
+		}
+	  	return jobs;
+  }
+
 
     @POST									// the method will handle POST request method on the said path
     @Produces({MediaType.APPLICATION_XML,MediaType.APPLICATION_JSON})	// the response will contain JSON
