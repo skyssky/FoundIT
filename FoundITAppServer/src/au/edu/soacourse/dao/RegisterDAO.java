@@ -37,10 +37,10 @@ public class RegisterDAO {
 			}
 			JSONObject users = new JSONObject(sb.toString());
 			JSONObject user = new JSONObject();
-			user.append("userID", userId);
-			user.append("userName", userName);
-			user.append("pwd", pwd);
-			user.append("role", role);
+			user.put("userID", userId);
+			user.put("userName", userName);
+			user.put("pwd", pwd);
+			user.put("role", role);
 			users.append("users", user);
 			BufferedWriter userDBBufferedWriter = new BufferedWriter(new FileWriter(userDB));
 			userDBBufferedWriter.write(users.toString(4));

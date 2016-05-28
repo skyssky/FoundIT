@@ -17,7 +17,7 @@
 						String error = session.getAttribute("errorMessage").toString(); 
 						if(error != ""){
 							out.print("<div class=\"alert alert-danger\" role=\"alert\">"+error+"</div>");
-							session.setAttribute("errorMessage", "");
+							session.removeAttribute("infoMeerrorMessagessage");
 						}
 					}
 				%>

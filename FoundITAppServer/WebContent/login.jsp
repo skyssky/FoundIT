@@ -12,8 +12,17 @@
 		<jsp:include page="navbar.jsp" flush="true" />
 		<div id="content">	
 			<div class="login-form">
+				<% 
+					if(session.getAttribute("errorMessage") != null){
+						String error = session.getAttribute("errorMessage").toString(); 
+						if(error != ""){
+							out.print("<div class=\"alert alert-danger\" role=\"alert\">"+error+"</div>");
+							session.removeAttribute("errorMessage");
+						}
+					}
+				%>
 				<h3>Login</h3>
-				<form role="form" action="login" method="POST">
+				<form role="form" action="login.action" method="POST">
 					<div class="form-group">
 						<label for="userName">User Name</label> <input type="text"
 							class="form-control" name="userName" placeholder="User name"/>

@@ -10,14 +10,16 @@
 </head>
 <body>
 <jsp:include page="navbar.jsp" flush="true" />
-				<% 
-					if(session.getAttribute("infoMessage") != null){
-						String info = session.getAttribute("infoMessage").toString(); 
-						if(info != ""){
-							out.print("<div class=\"alert alert-success \" role=\"alert\">"+info+"</div>");
-							session.setAttribute("infoMessage", "");
-						}
-					}
-				%>
+	<div id="content">	
+		<% 
+			if(session.getAttribute("infoMessage") != null){
+				String info = session.getAttribute("infoMessage").toString(); 
+				if(info != ""){
+					out.print("<div class=\"alert alert-success \" role=\"alert\">"+info+"</div>");
+					session.removeAttribute("infoMessage");
+				}
+			}
+		%>
+	</div>
 </body>
 </html>
