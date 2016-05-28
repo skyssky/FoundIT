@@ -38,7 +38,6 @@ public class LoginDAO {
 				sb.append(line+"\n");
 			}
 			JSONObject users = new JSONObject(sb.toString());
-			System.out.println(sb.toString());
 			JSONArray usersArray = users.getJSONArray("users");
 			for(int i = 0; i < usersArray.length(); i++){
 				JSONObject user = usersArray.getJSONObject(i);
