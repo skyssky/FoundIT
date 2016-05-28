@@ -26,6 +26,7 @@ import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
 import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
 import org.apache.http.ParseException;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
@@ -41,6 +42,7 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
+import au.edu.soacourse.httprequest.HttpRequestOp;
 import au.edu.soacourse.mail.MailSender;
 
 /**
@@ -50,6 +52,8 @@ import au.edu.soacourse.mail.MailSender;
 public class JobAlertServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
+	HttpRequestOp reqOp = new HttpRequestOp();
+	
     /**
      * @see HttpServlet#HttpServlet()
      */
@@ -74,59 +78,53 @@ public class JobAlertServlet extends HttpServlet {
 		System.out.println("keyword = " + keyword);
 		System.out.println("sort_by = " + sort_by);
 		
-		CloseableHttpClient httpclient = HttpClients.createDefault();
-		HttpGet httpget = new HttpGet(
-			     getServletContext().getInitParameter("RestfulURL")+"jobalerts?keyword=" + keyword + "&sort_by=" + sort_by);
-		httpget.setHeader("Content-Type", "application/xml; charset=utf-8");
-		CloseableHttpResponse hresponse = httpclient.execute(httpget);
+		String uri = getServletContext().getInitParameter("RestfulURL")+"jobalerts?keyword=" + keyword + "&sort_by=" + sort_by;
+		HttpResponse hresponse = reqOp.makeGetRequest(uri);
 		
 		// TODO Hardcode the path here, need to FIX
 		String jobalertFilename = getServletContext().getInitParameter("DBPath")+"alert/jobalert.xml";
 		String entityString = null;
 		
-		try {
-			HttpEntity entity = hresponse.getEntity();
-		    if (entity != null) {
-		        InputStream instream = entity.getContent();
-		        entityString = EntityUtils.toString(entity);
-		        try {
+		HttpEntity entity = hresponse.getEntity();
+	    if (entity != null) {
+	        InputStream instream = entity.getContent();
+	        entityString = EntityUtils.toString(entity);
+	        try {
 //		            System.out.println(EntityUtils.toString(entity));
-		            File jobalertFile = new File(jobalertFilename);
-		            if (!jobalertFile.exists()) {
-		            	jobalertFile.createNewFile();
-		            }
-		            DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-		            DocumentBuilder builder = factory.newDocumentBuilder();
-		            Document document = builder.parse(new InputSource(new StringReader(entityString)));
-		            
-		            TransformerFactory transformerFactory = TransformerFactory.newInstance();
-		            Transformer transformer = transformerFactory.newTransformer();
-		            DOMSource source = new DOMSource(document);
-		            StreamResult streamResult =  new StreamResult(jobalertFile);
-		            transformer.transform(source, streamResult);
-		            
-		        } catch (ParserConfigurationException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				} catch (ParseException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				} catch (SAXException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				} catch (TransformerConfigurationException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				} catch (TransformerException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				} finally {
-		            instream.close();
-		        }
-		    }
-		} finally {
-		    hresponse.close();
-		}
+	            File jobalertFile = new File(jobalertFilename);
+	            if (!jobalertFile.exists()) {
+	            	jobalertFile.createNewFile();
+	            }
+	            DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+	            DocumentBuilder builder = factory.newDocumentBuilder();
+	            Document document = builder.parse(new InputSource(new StringReader(entityString)));
+	            
+	            TransformerFactory transformerFactory = TransformerFactory.newInstance();
+	            Transformer transformer = transformerFactory.newTransformer();
+	            DOMSource source = new DOMSource(document);
+	            StreamResult streamResult =  new StreamResult(jobalertFile);
+	            transformer.transform(source, streamResult);
+	            
+	        } catch (ParserConfigurationException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (ParseException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (SAXException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (TransformerConfigurationException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (TransformerException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} finally {
+	            instream.close();
+	        }
+	    }
+
 		
 		// TODO Send RSS/Atom feed to user's email, i.e., jobalertFile
 		 // SMTP server information
@@ -161,10 +159,7 @@ public class JobAlertServlet extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		System.out.println("JobAlertServlet......doPost");
-		
-		
 
-		
 		
 		getServletContext().getRequestDispatcher("/jobalert.jsp").forward(
 				request, response);

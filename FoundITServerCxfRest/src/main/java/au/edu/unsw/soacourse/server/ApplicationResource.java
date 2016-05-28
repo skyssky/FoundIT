@@ -82,6 +82,24 @@ public class ApplicationResource {
 		if (debug) System.out.println("Application is found: " + appId);
 		return Response.ok(application, MediaType.APPLICATION_XML).build();
     }
+    
+    @GET																	// the method will handle GET request method on the said path
+    @Path("{appId}")														// this method will handle request paths http://localhost:8080/FoundITServerCxfRest/hello/echo/{some text input here}
+    @Produces({MediaType.APPLICATION_XML,MediaType.APPLICATION_JSON})									// the response will contain text plain content. (Note: @Produces({MediaType.TEXT_PLAIN}) means the same)
+    public Response getApplication(@PathParam("appId") String appId) throws JAXBException {	// map the path parameter text after /echo to String input.
+    	Application application = null;
+		String filename = path.getAppPath() + appId + ".xml";
+    	File file = new File(filename);
+    	if (!file.exists()) {
+    		return Response.status(Response.Status.NOT_FOUND).entity("Application '" + appId + "' is not found.").build();
+    	}
+    	// Bind XML to Java object
+    	JAXBContext jaxbContext = JAXBContext.newInstance(Application.class);
+		Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();
+		application = (Application) jaxbUnmarshaller.unmarshal(file);
+		if (debug) System.out.println("Application is found: " + appId);
+		return Response.ok(application, MediaType.APPLICATION_XML).build();
+    }
 
     @POST									// the method will handle POST request method on the said path
     @Produces({MediaType.APPLICATION_XML,MediaType.APPLICATION_JSON})	// the response will contain JSON

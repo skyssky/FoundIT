@@ -13,15 +13,16 @@ public class Job {
 	private int salary;			// salary rate
 	private String position;	// position type
 	private String location;	// location
-	private String detail;	// job details/detail
+	private String detail;		// job details/detail
 	private JobStatus status;
 	private String skill;
+	private String managerId;
 
 	public Job() {
 		
     }
 	
-	public Job(String jobId, String link, int salary, String position, String location, String detail, JobStatus status) {
+	public Job(String jobId, String link, int salary, String position, String location, String detail, JobStatus status, String managerId) {
 		this.jobId = jobId;
 		this.link = link;
 		this.salary = salary;
@@ -29,6 +30,7 @@ public class Job {
 		this.location = location;
 		this.detail = detail;
 		this.status = status;
+		this.managerId = managerId;
     }
 
     public String getJobId() {
@@ -101,5 +103,14 @@ public class Job {
     @XmlElement
     public void setSkill(String skill) {
         this.skill = skill;
+    }
+    
+    public String getManagerId() {
+        return this.managerId;
+    }
+    
+    @XmlElement
+    public void setManagerId(String managerId) {
+        this.managerId = managerId;
     }
 }
