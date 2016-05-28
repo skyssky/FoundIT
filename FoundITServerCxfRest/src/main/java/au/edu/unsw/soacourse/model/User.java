@@ -6,31 +6,35 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement
 public class User {
 	
-	private String username;
+	private String userId;
 	private String profileId;
-	private String detail;
 	private String skill;
 	private String experience;
+	private String name;
+	private String position;
+	private String education;
 	
 	public User() {
 		
     }
 	
-	public User(String username, String profileId, String detail, String skill, String experience) {
-		this.username = username;
+	public User(String userId, String profileId, String skill, String experience, String name, String position, String education) {
+		this.userId = userId;
 		this.profileId = profileId;
-		this.detail = detail;
 		this.skill = skill;
 		this.experience = experience;
+		this.name = name;
+		this.position = position;
+		this.education = education;
     }
 	
-	public String getUsername() {
-        return this.username;
+	public String getUserId() {
+        return this.userId;
     }
 	
 	@XmlElement
-    public void setUsername(String username) {
-        this.username = username;
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
     
     public String getProfileId() {
@@ -40,15 +44,6 @@ public class User {
     @XmlElement
     public void setProfileId(String profileId) {
         this.profileId = profileId;
-    }
-    
-    public String getDetail() {
-        return this.detail;
-    }
-    
-    @XmlElement
-    public void setDetail(String detail) {
-        this.detail = detail;
     }
     
     public String getSkill() {
@@ -69,4 +64,32 @@ public class User {
         this.experience = experience;
     }
     
+    
+    
+    public String getName() {
+        return this.name;
+    }
+    
+    @XmlElement
+    public void setName(String name) {
+        this.name = name;
+    }
+    
+    public String getPosition() {
+        return this.position;
+    }
+    
+    @XmlElement
+    public void setPosition(String position) {
+        this.position = position;
+    }
+    
+    public String getEducation() {
+        return this.education;
+    }
+    
+    @XmlElement
+    public void setEducation(String education) {
+        this.education = education;
+    }
 }

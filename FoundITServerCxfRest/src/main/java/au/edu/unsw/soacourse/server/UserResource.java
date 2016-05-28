@@ -36,22 +36,22 @@ public class UserResource {
 	Paths path = new Paths();
  
     @GET																	// the method will handle GET request method on the said path
-    @Path("/{username}")											// this method will handle request paths http://localhost:8080/FoundITServerCxfRest/hello/echo/{some text input here}
+    @Path("/{userId}")											// this method will handle request paths http://localhost:8080/FoundITServerCxfRest/hello/echo/{some text input here}
     @Produces({MediaType.APPLICATION_XML,MediaType.APPLICATION_JSON})									// the response will contain text plain content. (Note: @Produces({MediaType.TEXT_PLAIN}) means the same)
-    public User getUserProfile(@PathParam("username") String username) {	// map the path parameter text after /echo to String input.
+    public User getUserProfile(@PathParam("userId") String userId) {	// map the path parameter text after /echo to String input.
     	User user = null;
     	try {
-    		String filename = path.getUserPath() + username + ".xml";
+    		String filename = path.getUserPath() + userId + ".xml";
 	    	File file = new File(filename);
 	    	// Bind XML to Java object
 	    	JAXBContext jaxbContext = JAXBContext.newInstance(User.class);
     		Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();
     		user = (User) jaxbUnmarshaller.unmarshal(file);
-    		if (debug) System.out.println("user is found: " + username);
+    		if (debug) System.out.println("user is found: " + userId);
     	} catch (JAXBException e) {
-    		// TODO throw Response/Exception: user profile for user 'username' does not exist
+    		// TODO throw Response/Exception: user profile for user 'userId' does not exist
     		e.printStackTrace();
-    		if (debug) System.out.println("User profile for user '" + username + "' does not exist");
+    		if (debug) System.out.println("User profile for user '" + userId + "' does not exist");
     	}
     	return user;
     }
@@ -69,12 +69,12 @@ public class UserResource {
 //    	idGenerator.updateCounter(path.getUserPath(), idCounter);
     	
     	Response response;
-		String filename = path.getUserPath() + user.getUsername() + ".xml";
+		String filename = path.getUserPath() + user.getUserId() + ".xml";
     	File file = new File(filename);	// create the file if does not exist
     	if(!file.exists()) {
     		file.createNewFile();
     	} else {						// return 'CONFLICT' response if file already exists
-    		response = Response.status(Response.Status.CONFLICT).entity("User profile for user '" + user.getUsername() + "' already exists").build();
+    		response = Response.status(Response.Status.CONFLICT).entity("User profile for user '" + user.getUserId() + "' already exists").build();
     		return response;
     	}
     	if (debug) System.out.println("file: " + filename);
@@ -85,22 +85,22 @@ public class UserResource {
 		jaxbMarshaller.marshal(user, file);
 		jaxbMarshaller.marshal(user, System.out);
 
-    	response = Response.status(Response.Status.CREATED).entity("User profile for user '" + user.getUsername() + "' has been created").build();
+    	response = Response.status(Response.Status.CREATED).entity("User profile for user '" + user.getUserId() + "' has been created").build();
     	return response;
     }
     
 	@PUT
-	@Path("/{username}")						// TODO seems to be useless. Just set path to "/" ????
+	@Path("/{userId}")						// TODO seems to be useless. Just set path to "/" ????
 	@Produces({MediaType.APPLICATION_XML,MediaType.APPLICATION_JSON})
 	@Consumes({MediaType.APPLICATION_XML,MediaType.APPLICATION_JSON})
 	public Response putUser(User user) {
 		Response response;
 		try {
-			String filename = path.getUserPath() + user.getUsername() + ".xml";
+			String filename = path.getUserPath() + user.getUserId() + ".xml";
 	    	File file = new File(filename);	// create the file if does not exist
 	    	if(!file.exists()) {
 	    		file.createNewFile();
-	    		response = Response.status(Response.Status.NOT_FOUND).entity("User profile for user '" + user.getUsername() + "' is not found.").build();
+	    		response = Response.status(Response.Status.NOT_FOUND).entity("User profile for user '" + user.getUserId() + "' is not found.").build();
 	    		return response;
 	    	}
 	    	if (debug) System.out.println("file: " + filename);
@@ -115,27 +115,27 @@ public class UserResource {
 		} catch (JAXBException e) {
 			e.printStackTrace();
 		}
-		response = Response.status(Response.Status.ACCEPTED).entity("User profile for user '" + user.getUsername() + "' has been updated").build();
+		response = Response.status(Response.Status.ACCEPTED).entity("User profile for user '" + user.getUserId() + "' has been updated").build();
 		return response;
 	}
 	
 	@DELETE
-	@Path("/{username}")
-	public Response deleteUser(@PathParam("username") String username) throws IOException {
+	@Path("/{userId}")
+	public Response deleteUser(@PathParam("userId") String userId) throws IOException {
 		Response response;
-		String filename = path.getUserPath() + username + ".xml";
+		String filename = path.getUserPath() + userId + ".xml";
 		File file = new File(filename);	// create the file if does not exist
 		if(!file.exists()) {
-			response = Response.status(Response.Status.NOT_FOUND).entity("User posting for user '" + username + "' is not found.").build();
+			response = Response.status(Response.Status.NOT_FOUND).entity("User posting for user '" + userId + "' is not found.").build();
 			return response;
 		}
-		File dfile = new File(path.getUserPath() + "_" + username + ".xml");
+		File dfile = new File(path.getUserPath() + "_" + userId + ".xml");
 		boolean success = file.renameTo(dfile);
 		if (!success) {
-			response = Response.status(Response.Status.FORBIDDEN).entity("User posting for user '" + username + "' cannot be deleted.").build();
+			response = Response.status(Response.Status.FORBIDDEN).entity("User posting for user '" + userId + "' cannot be deleted.").build();
 			return response;
 		}
-		response = Response.status(Response.Status.OK).entity("User posting for user '" + username + "' has been deleted").build();
+		response = Response.status(Response.Status.OK).entity("User posting for user '" + userId + "' has been deleted").build();
 		return response;
 	}
 }
