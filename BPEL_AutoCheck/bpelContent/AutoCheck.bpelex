@@ -18,7 +18,7 @@
   </extensions>
   <extensions>
     <extendedObject href="AutoCheck.bpel#/"/>
-    <extensionObject xsi:type="org.eclipse.bpel.ui.uiextensionmodel:ProcessExtension" modificationStamp="1464179800000"/>
+    <extensionObject xsi:type="org.eclipse.bpel.ui.uiextensionmodel:ProcessExtension" modificationStamp="1464399564000"/>
   </extensions>
   <extensions>
     <extendedObject href="AutoCheck.bpel#//@activity/@activities.1/@copy.0"/>
