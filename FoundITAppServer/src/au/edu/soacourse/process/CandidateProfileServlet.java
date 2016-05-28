@@ -26,7 +26,7 @@ public class CandidateProfileServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		request.getSession().getAttribute("userID");
+		//request.getSession().getAttribute("userID");
 		
 		
 		getServletContext().getRequestDispatcher("/profile.jsp").forward(request, response);
