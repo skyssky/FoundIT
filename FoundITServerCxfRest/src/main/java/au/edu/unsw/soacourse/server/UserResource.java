@@ -58,7 +58,7 @@ public class UserResource {
 
     @POST									// the method will handle POST request method on the said path
     @Produces({MediaType.APPLICATION_XML,MediaType.APPLICATION_JSON})	// the response will contain JSON
-    @Consumes(MediaType.APPLICATION_XML)	// applies to the input parameter JsonBean input. map the POST body content (which will contain JSON) to JsonBean input
+    @Consumes({MediaType.APPLICATION_XML,MediaType.APPLICATION_JSON})	// applies to the input parameter JsonBean input. map the POST body content (which will contain JSON) to JsonBean input
 //    @Path("/")								// this method will handle request paths http://localhost:8080/FoundITServerCxfRest/hello/jsonBean
     public Response addUserProfile(User user) throws JAXBException, IOException {
     	
@@ -92,7 +92,7 @@ public class UserResource {
 	@PUT
 	@Path("/{username}")						// TODO seems to be useless. Just set path to "/" ????
 	@Produces({MediaType.APPLICATION_XML,MediaType.APPLICATION_JSON})
-	@Consumes(MediaType.APPLICATION_XML)
+	@Consumes({MediaType.APPLICATION_XML,MediaType.APPLICATION_JSON})
 	public Response putUser(User user) {
 		Response response;
 		try {

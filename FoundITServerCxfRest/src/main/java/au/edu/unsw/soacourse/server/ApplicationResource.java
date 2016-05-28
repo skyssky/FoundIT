@@ -85,7 +85,7 @@ public class ApplicationResource {
 
     @POST									// the method will handle POST request method on the said path
     @Produces({MediaType.APPLICATION_XML,MediaType.APPLICATION_JSON})	// the response will contain JSON
-    @Consumes(MediaType.APPLICATION_XML)	// applies to the input parameter JsonBean input. map the POST body content (which will contain JSON) to JsonBean input
+    @Consumes({MediaType.APPLICATION_XML,MediaType.APPLICATION_JSON})	// applies to the input parameter JsonBean input. map the POST body content (which will contain JSON) to JsonBean input
 //    @Path("")								// this method will handle request paths http://localhost:8080/FoundITServerCxfRest/hello/jsonBean
     public Response addApplication(Application application) throws JAXBException, IOException {
     	
@@ -124,7 +124,7 @@ public class ApplicationResource {
 	@PUT
 	@Path("{appId}")							
 	@Produces({MediaType.APPLICATION_XML,MediaType.APPLICATION_JSON})
-	@Consumes(MediaType.APPLICATION_XML)
+	@Consumes({MediaType.APPLICATION_XML,MediaType.APPLICATION_JSON})
 	public Response putApplication(Application application) throws JAXBException, IOException {
 		Response response;
 		// An application can be updated iff the job posting is opening

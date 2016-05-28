@@ -123,7 +123,7 @@ public class HiringTeamResource {
 
     @POST									// the method will handle POST request method on the said path
     @Produces({MediaType.APPLICATION_XML,MediaType.APPLICATION_JSON})	// the response will contain JSON
-    @Consumes(MediaType.APPLICATION_XML)	// applies to the input parameter JsonBean input. map the POST body content (which will contain JSON) to JsonBean input
+    @Consumes({MediaType.APPLICATION_XML,MediaType.APPLICATION_JSON})	// applies to the input parameter JsonBean input. map the POST body content (which will contain JSON) to JsonBean input
 //    @Path("/")								// this method will handle request paths http://localhost:8080/FoundITServerCxfRest/hello/jsonBean
     public Response addHiringTeam(HiringTeam team) throws JAXBException, IOException {
     	
@@ -153,7 +153,7 @@ public class HiringTeamResource {
 	@PUT
 	@Path("/{teamId}")						
 	@Produces({MediaType.APPLICATION_XML,MediaType.APPLICATION_JSON})
-	@Consumes(MediaType.APPLICATION_XML)
+	@Consumes({MediaType.APPLICATION_XML,MediaType.APPLICATION_JSON})
 	public Response putHiringTeam(HiringTeam team) throws JAXBException {
 		String filename = path.getTeamPath() + team.getTeamId() + ".xml";
 		File file = new File(filename);	// create the file if does not exist
