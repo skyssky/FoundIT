@@ -128,7 +128,7 @@ public class AutoCheckServlet extends HttpServlet {
         
         // Save SOAP message to catalina.home/webapps/ROOT/FoundIT/FoundITApp/autocheck/autocheck-soap.xml
         // TODO path is hard-coded
-        String path = "/Users/zenglinwang/Documents/Workspace/COMP9322/cs9322-Prac/apache-tomcat-8.0.32/webapps/ROOT/FoundIT/FoundITApp/autocheck";
+        String path = "/Users/zenglinwang/Documents/Workspace/COMP9322/cs9322-Prac/apache-tomcat-8.0.32/webapps/ROOT/FoundIT/FoundITApp/autocheck/";
         File resultFile = new File(path + "autocheck-soap.xml");
         if (!resultFile.exists()) {
         	resultFile.createNewFile();
