@@ -1,6 +1,7 @@
 package au.edu.soacourse.dao;
 
 import java.io.File;
+import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -31,7 +32,7 @@ public class LoginDAO {
 		try{
 			File userDB = new File(userDBPath);				
 			userDB.createNewFile();
-			List<String> lines = Files.readAllLines(userDB.toPath());
+			List<String> lines = Files.readAllLines(userDB.toPath(), Charset.defaultCharset());
 			StringBuilder sb = new StringBuilder();
 			for (String line : lines) {
 				sb.append(line+"\n");

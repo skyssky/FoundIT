@@ -3,10 +3,10 @@ package au.edu.soacourse.dao;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
+import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.util.List;
 import java.util.UUID;
-
 
 import org.json.JSONObject;
 
@@ -30,7 +30,7 @@ public class RegisterDAO {
 			String userDBPath = DBPathString+"users.json";
 			File userDB = new File(userDBPath);				
 			userDB.createNewFile();
-			List<String> lines = Files.readAllLines(userDB.toPath());
+			List<String> lines = Files.readAllLines(userDB.toPath(), Charset.defaultCharset());
 			StringBuilder sb = new StringBuilder();
 			for (String line : lines) {
 				sb.append(line+"\n");
