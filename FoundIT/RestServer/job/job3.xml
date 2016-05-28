@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<job>
+    <detail>Java Engineer</detail>
+    <jobId>job3</jobId>
+    <link>http://www.baidu.com</link>
+    <location>Sydney</location>
+    <position>Java Developer</position>
+    <salary>5000</salary>
+    <skill>Java and C++</skill>
+    <status>CREATED</status>
+</job>
