@@ -45,7 +45,7 @@
 	        $.ajax({
 	          type: "post",
 	          url: "/FoundITAppServer/search.action",
-	          contentType: 'application/x-www-form-urlencoded',	          
+	          contentType: 'application/x-www-form-urlencoded',         
 	          data: $("#search").serializeArray(),
 	          success:function(data) {  },
 	          error: function(xhr,status,error) {}
