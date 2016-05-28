@@ -76,12 +76,12 @@ public class JobAlertServlet extends HttpServlet {
 		
 		CloseableHttpClient httpclient = HttpClients.createDefault();
 		HttpGet httpget = new HttpGet(
-			     "http://localhost:8080/FoundITServerCxfRest/jobalerts?keyword=" + keyword + "&sort_by=" + sort_by);
+			     getServletContext().getInitParameter("RestfulURL")+"jobalerts?keyword=" + keyword + "&sort_by=" + sort_by);
 		httpget.setHeader("Content-Type", "application/xml; charset=utf-8");
 		CloseableHttpResponse hresponse = httpclient.execute(httpget);
 		
 		// TODO Hardcode the path here, need to FIX
-		String jobalertFilename = "/Users/zenglinwang/Documents/Workspace/COMP9322/cs9322-Prac/apache-tomcat-8.0.32/webapps/ROOT/FoundIT/FoundITApp/temp/jobalert.xml";
+		String jobalertFilename = getServletContext().getInitParameter("DBPath")+"alert/jobalert.xml";
 		String entityString = null;
 		
 		try {

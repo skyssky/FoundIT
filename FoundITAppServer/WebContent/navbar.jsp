@@ -26,12 +26,19 @@
             <li><a href="#">One more separated link</a></li>
           </ul>
         </li>
-      -->
+        -->
+        <%
+        //For candidates
+        if(session.getAttribute("role") != null && session.getAttribute("role").equals("candidate")){
+        	out.print("<li><a href=\"search\">Search Jobs</a></li>");
+        }        
+        %>        
+      
       </ul>
       <% 
-      if(session.getAttribute("role") != null && session.getAttribute("role").equals("candidate")){
-      	out.print("<form class=\"navbar-form navbar-left\" role=\"search\"><div class=\"form-group\"><input type=\"text\" class=\"form-control\" placeholder=\"Search\"></div><button type=\"submit\" class=\"btn btn-default\">Submit</button></form>");
-      }
+      //if(session.getAttribute("role") != null && session.getAttribute("role").equals("candidate")){
+      	//out.print("<form class=\"navbar-form navbar-left\" role=\"search\"><div class=\"form-group\"><input type=\"text\" class=\"form-control\" placeholder=\"Search\"></div><button type=\"submit\" class=\"btn btn-default\">Submit</button></form>");
+      //}
       %>
       <ul class="nav navbar-nav navbar-right">
       	<%
