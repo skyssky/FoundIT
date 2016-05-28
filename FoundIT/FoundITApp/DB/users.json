@@ -28,5 +28,11 @@
         "userName": "abc5@gmail.com",
         "pwd": "123",
         "userID": "052a2e06-c5d2-465e-9816-114a523206df"
+    },
+    {
+        "role": "candidate",
+        "userName": "abc6@gmail.com",
+        "pwd": "123",
+        "userID": "58a9bbda-8a2d-4f7c-a0a6-486d14b93baa"
     }
 ]}

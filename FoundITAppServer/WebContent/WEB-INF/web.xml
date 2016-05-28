@@ -75,10 +75,7 @@
   <servlet-mapping>
     <servlet-name>CandidateProfileServlet</servlet-name>
     <url-pattern>/profile.action</url-pattern>
-  </servlet-mapping>
-<<<<<<< HEAD
-=======
-  
+  </servlet-mapping> 
   <servlet>
     <servlet-name>LoadProfileServlet</servlet-name>
     <servlet-class>au.edu.soacourse.process.LoadProfileServlet</servlet-class>
@@ -88,7 +85,6 @@
     <url-pattern>/loadProfile</url-pattern>
   </servlet-mapping>  
   
->>>>>>> origin/master
   <context-param>
     <param-name>DBPath</param-name>
     <param-value>${catalina.base}/webapps/FoundIT/FoundITApp/DB/</param-value>
