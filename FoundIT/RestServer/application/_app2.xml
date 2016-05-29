@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<application>
-    <appId>app2</appId>
-    <cover>Hi</cover>
-    <jobId>job2</jobId>
-    <status>PROCESSED</status>
-    <userId>user2</userId>
-</application>
