@@ -114,9 +114,9 @@ public class BackgroundCheckServlet extends HttpServlet {
 //		candidatesJson.getString("")
 	}
 	
-	private void rejectApplication(HttpServletResponse response, JSONObject candidate) throws IOException {
+	private void rejectApplication(HttpServletResponse response, JSONObject candidate, String jobId) throws IOException {
 		// Get application by userId
-		String serviceURLString = getServletContext().getInitParameter("RestfulURL") + "applications?userId=" + candidate.getString("userId");
+		String serviceURLString = getServletContext().getInitParameter("RestfulURL") + "applications?userId=" + candidate.getString("userId") + "&jobId=" + jobId;
 		URL serviceURL = new URL(serviceURLString);
 		URLConnection connection = serviceURL.openConnection();
 		connection.setRequestProperty("Accept", "application/json");
@@ -130,15 +130,20 @@ public class BackgroundCheckServlet extends HttpServlet {
 			}
 			response.setContentType("application/json");
 			
-			// Update candidate's application status to "REJECTED"
-			candidate.put("status", "REJECTED");
-			HttpURLConnection connection2 = (HttpURLConnection) serviceURL.openConnection();
-			connection2.setRequestMethod("PUT");
+			// Update application status to "REJECTED"			
+			JSONArray appArray = new JSONArray(responseBody); 
+			JSONObject app = (JSONObject) appArray.get(0);
+			app.put("status", "REJECTED");
+			System.out.println("app ====> PUT ==> \n" + app.toString());
+			String serviceURLString2 = getServletContext().getInitParameter("RestfulURL") + "applications/" + app.getString("appId");
+			URL serviceURL2 = new URL(serviceURLString2);
+			HttpURLConnection connection2 = (HttpURLConnection) serviceURL2.openConnection();
+			connection2.setRequestMethod("PUT");			
 			connection2.setRequestProperty("Content-Type","application/json");
 			connection2.setDoOutput(true);
 			OutputStreamWriter out2 = new OutputStreamWriter(connection2.getOutputStream());
 			//System.out.println("UPDATE\n"+profile.toString());
-            out2.write(candidate.toString());
+            out2.write(app.toString());
             out2.flush();
             out2.close();
             BufferedReader in = new BufferedReader(new InputStreamReader(connection2.getInputStream()));
@@ -184,7 +189,7 @@ public class BackgroundCheckServlet extends HttpServlet {
 		    }
 	    	// UPDATE THIS CANDIDATE's Application status to "REJECTED" ==> terminate ==> reject app automatically
 		    if (!checkResult) {
-		    	rejectApplication(response, cand);
+		    	rejectApplication(response, cand, jobId);
 		    } else {
 		    	candidatesIdentified.put(cand);
 		    }
