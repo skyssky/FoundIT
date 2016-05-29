@@ -40,7 +40,6 @@ public class LoadManagerJobServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		System.out.println("Step2. load manager job servlet - GET*");
 		// Step2. Get job profile and update its status to "INREVIEW"
-//		String managerId = request.getParameter("userID");
 		
 		// Read jobId from query string
 		String jobId = null;
@@ -50,10 +49,8 @@ public class LoadManagerJobServlet extends HttpServlet {
 				jobId = queryStrs[1];
 			}
 		}
-
 		
 		String serviceURLString = getServletContext().getInitParameter("RestfulURL") + "jobs";
-//		System.out.println("2 managerId = *" + managerId + "*");
 		System.out.println("jobId = *" + jobId + "*");
 		
 		if (jobId != null && jobId != "") {
@@ -87,25 +84,15 @@ public class LoadManagerJobServlet extends HttpServlet {
 	            out2.close();
 	            BufferedReader in = new BufferedReader(new InputStreamReader(connection2.getInputStream()));
 	            in.close();
-				
-	            // continue: print to jsp page
-				java.io.PrintWriter out = response.getWriter( );
-				out.print(responseBody);
-				out.flush();
-				out.close();	
 			} else{
-				java.io.PrintWriter out = response.getWriter( );
-				out.print("{}");
-				out.flush();
-				out.close();	
+				// TODO FAILED TO UPDATE the status
 			}
 		} else {
-			// DO NOT HANDLE ==> return empty to user, as manager can only see jobs he created at this recruitment process
-			java.io.PrintWriter out = response.getWriter( );
-			out.print("{}");
-			out.flush();
-			out.close();
+			// TODO FAILED TO UPDATE the status
 		}
+		
+		// LIST ALL CANDIDATES ACCORDING TO APPLICATIONS
+		
 	}
 
 	/**
