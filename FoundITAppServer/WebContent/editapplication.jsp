@@ -52,6 +52,11 @@
 		    loadProfileRequest("<% if(session.getAttribute("userID") != null){
 	      							out.print(session.getAttribute("userID"));
 	      						}%>");
+		    loadApplicationRequest(<%if(session.getAttribute("userID") != null){
+						out.print(session.getAttribute("userID"));
+					}%>,<%if(session.getAttribute("jobId") != null){
+						out.print(session.getAttribute("jobId"));
+					}%>);
 		});
 		function loadProfileRequest(userID){
 			$.ajax({
@@ -73,6 +78,9 @@
 				$("#experience").val(data.experience);
 				$("#skill").val(data.skill);
 			}
+		}
+		loadApplicationRequest(userID,jobId){
+			alert(jobId);
 		}
 	</script>
 </body>

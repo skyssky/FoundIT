@@ -56,7 +56,7 @@
 			content += "<th>Job detail</th><th>Desire skill</th><th>Salary</th><th>Location</th><th>Apply</th>";
 			$.each(data,function(index, element) {
     			//alert('detail: ' + element.detail + ', location: ' + element.location);
-    			content += '<tr><td>' + element.detail + "</td><td>" +  element.skill + "</td><td>" +  element.salary + "</td><td>" +  element.location + "</td><td>" +  "<a href=\"application?"+ element.jobId +"\"><button type=\"button\" class=\"btn btn-primary\">Apply</button></a>" + '</td></tr>';				
+    			content += '<tr><td>' + element.detail + "</td><td>" +  element.skill + "</td><td>" +  element.salary + "</td><td>" +  element.location + "</td><td>" +  "<a href=\"application?jobId="+ element.jobId +"\"><button type=\"button\" class=\"btn btn-primary\">Apply</button></a>" + '</td></tr>';				
 			});
 			content += "</table>";
 			$("#search-results").html(content);

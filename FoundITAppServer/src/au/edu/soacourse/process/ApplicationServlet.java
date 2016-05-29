@@ -26,6 +26,8 @@ public class ApplicationServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		String applyForJobId = request.getParameter("jobId");
+		request.setAttribute("jobId", applyForJobId);
 		getServletContext().getRequestDispatcher("/editapplication.jsp").forward(request, response);
 	}
 
