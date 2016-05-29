@@ -20,6 +20,9 @@
 				}
 			}
 		%>
+		<div class="welcome">
+			Welcome to Found IT!
+		</div>
 	</div>
 </body>
 </html>

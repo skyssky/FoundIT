@@ -44,26 +44,31 @@
       	//out.print("<form class=\"navbar-form navbar-left\" role=\"search\"><div class=\"form-group\"><input type=\"text\" class=\"form-control\" placeholder=\"Search\"></div><button type=\"submit\" class=\"btn btn-default\">Submit</button></form>");
       //}
       %>
-      <ul class="nav navbar-nav navbar-right">
-      	<%
-      		if(session.getAttribute("userName") != null){
-      			out.print("<li><a href=\"#\">"+session.getAttribute("role")+"</a></li>");
-      		}
-      	%>                
-        <li class="dropdown">
-          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Account <span class="caret"></span></a>
-          <ul class="dropdown-menu">
-            <li><a href="register">Register</a></li>
-            <li><a href="login">Login</a></li>          
-            <li role="separator" class="divider"></li>
-            <li><a href="logout">Logout</a></li>
+      <ul class="nav navbar-nav navbar-right">            
+        <li class="dropdown" >
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+	      	<%
+	      		if(session.getAttribute("userName") != null){
+	      			out.print(session.getAttribute("userName"));
+	      		}else{
+	      			out.print("Account");
+	      		}
+	      	%>
+		  <span class="caret"></span></a>
+          <ul class="dropdown-menu" style="text-align: center; min-width: auto;">
+          	<%
+	      		if(session.getAttribute("userName") != null){
+	      			out.print("<li><a href=\"#\">"+((String)(session.getAttribute("role"))).toUpperCase()+"</a></li>");
+	      			out.print("<li role=\"separator\" class=\"divider\"></li>");
+	      			out.print("<li><a href=\"logout\">Logout</a></li>");
+	      		}else{
+	      			out.print("<li><a href=\"register\">Register</a></li><li><a href=\"login\">Login</a></li>");
+	      		}
+	      	%>
           </ul>
         </li>
       </ul>
     </div><!-- /.navbar-collapse -->
   </div><!-- /.container-fluid -->
 </nav>
-
-
-
 </div>
