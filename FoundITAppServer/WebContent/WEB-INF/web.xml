@@ -83,7 +83,31 @@
   <servlet-mapping>
     <servlet-name>LoadProfileServlet</servlet-name>
     <url-pattern>/loadProfile</url-pattern>
-  </servlet-mapping>  
+  </servlet-mapping>
+  <servlet>
+    <servlet-name>RecruitmentServlet</servlet-name>
+    <servlet-class>au.edu.soacourse.process.RecruitmentServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>RecruitmentServlet</servlet-name>
+    <url-pattern>/recruitment</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <servlet-name>LoadManagerJobsServlet</servlet-name>
+    <servlet-class>au.edu.soacourse.process.LoadManagerJobsServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>LoadManagerJobsServlet</servlet-name>
+    <url-pattern>/loadManagerJobs</url-pattern>
+  </servlet-mapping>
+   <servlet>
+    <servlet-name>LoadManagerJobServlet</servlet-name>
+    <servlet-class>au.edu.soacourse.process.LoadManagerJobServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>LoadManagerJobServlet</servlet-name>
+    <url-pattern>/loadManagerJob</url-pattern>
+  </servlet-mapping>
   <context-param>
     <param-name>DBPath</param-name>
     <param-value>${catalina.base}/webapps/FoundIT/FoundITApp/DB/</param-value>

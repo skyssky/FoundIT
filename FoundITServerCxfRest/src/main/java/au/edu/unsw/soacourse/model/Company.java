@@ -10,17 +10,21 @@ public class Company {
 	private String name;
 	private String type;
 	private String detail;
+	private String site;	// company web site
+	private String hq;		// head quarter
 	
 	public Company() {
 		
     }
 	
-	public Company(String profileId, String name, String type, String detail, String managerId) {
+	public Company(String profileId, String name, String type, String detail, String managerId, String site, String hq) {
 		this.profileId = profileId;
 		this.name = name;
 		this.type = type;
 		this.detail = detail;
 		this.managerId = managerId;
+		this.site = site;
+		this.hq = hq;
     }
 	
 	public String getName() {
@@ -66,5 +70,23 @@ public class Company {
     @XmlElement
     public void setType(String type) {
         this.type = type;
+    }
+    
+    public String getSite() {
+        return this.site;
+    }
+    
+    @XmlElement
+    public void setSite(String site) {
+        this.site = site;
+    }
+    
+    public String getHq() {
+        return this.hq;
+    }
+    
+    @XmlElement
+    public void setHq(String hq) {
+        this.hq = hq;
     }
 }
