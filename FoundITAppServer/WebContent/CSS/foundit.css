@@ -34,6 +34,9 @@ body {
 #search-results{
 	margin: 10px;
 }
+#application-results{
+	margin: 10px;
+}
 .welcome {
 	font-size: 40pt;
 	position: relative;  	

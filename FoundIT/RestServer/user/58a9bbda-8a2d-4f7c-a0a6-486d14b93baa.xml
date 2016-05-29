@@ -4,7 +4,11 @@
     <education>UNSW</education>
     <experience>No work experience.</experience>
     <license>0A</license>
+<<<<<<< HEAD
     <name>Tom</name>
+=======
+    <name>Arthur</name>
+>>>>>>> origin/master
     <position>Senior Engineer</position>
     <skill>Skilled at Artificial Intelligence.</skill>
     <userId>58a9bbda-8a2d-4f7c-a0a6-486d14b93baa</userId>
