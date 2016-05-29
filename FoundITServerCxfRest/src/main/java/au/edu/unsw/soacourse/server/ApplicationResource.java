@@ -257,7 +257,7 @@ public class ApplicationResource {
 	
 	boolean jobIsOpening(Application application) throws JAXBException {
 		Job job = null;
-    	String filename = path.getAppPath() + application.getJobId() + ".xml";
+    	String filename = path.getJobPath() + application.getJobId() + ".xml";
     	File file = new File(filename);	// create the file if does not exist
     	if(!file.exists()) {
     		if (debug) System.out.println("Job '" + application.getJobId() + "' is not found, so cannot confirm your application.");

@@ -49,12 +49,13 @@
 		}
 		$("#autocheck-button").click(function(){	
 			console.log(JSON.stringify(applicants));
+			var payload = {"candidates": applicants,"jobId": "<% if(request.getAttribute("jobId") != null){out.print(request.getAttribute("jobId"));}%>"};
 			$.ajax({
 				  url: "/FoundITAppServer/backgroundCheck",
 		          contentType: 'application/json',
 		          type: "POST",
 		          datatype: "json",
-			      data: JSON.stringify(applicants),
+			      data: JSON.stringify(payload),
 			      success:function(data) { reload(data); },
 			      error: function(xhr,status,error) {}
 			    });

@@ -59,43 +59,43 @@ public class BackgroundCheckServlet extends HttpServlet {
 		// IN : list of candidates in JSON string
 		// OUT: reject candidates' applications who have not passed the AutoCheck 
 		
-		String candidatesStr = request.getParameter("candidates");				// TODO might need to change
-		candidatesStr = "[{\"address\": null,\"name\": \"Boy\",\"userId\": \"052a2e06-c5d2-465e-9816-114a523206df\","
-		+ "\"skill\": \"Java\",\"experience\": \"No\",\"education\": \"UNSW BE\","
-		+ "\"position\": \"No One\",\"license\": null}, "
-		+ "{\"address\": null,\"name\": \"Boy\",\"userId\": \"052a2e06-c5d2-465e-9816-114a523206df\","
-		+ "\"skill\": \"Java\",\"experience\": \"No\",\"education\": \"UNSW BE\","
-		+ "\"position\": \"No One\",\"license\": null}]";
-		
-		boolean checkResult = false;
-		String license = null, address = null;
-		JSONObject candidatesJson = new JSONObject(candidatesStr);
-		JSONArray candidatesIdentified = new JSONArray();
-		JSONArray candidatesArray = candidatesJson.getJSONArray("0");
-		for (int i = 0; i < candidatesArray.length(); i++) {
-		    // Get license and address of candidate
-		    JSONObject cand = candidatesArray.getJSONObject(i); 
-		    license = cand.getString("license");
-		    address = cand.getString("address");
-		    // Check identity by license
-		    checkResult = runAutocheck(license);
-		    if (!checkResult) {
-		    	checkResult = runAutocheck(address);
-		    }
-	    	// UPDATE THIS CANDIDATE's Application status to "REJECTED" ==> terminate ==> reject app automatically
-		    if (!checkResult) {
-		    	rejectApplication(response, cand);
-		    } else {
-		    	candidatesIdentified.put(cand);
-		    }
-		}
-		// return list of identified candidates as String
-		String candidatesIdentifiedStr = candidatesIdentified.toString();
-		response.setContentType("application/json");
-		java.io.PrintWriter out = response.getWriter( );
-		out.print(candidatesIdentifiedStr);
-		out.flush();
-		out.close();
+//		String candidatesStr = request.getParameter("candidates");				// TODO might need to change
+//		candidatesStr = "[{\"address\": null,\"name\": \"Boy\",\"userId\": \"052a2e06-c5d2-465e-9816-114a523206df\","
+//		+ "\"skill\": \"Java\",\"experience\": \"No\",\"education\": \"UNSW BE\","
+//		+ "\"position\": \"No One\",\"license\": null}, "
+//		+ "{\"address\": null,\"name\": \"Boy\",\"userId\": \"052a2e06-c5d2-465e-9816-114a523206df\","
+//		+ "\"skill\": \"Java\",\"experience\": \"No\",\"education\": \"UNSW BE\","
+//		+ "\"position\": \"No One\",\"license\": null}]";
+//		
+//		boolean checkResult = false;
+//		String license = null, address = null;
+//		JSONObject candidatesJson = new JSONObject(candidatesStr);
+//		JSONArray candidatesIdentified = new JSONArray();
+//		JSONArray candidatesArray = candidatesJson.getJSONArray("0");
+//		for (int i = 0; i < candidatesArray.length(); i++) {
+//		    // Get license and address of candidate
+//		    JSONObject cand = candidatesArray.getJSONObject(i); 
+//		    license = cand.getString("license");
+//		    address = cand.getString("address");
+//		    // Check identity by license
+//		    checkResult = runAutocheck(license);
+//		    if (!checkResult) {
+//		    	checkResult = runAutocheck(address);
+//		    }
+//	    	// UPDATE THIS CANDIDATE's Application status to "REJECTED" ==> terminate ==> reject app automatically
+//		    if (!checkResult) {
+//		    	rejectApplication(response, cand);
+//		    } else {
+//		    	candidatesIdentified.put(cand);
+//		    }
+//		}
+//		// return list of identified candidates as String
+//		String candidatesIdentifiedStr = candidatesIdentified.toString();
+//		response.setContentType("application/json");
+//		java.io.PrintWriter out = response.getWriter( );
+//		out.print(candidatesIdentifiedStr);
+//		out.flush();
+//		out.close();
 //		
 //		String serviceURLString = getServletContext().getInitParameter("RestfulURL") + "applications/";
 //		URL serviceURL = new URL(serviceURLString);
@@ -130,7 +130,7 @@ public class BackgroundCheckServlet extends HttpServlet {
 			}
 			response.setContentType("application/json");
 			
-			// Update candidate's status to "REJECTED"
+			// Update candidate's application status to "REJECTED"
 			candidate.put("status", "REJECTED");
 			HttpURLConnection connection2 = (HttpURLConnection) serviceURL.openConnection();
 			connection2.setRequestMethod("PUT");
@@ -160,9 +160,12 @@ public class BackgroundCheckServlet extends HttpServlet {
 	    if(br != null){
 	        json = br.readLine();
 	    }
-	    System.out.println(json.toString());
-		JSONArray candidatesArray = new JSONArray(json); // this parses the json
-
+	    System.out.println("=====> json.toString() = " + json.toString());
+		//System.out.println("=====> json.toString() = " + candidatesStr);
+		JSONObject returnObject = new JSONObject(json); // this parses the json
+		JSONArray candidatesArray = returnObject.getJSONArray("candidates");
+		String jobId = returnObject.getString("jobId");
+//		JSONArray candidatesArray = candidatesObject.getJSONArray("candidates");
 		boolean checkResult = false;
 		String license = null, address = null;
 		
