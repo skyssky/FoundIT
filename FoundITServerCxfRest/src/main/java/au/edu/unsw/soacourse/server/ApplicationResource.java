@@ -46,25 +46,25 @@ public class ApplicationResource {
 	Paths path = new Paths();
 	FileOperations fop = new FileOperations();
  
-    @GET																	// the method will handle GET request method on the said path
-//    @Path("")														// this method will handle request paths http://localhost:8080/FoundITServerCxfRest/hello/echo/{some text input here}
-    @Produces({MediaType.APPLICATION_XML,MediaType.APPLICATION_JSON})									// the response will contain text plain content. (Note: @Produces({MediaType.TEXT_PLAIN}) means the same)
-    public List<Application> getApplications() throws JAXBException {			// map the path parameter text after /echo to String input.
-    	// Get all applications
-    	List<Application> applications = new ArrayList<Application>();
-    	Application application;
-    	Collection<File> files = getFiles(path.getAppPath());
-		for (File file: files) {
-			// Bind XML to Java object
-	    	JAXBContext jaxbContext;
-			jaxbContext = JAXBContext.newInstance(Application.class);
-			Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();
-			application = (Application) jaxbUnmarshaller.unmarshal(file);
-    		if (debug) System.out.println("Application is found: " + application.getAppId());
-    		applications.add(application);
-		}
-    	return applications;
-    }
+//    @GET																	// the method will handle GET request method on the said path
+////    @Path("")														// this method will handle request paths http://localhost:8080/FoundITServerCxfRest/hello/echo/{some text input here}
+//    @Produces({MediaType.APPLICATION_XML,MediaType.APPLICATION_JSON})									// the response will contain text plain content. (Note: @Produces({MediaType.TEXT_PLAIN}) means the same)
+//    public List<Application> getApplications() throws JAXBException {			// map the path parameter text after /echo to String input.
+//    	// Get all applications
+//    	List<Application> applications = new ArrayList<Application>();
+//    	Application application;
+//    	Collection<File> files = getFiles(path.getAppPath());
+//		for (File file: files) {
+//			// Bind XML to Java object
+//	    	JAXBContext jaxbContext;
+//			jaxbContext = JAXBContext.newInstance(Application.class);
+//			Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();
+//			application = (Application) jaxbUnmarshaller.unmarshal(file);
+//    		if (debug) System.out.println("Application is found: " + application.getAppId());
+//    		applications.add(application);
+//		}
+//    	return applications;
+//    }
     
     @GET																	// the method will handle GET request method on the said path
     @Path("{appId}")														// this method will handle request paths http://localhost:8080/FoundITServerCxfRest/hello/echo/{some text input here}
@@ -87,44 +87,60 @@ public class ApplicationResource {
     @GET																	// the method will handle GET request method on the said path
     // Get apps by jobId
     @Produces({MediaType.APPLICATION_XML,MediaType.APPLICATION_JSON})									// the response will contain text plain content. (Note: @Produces({MediaType.TEXT_PLAIN}) means the same)
-    public List<Application> getApplicationByJob(@QueryParam("jobId") String jobId) throws JAXBException {	// map the path parameter text after /echo to String input.
+    public List<Application> getApplicationByJob(@QueryParam("jobId") String jobId, @QueryParam("userId") String userId) throws JAXBException {	// map the path parameter text after /echo to String input.
     	List<Application> apps = new ArrayList<Application>();
-    	Application app = null;
-	  	Collection<File> files = fop.getFiles(path.getAppPath());
-	  	for (File file: files) {
-			// Bind XML to Java object
-	    	JAXBContext jaxbContext;
-			jaxbContext = JAXBContext.newInstance(Application.class);
-			Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();
-			app = (Application) jaxbUnmarshaller.unmarshal(file);
-	  		if (debug) System.out.println("Application is found: " + app.getAppId());
-	  		if (app.getJobId().equals(jobId)) {
-	  			apps.add(app);
-	  		}
-		}
-	  	return apps;
+    	if (jobId != null && userId == null) {
+        	Application app = null;
+    	  	Collection<File> files = fop.getFiles(path.getAppPath());
+    	  	for (File file: files) {
+    			// Bind XML to Java object
+    	    	JAXBContext jaxbContext;
+    			jaxbContext = JAXBContext.newInstance(Application.class);
+    			Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();
+    			app = (Application) jaxbUnmarshaller.unmarshal(file);
+    	  		if (debug) System.out.println("1 Application is found: " + app.getAppId());
+    	  		if (app.getJobId().equals(jobId)) {
+    	  			apps.add(app);
+    	  		}
+    		}
+    	} else if (jobId == null && userId != null) {
+        	Application app = null;
+    	  	Collection<File> files = fop.getFiles(path.getAppPath());
+    	  	for (File file: files) {
+    			// Bind XML to Java object
+    	    	JAXBContext jaxbContext;
+    			jaxbContext = JAXBContext.newInstance(Application.class);
+    			Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();
+    			app = (Application) jaxbUnmarshaller.unmarshal(file);
+    	  		if (app.getUserId().equals(userId)) {
+    	  			if (debug) System.out.println("2 Application is found: " + app.getAppId());
+    	  			apps.add(app);
+    	  		}
+    		}
+    	}
+    	return apps;
     }
     
-    @GET																	// the method will handle GET request method on the said path
-    // Get apps by userId
-    @Produces({MediaType.APPLICATION_XML,MediaType.APPLICATION_JSON})									// the response will contain text plain content. (Note: @Produces({MediaType.TEXT_PLAIN}) means the same)
-    public List<Application> getApplicationByUser(@QueryParam("userId") String userId) throws JAXBException {	// map the path parameter text after /echo to String input.
-    	List<Application> apps = new ArrayList<Application>();
-    	Application app = null;
-	  	Collection<File> files = fop.getFiles(path.getAppPath());
-	  	for (File file: files) {
-			// Bind XML to Java object
-	    	JAXBContext jaxbContext;
-			jaxbContext = JAXBContext.newInstance(Application.class);
-			Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();
-			app = (Application) jaxbUnmarshaller.unmarshal(file);
-	  		if (app.getUserId().equals(userId)) {
-	  			if (debug) System.out.println("Application is found: " + app.getAppId());
-	  			apps.add(app);
-	  		}
-		}
-	  	return apps;
-    }
+//    @GET																	// the method will handle GET request method on the said path
+//    // Get apps by userId
+//    @Produces({MediaType.APPLICATION_XML,MediaType.APPLICATION_JSON})									// the response will contain text plain content. (Note: @Produces({MediaType.TEXT_PLAIN}) means the same)
+//    public List<Application> getApplicationByUser(@QueryParam("userId") String userId) throws JAXBException {	// map the path parameter text after /echo to String input.
+//    	List<Application> apps = new ArrayList<Application>();
+//    	Application app = null;
+//	  	Collection<File> files = fop.getFiles(path.getAppPath());
+//	  	for (File file: files) {
+//			// Bind XML to Java object
+//	    	JAXBContext jaxbContext;
+//			jaxbContext = JAXBContext.newInstance(Application.class);
+//			Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();
+//			app = (Application) jaxbUnmarshaller.unmarshal(file);
+//	  		if (app.getUserId().equals(userId)) {
+//	  			if (debug) System.out.println("2 Application is found: " + app.getAppId());
+//	  			apps.add(app);
+//	  		}
+//		}
+//	  	return apps;
+//    }
 
     @POST									// the method will handle POST request method on the said path
     @Produces({MediaType.APPLICATION_XML,MediaType.APPLICATION_JSON})	// the response will contain JSON

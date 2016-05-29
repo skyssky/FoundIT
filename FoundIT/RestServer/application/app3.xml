@@ -5,4 +5,5 @@
     <jobId>job2</jobId>
     <link>/user/profile/user1</link>
     <status>INREVIEW</status>
+    <userId>user1</userId>
 </application>

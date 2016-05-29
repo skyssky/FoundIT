@@ -12,10 +12,10 @@ jobalerts?keyword=X&sort_by=jobtitle
 #### ApplicationResource
 
 GET
-applications			- get all applications
+X applications			- get all applications
 applications/{appId}		- get specific application
 applications?userId=X		- get applications by userId
-applications?jobId=X
+applications?jobId=X		- get applications by jobId
 
 POST
 applications			- create a new application
