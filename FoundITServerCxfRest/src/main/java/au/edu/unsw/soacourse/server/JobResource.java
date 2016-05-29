@@ -27,6 +27,7 @@ import au.edu.unsw.soacourse.auxiliary.IdGenerator;
 import au.edu.unsw.soacourse.auxiliary.Paths;
 import au.edu.unsw.soacourse.model.IdCounter;
 import au.edu.unsw.soacourse.model.Job;
+import au.edu.unsw.soacourse.model.Job.JobStatus;
 
 /* NOTES: 
  * 
@@ -208,9 +209,12 @@ public class JobResource {
 			skillIsSpecified = false;
 		}
 		boolean statusIsSpecified = true;
+		boolean statusIsClosed = false;
 		if (status == null) {
 			status = "";
 			statusIsSpecified = false;
+		} else if (status.toLowerCase().equals("closed")) {
+			statusIsClosed = true;
 		}
 
 	  	keyword = keyword.toLowerCase();
@@ -263,7 +267,9 @@ public class JobResource {
 	    			addFlag = false;
 		  		} else if (statusIsSpecified) {
 		  			status = status.toLowerCase();
-		  			if (!job.getStatus().toString().toLowerCase().equals(status)) {
+		  			if (statusIsClosed && job.getStatus().toString().toLowerCase().equals(JobStatus.OPEN)) {
+		  				addFlag = false;
+		  			} else if (!statusIsClosed && !job.getStatus().toString().toLowerCase().equals(status)) {
 		  				addFlag = false;
 		  			}
 		  		}

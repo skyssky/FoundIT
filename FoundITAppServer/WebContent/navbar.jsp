@@ -34,7 +34,7 @@
         	out.print("<li><a href=\"profile\">Edit Profile</a></li>");
         } else if(session.getAttribute("role") != null && session.getAttribute("role").equals("manager")){
         	out.print("<li><a href=\"companyProfile\">Company Profile</a></li>");
-        	out.print("<li><a href=\"recruitment\">Recruitment</a></li>");
+        	out.print("<li><a href=\"managerJobs\">Recruitment</a></li>");
         }
         %>        
       

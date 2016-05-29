@@ -34,10 +34,10 @@
 		function loadJobProfile(data){
 			$("#job-profile").html("");
 			var content = "<table class=\"table\">";
-			content += "<th>Job detail</th><th>Desire skill</th><th>Salary</th><th>Location</th><th>View Candidates</th>";
+			content += "<th>Job detail</th><th>Desire skill</th><th>View Candidates</th>";
 			$.each(data,function(index, element) {
     			//alert('detail: ' + element.detail + ', location: ' + element.location);
-    			content += '<tr><td>' + element.detail + "</td><td>" +  element.skill + "</td><td>" +  element.salary + "</td><td>" +  element.location + "</td><td>" +  "<a href=\"#\"><button type=\"button\" class=\"btn btn-primary\" id=\"view-candidates-button\">View candidates</button></a>" + '</td></tr>';				
+    			content += '<tr><td>' + element.detail + "</td><td>" +  element.skill + "</td><td>" + "<a href=\"loadCandidates?jobId="+element.jobId+"\"><button type=\"button\" class=\"btn btn-primary\" id=\"view-candidates-button\">View candidates</button></a>" + '</td></tr>';				
 			});
 			content += "</table>";
 			$("#job-profile").html(content);

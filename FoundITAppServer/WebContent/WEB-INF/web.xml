@@ -91,8 +91,8 @@
   <servlet-mapping>
     <servlet-name>CompanyProfileServlet</servlet-name>
     <url-pattern>/companyProfile</url-pattern>
-  </servlet-mapping>  
-    <servlet-mapping>
+  </servlet-mapping>
+  <servlet-mapping>
     <servlet-name>CompanyProfileServlet</servlet-name>
     <url-pattern>/companyProfile.action</url-pattern>
   </servlet-mapping>
@@ -105,12 +105,20 @@
     <url-pattern>/loadCompanyProfile</url-pattern>
   </servlet-mapping>
   <servlet>
-    <servlet-name>RecruitmentServlet</servlet-name>
-    <servlet-class>au.edu.soacourse.process.RecruitmentServlet</servlet-class>
+    <servlet-name>ManagerJobsServlet</servlet-name>
+    <servlet-class>au.edu.soacourse.process.ManagerJobsServlet</servlet-class>
   </servlet>
   <servlet-mapping>
-    <servlet-name>RecruitmentServlet</servlet-name>
-    <url-pattern>/recruitment</url-pattern>
+    <servlet-name>ManagerJobsServlet</servlet-name>
+    <url-pattern>/managerJobs</url-pattern>
+  </servlet-mapping>
+    <servlet>
+    <servlet-name>ManagerJobServlet</servlet-name>
+    <servlet-class>au.edu.soacourse.process.ManagerJobServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>ManagerJobServlet</servlet-name>
+    <url-pattern>/managerJob</url-pattern>
   </servlet-mapping>
   <servlet>
     <servlet-name>LoadManagerJobsServlet</servlet-name>
@@ -120,7 +128,7 @@
     <servlet-name>LoadManagerJobsServlet</servlet-name>
     <url-pattern>/loadManagerJobs</url-pattern>
   </servlet-mapping>
-   <servlet>
+  <servlet>
     <servlet-name>LoadManagerJobServlet</servlet-name>
     <servlet-class>au.edu.soacourse.process.LoadManagerJobServlet</servlet-class>
   </servlet>
