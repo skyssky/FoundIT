@@ -10,7 +10,8 @@ LoadCandidatesServlet
 LoadJobServlet
 - disable the “edit” action when this job “has applications” and “OPEN”
 
-
+JobResource
+- PUT, DELETE: disable edit/delete when non-OPEN status
 
 
 
@@ -138,7 +139,7 @@ users/{userId}			- delete the user
 	private String username;	// a link to user profile
 	private String cover;		// cover letter
 	private AppStatus status;
-	public enum AppStatus { CREATED, OPEN, INREVIEW, PROCESSED, SENTINVITATION };
+	public enum AppStatus { OPEN, INREVIEW, REJECTED, ACCEPTED, SENTINVITATION };
 
 
 #### Company
@@ -169,7 +170,7 @@ users/{userId}			- delete the user
 	private JobStatus status;
 	private String skill;
 	private String managerId;
-	public enum JobStatus { CREATED, OPEN, INREVIEW, PROCESSED, SENTINVITATION };
+	public enum JobStatus { OPEN, INREVIEW, PROCESSED, SENTINVITATION };
 
 #### JobAlert
 	private String guid;		// job id

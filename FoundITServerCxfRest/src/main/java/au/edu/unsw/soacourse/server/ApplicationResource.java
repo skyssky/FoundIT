@@ -285,7 +285,7 @@ public class ApplicationResource {
     	JAXBContext jaxbContext = JAXBContext.newInstance(Application.class);
 		Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();
 		application = (Application) jaxbUnmarshaller.unmarshal(file);
-		if (application.getStatus() != AppStatus.PROCESSED) {
+		if (application.getStatus() != AppStatus.REJECTED || application.getStatus() != AppStatus.ACCEPTED) {
 			return false;
 		}
 		return true;

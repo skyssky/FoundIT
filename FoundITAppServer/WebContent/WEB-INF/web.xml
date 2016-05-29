@@ -173,6 +173,10 @@
     <param-value>${catalina.base}/webapps/FoundIT/FoundITApp/DB/</param-value>
   </context-param>
   <context-param>
+    <param-name>ACPath</param-name>
+    <param-value>${catalina.base}/webapps/FoundIT/FoundITApp/autocheck/</param-value>
+  </context-param>
+  <context-param>
     <param-name>RestfulURL</param-name>
     <param-value>http://localhost:8080/FoundITServerCxfRest/</param-value>
   </context-param>

@@ -120,7 +120,7 @@ public class AutoCheckServlet extends HttpServlet {
     /**
      * Method used to print the SOAP Response
      */
-    private static void printSOAPResponse(SOAPMessage soapResponse) throws Exception {    	
+    private void printSOAPResponse(SOAPMessage soapResponse) throws Exception {    	
     	// Read SOAP message
         TransformerFactory transformerFactory = TransformerFactory.newInstance();
         Transformer transformer = transformerFactory.newTransformer();
@@ -128,7 +128,7 @@ public class AutoCheckServlet extends HttpServlet {
         
         // Save SOAP message to catalina.home/webapps/ROOT/FoundIT/FoundITApp/autocheck/autocheck-soap.xml
         // TODO path is hard-coded
-        String path = "/Users/zenglinwang/Documents/Workspace/COMP9322/cs9322-Prac/apache-tomcat-8.0.32/webapps/ROOT/FoundIT/FoundITApp/autocheck/";
+        String path = getServletContext().getInitParameter("ACPath");
         File resultFile = new File(path + "autocheck-soap.xml");
         if (!resultFile.exists()) {
         	resultFile.createNewFile();
@@ -168,7 +168,7 @@ public class AutoCheckServlet extends HttpServlet {
             SOAPMessage soapResponse = soapConnection.call(createSOAPRequest(), url);
 
             // Process the SOAP Response
-            printSOAPResponse(soapResponse);
+//            printSOAPResponse(soapResponse);
 
             soapConnection.close();
         } catch (Exception e) {
