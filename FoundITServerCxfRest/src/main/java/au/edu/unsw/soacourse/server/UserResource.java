@@ -134,6 +134,7 @@ public class UserResource {
     	// Get users by appIds
     	User user = null;
     	for (au.edu.unsw.soacourse.model.Application app: apps) {
+    		System.out.println("app ==> " + app.getAppId());
     		user = getUserByAppLocal(app.getAppId());
     		if (user != null) {
     			System.out.println("/job/{jobid} ==> user is found: " + user.getUserId());
