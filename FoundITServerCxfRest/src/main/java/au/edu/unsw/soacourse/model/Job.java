@@ -6,7 +6,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement
 public class Job {
 	
-	public enum JobStatus { CREATED, OPEN, INREVIEW, PROCESSED, SENTINVITATION };	// status of this job posting
+	public enum JobStatus { OPEN, INREVIEW, PROCESSED, SENTINVITATION };	// status of this job posting
 	
 	private String jobId;		// job id
 	private String link;		// a link to company profile

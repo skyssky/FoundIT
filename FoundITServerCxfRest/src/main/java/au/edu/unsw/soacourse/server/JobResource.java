@@ -131,6 +131,10 @@ public class JobResource {
     		return response;
     	}
     	if (debug) System.out.println("file: " + filename);
+    	
+    	// Force the newly created job to be "OPEN" status
+    	job.setStatus(JobStatus.OPEN);
+    	
     	// Bind Java object to XML
     	JAXBContext jaxbContext = JAXBContext.newInstance(Job.class);
 		Marshaller jaxbMarshaller = jaxbContext.createMarshaller();
