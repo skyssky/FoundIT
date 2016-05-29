@@ -45,7 +45,7 @@ public class RecruitmentServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-		getServletContext().getRequestDispatcher("/recruitment.jsp").forward(request, response);
+		getServletContext().getRequestDispatcher("/recruitmentjobs.jsp").forward(request, response);
 		
 	}
 
