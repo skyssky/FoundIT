@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<job>
+    <detail>You should be good at Java and C++</detail>
+    <jobId>job10</jobId>
+    <link>xxxx</link>
+    <location>Sydny</location>
+    <managerId>3b36cff5-f1ee-4047-8e0c-7ff6245bf56d</managerId>
+    <position>Leader Programer</position>
+    <salary>10000</salary>
+    <skill>Java and C++</skill>
+    <status>INREVIEW</status>
+</job>

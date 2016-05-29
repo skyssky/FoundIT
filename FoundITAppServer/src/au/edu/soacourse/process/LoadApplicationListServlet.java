@@ -72,7 +72,8 @@ public class LoadApplicationListServlet extends HttpServlet {
 						Iterator<?> keys = job.keys();
 						while( keys.hasNext() ) {
 						    String key = (String)keys.next();
-						    applications.getJSONObject(i).put(key, job.get(key));
+						    if(!applications.getJSONObject(i).has(key))
+						    	applications.getJSONObject(i).put(key, job.get(key));
 						}
 					}
 				}

@@ -114,7 +114,7 @@
 				content += "<tr><td>Detail</td><td>"+data.detail+"</td></tr>";
 				content += "<tr><td>Link</td><td>"+data.link+"</td></tr>";
 				//content += "<tr><td>Company</td><td>XX</td></tr>";
-				content += "<tr><td>Application Status</td><td>"+data.status+"</td></tr>";
+				content += "<tr><td>Job Status</td><td>"+data.status+"</td></tr>";
 				content += "</table>";
 				$("#job").html(content);
 				$("#jobId").val(data.jobId);
@@ -125,6 +125,13 @@
 				//alert(data);
 			}else{				
 				$("#cover").val(data[0].cover);
+				if(data[0].status == "REJECTED"){
+					$("#error").html(data[0].status);
+					$("#error").show();
+				}else if(data[0].status == "SHORTLIST"){
+					$("#info").html(data[0].status);
+					$("#info").show()
+				}
 				$("#appId").val(data[0].appId);
 				$("#userID").val(data[0].userId);			
 			}

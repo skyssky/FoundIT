@@ -12,18 +12,6 @@
         "userID": "6544189d-88e2-486c-b109-971b342fd816"
     },
     {
-        "role": "reviewer",
-        "userName": "abc3@gmail.com",
-        "pwd": "123",
-        "userID": "e1aeb7ee-e307-494a-9338-1b42fa7db124"
-    },
-    {
-        "role": "reviewer",
-        "userName": "abc4@gmail.com",
-        "pwd": "123",
-        "userID": "3161364e-b575-4a7d-b41b-f6ec6818bf9f"
-    },
-    {
         "role": "candidate",
         "userName": "abc5@gmail.com",
         "pwd": "123",
