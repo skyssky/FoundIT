@@ -1,14 +1,9 @@
 package au.edu.soacourse.process;
 
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringReader;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -28,17 +23,8 @@ import javax.xml.transform.stream.StreamResult;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.ParseException;
-import org.apache.http.client.methods.CloseableHttpResponse;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.CloseableHttpClient;
-import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
-import org.apache.commons.digester.rss.Channel;
-import org.apache.commons.digester.rss.Item;
-import org.apache.commons.digester.rss.RSSDigester;
 import org.w3c.dom.Document;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
@@ -141,8 +127,11 @@ public class JobAlertServlet extends HttpServlet {
             ex.printStackTrace();
         }    
 
-        // TODO may need to fix the path
-		getServletContext().getRequestDispatcher("/FoundIT/FoundITApp/jobalert/jobalert.xml").forward(request, response);
+        response.setContentType("application/xml");
+		java.io.PrintWriter out = response.getWriter( );
+		out.print(entityString);
+		out.flush();
+		out.close();	
 		
 		// TODO give a feedback to client: email sent
 	}
