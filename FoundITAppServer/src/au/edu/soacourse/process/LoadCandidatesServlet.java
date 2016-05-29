@@ -22,13 +22,13 @@ import org.json.JSONObject;
  * Servlet implementation class ManagerJobServlet
  */
 @WebServlet("/LoadManagerJobServlet")
-public class LoadManagerJobServlet extends HttpServlet {
+public class LoadCandidatesServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public LoadManagerJobServlet() {
+    public LoadCandidatesServlet() {
         super();
         
         
@@ -41,7 +41,9 @@ public class LoadManagerJobServlet extends HttpServlet {
 		System.out.println("Step2. load manager job servlet - GET*");
 		// Step2. Get job profile and update its status to "INREVIEW"
 		
-		// Read jobId from query string
+		/*
+		 * Read jobId from query string
+		 */
 		String jobId = null;
 		String[] queryStrs = request.getQueryString().split("=");
 		if (queryStrs.length >= 2) {
@@ -91,18 +93,17 @@ public class LoadManagerJobServlet extends HttpServlet {
 			// TODO FAILED TO UPDATE the status
 		}
 		
-		// LIST ALL CANDIDATES ACCORDING TO APPLICATIONS
-		// 
-		String managerId = request.getParameter("userID");
-//		String jobId = request.getParameter("jobId");
-		serviceURLString = getServletContext().getInitParameter("RestfulURL") + "users";
-		System.out.println("1 managerId = *" + managerId + "*");
-//		System.out.println("jobId = *" + jobId + "*");
+		
+		
+		/*
+		 * LIST ALL CANDIDATES ACCORDING TO JOBID
+		*/ 
+		String serviceURLString2 = getServletContext().getInitParameter("RestfulURL") + "users";
+		System.out.println("jobId = *" + jobId + "*");
 
-		if(managerId != null && managerId != ""){
-			serviceURLString += "?managerId=" + managerId;
-			//System.out.println(serviceURLString);
-			URL serviceURL = new URL(serviceURLString);
+		if (jobId != null && jobId != "") {
+			serviceURLString2 += "/job/" + jobId;
+			URL serviceURL = new URL(serviceURLString2);
 			URLConnection connection = serviceURL.openConnection();
 			connection.setRequestProperty("Accept", "application/json");
 			int responseCode = ((HttpURLConnection) connection).getResponseCode();
@@ -124,9 +125,7 @@ public class LoadManagerJobServlet extends HttpServlet {
 				out.flush();
 				out.close();	
 			}
-
 		} else {
-			// DO NOT HANDLE ==> return empty to user, as manager can only see jobs he created at this recruitment process
 			java.io.PrintWriter out = response.getWriter( );
 			out.print("{}");
 			out.flush();
