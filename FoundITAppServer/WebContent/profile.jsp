@@ -35,6 +35,14 @@
 					<label for="skill">Professional Skill</label> <input type="text"
 						class="form-control" name="skill" id="skill" placeholder="Professional Skill"/>
 				</div>
+				<div class="form-group">
+					<label for="license">Driver License</label> <input type="text"
+						class="form-control" name="license" id="license" placeholder="Driver License"/>
+				</div>
+				<div class="form-group">
+					<label for="address">Address</label> <input type="text"
+						class="form-control" name="address" id="address" placeholder="Address"/>
+				</div>
 				<button type="submit" id="save-button" class="btn btn-primary btn-submit">Save</button>
 			</form>			
 		</div>
@@ -64,6 +72,8 @@
 				$("#education").val(data.education);
 				$("#experience").val(data.experience);
 				$("#skill").val(data.skill);
+				$("#license").val(data.license);
+				$("#address").val(data.address);
 			}
 		}
 		

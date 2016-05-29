@@ -12,18 +12,22 @@ public class User {
 	private String name;
 	private String position;
 	private String education;
+	private String address;
+	private String license;
 	
 	public User() {
 		
     }
 	
-	public User(String userId, String skill, String experience, String name, String position, String education) {
+	public User(String userId, String skill, String experience, String name, String position, String education, String address, String license) {
 		this.userId = userId;
 		this.skill = skill;
 		this.experience = experience;
 		this.name = name;
 		this.position = position;
 		this.education = education;
+		this.address = address;
+		this.license = license;
     }
 	
 	public String getUserId() {
@@ -80,5 +84,23 @@ public class User {
     @XmlElement
     public void setEducation(String education) {
         this.education = education;
+    }
+    
+    public String getAddress() {
+        return this.address;
+    }
+    
+    @XmlElement
+    public void setAddress(String address) {
+        this.address = address;
+    }
+    
+    public String getLicense() {
+        return this.license;
+    }
+    
+    @XmlElement
+    public void setLicense(String license) {
+        this.license = license;
     }
 }

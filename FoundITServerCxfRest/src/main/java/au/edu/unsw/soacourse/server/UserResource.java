@@ -186,7 +186,7 @@ public class UserResource {
 			String filename = path.getUserPath() + user.getUserId() + ".xml";
 	    	File file = new File(filename);	// create the file if does not exist
 	    	if(!file.exists()) {
-	    		file.createNewFile();
+//	    		file.createNewFile();
 	    		response = Response.status(Response.Status.NOT_FOUND).entity("User profile for user '" + user.getUserId() + "' is not found.").build();
 	    		return response;
 	    	}
@@ -197,8 +197,6 @@ public class UserResource {
 			jaxbMarshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
 			jaxbMarshaller.marshal(user, file);
 			jaxbMarshaller.marshal(user, System.out);
-		} catch (IOException e) {
-			e.printStackTrace();
 		} catch (JAXBException e) {
 			e.printStackTrace();
 		}

@@ -197,6 +197,8 @@ users/{userId}			- delete the user
 	private String name;
 	private String position;
 	private String education;
+	private String address;
+	private String license;
 
 
 

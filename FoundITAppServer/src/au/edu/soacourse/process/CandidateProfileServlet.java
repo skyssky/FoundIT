@@ -47,6 +47,8 @@ public class CandidateProfileServlet extends HttpServlet {
 		String position = request.getParameter("position");
 		String education = request.getParameter("education");
 		String experience = request.getParameter("experience");
+		String address = request.getParameter("address");
+		String license = request.getParameter("license");
 		String serviceURLString = getServletContext().getInitParameter("RestfulURL")+"users";
 		JSONObject profile = new JSONObject();
 		if(formUserID != null && !formUserID.equals("")){
@@ -58,6 +60,8 @@ public class CandidateProfileServlet extends HttpServlet {
 			profile.put("position", position);
 			profile.put("education",education);
 			profile.put("experience", experience);
+			profile.put("address", address);
+			profile.put("license", license);
 			URL serviceURL = new URL(serviceURLString);
 			HttpURLConnection connection = (HttpURLConnection) serviceURL.openConnection();
 			connection.setRequestMethod("PUT");
@@ -78,6 +82,8 @@ public class CandidateProfileServlet extends HttpServlet {
 			profile.put("position", position);
 			profile.put("education",education);
 			profile.put("experience", experience);
+			profile.put("address", address);
+			profile.put("license", license);
 			URL serviceURL = new URL(serviceURLString);
 			HttpURLConnection connection = (HttpURLConnection) serviceURL.openConnection();
 			connection.setRequestMethod("POST");

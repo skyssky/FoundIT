@@ -156,7 +156,7 @@ public class JobResource {
 			String filename = path.getJobPath() + job.getJobId() + ".xml";
 	    	File file = new File(filename);	// create the file if does not exist
 	    	if(!file.exists()) {
-	    		file.createNewFile();
+//	    		file.createNewFile();
 	    		response = Response.status(Response.Status.NOT_FOUND).entity("Job posting for job '" + job.getJobId() + "' is not found.").build();
 	    		return response;
 	    	}
@@ -167,8 +167,6 @@ public class JobResource {
 			jaxbMarshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
 			jaxbMarshaller.marshal(job, file);
 			jaxbMarshaller.marshal(job, System.out);
-		} catch (IOException e) {
-			e.printStackTrace();
 		} catch (JAXBException e) {
 			e.printStackTrace();
 		}
