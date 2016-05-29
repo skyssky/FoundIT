@@ -50,7 +50,15 @@
   </servlet>
   <servlet-mapping>
     <servlet-name>JobAlertServlet</servlet-name>
-    <url-pattern>/jobAlert</url-pattern>
+    <url-pattern>/jobalert</url-pattern>
+  </servlet-mapping>
+    <servlet>
+    <servlet-name>JobAlertMainServlet</servlet-name>
+    <servlet-class>au.edu.soacourse.process.JobAlertMainServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>JobAlertMainServlet</servlet-name>
+    <url-pattern>/jobalertmain</url-pattern>
   </servlet-mapping>
   <servlet>
     <servlet-name>SearchJobsServlet</servlet-name>

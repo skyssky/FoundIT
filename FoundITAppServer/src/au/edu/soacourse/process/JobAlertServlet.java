@@ -1,9 +1,16 @@
 package au.edu.soacourse.process;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
 import java.io.StringReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.net.URLConnection;
+import java.util.Scanner;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -24,6 +31,8 @@ import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.ParseException;
 import org.apache.http.util.EntityUtils;
+import org.json.JSONArray;
+import org.json.JSONObject;
 import org.w3c.dom.Document;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
@@ -53,12 +62,70 @@ public class JobAlertServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {		
 		System.out.println("JobAlertServlet......doGet");
 		
+		
 		String keyword = request.getParameter("keyword");
 		String sort_by = request.getParameter("sort_by");
 		
 		// For Testing
 //		keyword = "Java";
 //		sort_by = "jobtitle";
+		
+		System.out.println("keyword = " + keyword);
+		System.out.println("sort_by = " + sort_by);
+		
+		String serviceURLString = getServletContext().getInitParameter("RestfulURL")+"jobalerts?keyword=" + keyword + "&sort_by=" + sort_by;
+		URL serviceURL = new URL(serviceURLString);
+		URLConnection connection = serviceURL.openConnection();
+		connection.setRequestProperty("Accept", "application/json");
+		int responseCode = ((HttpURLConnection) connection).getResponseCode();
+		String responseBody = "";
+		if(responseCode == 200){
+			InputStream serviceResponse = connection.getInputStream();	
+			try (Scanner scanner = new Scanner(serviceResponse)) {
+			    responseBody = scanner.useDelimiter("\\A").next();
+			    System.out.println("2 responseBody ===>" + responseBody);
+			}
+			response.setContentType("application/json");
+			java.io.PrintWriter out = response.getWriter( );
+			out.print(responseBody);
+			out.flush();
+			out.close();
+		}
+		
+		// Send RSS/Atom feed to user's email, i.e., jobalertFile
+		 // SMTP server information
+        String host = "smtp.live.com";
+        String port = "25";	// 25 or 465
+        String mailFrom = "skysskyTest@hotmail.com";
+        String password = "!Q@W#E$R";
+ 
+        // outgoing message information
+        String mailTo = "skysskyTest@hotmail.com";
+        String subject = "HTML Test: Hello my friend";
+ 
+        // message contains HTML markups
+        String message = responseBody;
+        
+        MailSender mailer = new MailSender();
+        try {
+            mailer.sendRssEmail(host, port, mailFrom, password, mailTo, subject, message);
+            System.out.println("Email sent.");
+        } catch (Exception ex) {
+            System.out.println("Failed to sent email.");
+            ex.printStackTrace();
+        }    
+		// TODO give a feedback to client: email sent
+		
+	}
+
+	/**
+	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
+	 */
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		System.out.println("JobAlertServlet......doPost");
+		
+		String keyword = request.getParameter("keyword");
+		String sort_by = request.getParameter("sort_by");
 		
 		System.out.println("keyword = " + keyword);
 		System.out.println("sort_by = " + sort_by);
@@ -134,13 +201,6 @@ public class JobAlertServlet extends HttpServlet {
 		out.close();	
 		
 		// TODO give a feedback to client: email sent
-	}
-
-	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
-	 */
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		System.out.println("JobAlertServlet......doPost");
 	}
 
 }

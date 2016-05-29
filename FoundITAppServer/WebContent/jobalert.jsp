@@ -34,7 +34,6 @@
 			</form>
 		</div>		
 		<div id="search-results">
-		
 		</div>
 	</div>
 	<script>
@@ -43,7 +42,7 @@
 			e.preventDefault();
 		    $.ajax({
 		      type: "get",
-		      url: "/FoundITAppServer/jobAlert",
+		      url: "/FoundITAppServer/jobalert",
 		      /* contentType: 'application/x-www-form-urlencoded', */         
 		      data: $("#search").serializeArray(),
 		      success:function(data) { updateSearchResult(data); },
