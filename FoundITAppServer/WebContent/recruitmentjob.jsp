@@ -41,8 +41,14 @@
 					<label for="detail">Job Description</label> <textarea type=""
 						class="form-control" name="detail" id="detail" placeholder="Job Description"/></textarea>
 				</div>
-				<button type="submit" id="save-button" class="btn btn-primary btn-submit">Save</button>
-				<button id="process-button" class="btn btn-primary btn-submit">Process</button>
+				<div class="form form-inline" style="text-align: center;">
+					<div class="form-group">
+						<button type="submit" id="save-button" class="btn btn-primary">Save</button>
+					</div>
+					<div class="form-group">
+						<button id="process-button" class="btn btn-primary ">Process</button>
+					</div>
+				</div>
 			</form>			
 		</div>
 	</div>
@@ -77,6 +83,17 @@
 				$("#detail").val(data.detail);
 			}
 		}
+		$("#save-button").click(function(e){
+			e.preventDefault();
+			$.ajax({
+			      type: "post",
+			      url: "/FoundITAppServer/managerJob.action",
+			      contentType: 'application/x-www-form-urlencoded',         
+			      data: $("#profile").serializeArray(),
+			      success:function(data) { $("#info").html(data); $("#info").show();},
+			      error: function(xhr,status,error) {}
+			    });
+		});
 	</script>
 </body>
 </html>
