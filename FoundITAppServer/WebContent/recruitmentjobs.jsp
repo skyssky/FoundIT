@@ -34,7 +34,7 @@
 			content += "<th>Job Position</th><th>Job Detail</th><th>Process Applications</th>";
 			$.each(data,function(index, element) {
     			//alert('detail: ' + element.detail + ', location: ' + element.location);
-    			content += '<tr><td>' + element.position + "</td><td>" + element.detail + "</td><td>" +  "<a href=\"/loadManagerJob?jobId="+element.jobId+"\"><button type=\"button\" class=\"btn btn-primary\" id=\"process-button\">Process</button></a>" + '</td></tr>';				
+    			content += '<tr><td>' + element.position + "</td><td>" + element.detail + "</td><td>" +  "<a href=\"loadManagerJob?jobId="+element.jobId+"\"><button type=\"button\" class=\"btn btn-primary\" id=\"process-button\">Process</button></a>" + '</td></tr>';				
 			});
 			content += "</table>";
 			$("#job-positions").html(content);

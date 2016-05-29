@@ -30,21 +30,33 @@ public class LoadManagerJobServlet extends HttpServlet {
      */
     public LoadManagerJobServlet() {
         super();
-        // TODO Auto-generated constructor stub
+        
+        
     }
 
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		System.out.println("Step2. load manager job servlet - GET*");
 		// Step2. Get job profile and update its status to "INREVIEW"
-		String managerId = request.getParameter("userID");
-		String jobId = request.getParameter("jobId");
+//		String managerId = request.getParameter("userID");
+		
+		// Read jobId from query string
+		String jobId = null;
+		String[] queryStrs = request.getQueryString().split("=");
+		if (queryStrs.length >= 2) {
+			if (queryStrs[0].equals("jobId")) {
+				jobId = queryStrs[1];
+			}
+		}
+
+		
 		String serviceURLString = getServletContext().getInitParameter("RestfulURL") + "jobs";
-		System.out.println("managerId = *" + managerId + "*");
+//		System.out.println("2 managerId = *" + managerId + "*");
 		System.out.println("jobId = *" + jobId + "*");
 		
-		if (managerId != null && managerId != "" && jobId != null && jobId != "") {
+		if (jobId != null && jobId != "") {
 			serviceURLString += "/" + jobId;
 			//System.out.println(serviceURLString);
 			URL serviceURL = new URL(serviceURLString);

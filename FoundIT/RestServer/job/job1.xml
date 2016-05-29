@@ -4,9 +4,9 @@
     <jobId>job1</jobId>
     <link>http://www.baidu.com</link>
     <location>Sydney</location>
-    <skill>Swift</skill>
+    <managerId>3b36cff5-f1ee-4047-8e0c-7ff6245bf56d</managerId>
     <position>iOS Developer</position>
     <salary>5000</salary>
-    <status>CREATED</status>
-    <managerId>3b36cff5-f1ee-4047-8e0c-7ff6245bf56d</managerId>
+    <skill>Swift</skill>
+    <status>INREVIEW</status>
 </job>

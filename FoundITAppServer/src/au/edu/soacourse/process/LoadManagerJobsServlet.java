@@ -39,11 +39,11 @@ public class LoadManagerJobsServlet extends HttpServlet {
 		String managerId = request.getParameter("userID");
 //		String jobId = request.getParameter("jobId");
 		String serviceURLString = getServletContext().getInitParameter("RestfulURL") + "jobs";
-		System.out.println("managerId = *" + managerId + "*");
+		System.out.println("1 managerId = *" + managerId + "*");
 //		System.out.println("jobId = *" + jobId + "*");
 
 		if(managerId != null && managerId != ""){
-			serviceURLString += "?manager=" + managerId;
+			serviceURLString += "?managerId=" + managerId;
 			//System.out.println(serviceURLString);
 			URL serviceURL = new URL(serviceURLString);
 			URLConnection connection = serviceURL.openConnection();

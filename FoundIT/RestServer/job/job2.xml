@@ -4,9 +4,9 @@
     <jobId>job2</jobId>
     <link>http://www.baidu.com</link>
     <location>China</location>
-    <skill>Java</skill>
+    <managerId>3b36cff5-f1ee-4047-8e0c-7ff6245bf56d</managerId>
     <position>Java Developer</position>
     <salary>2000</salary>
-    <status>OPEN</status>
-    <managerId>3b36cff5-f1ee-4047-8e0c-7ff6245bf56d</managerId>
+    <skill>Java</skill>
+    <status>INREVIEW</status>
 </job>
