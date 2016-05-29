@@ -14,6 +14,7 @@
 		<div class="job-form">
 			<h3>Job Posting</h3>
 			<div class="alert alert-success " role="alert" id="info" style="display:none;"></div>
+			<div class="alert alert-danger " role="alert" id="error" style="display:none;"></div>
 			<form role="form" id="posting">
 			 	<input type="hidden" name="managerId" id="managerId" />
 			 	<input type="hidden" name="jobId" id="jobId" />
@@ -46,7 +47,7 @@
 						<button type="submit" id="save-button" class="btn btn-primary">Save</button>
 					</div>
 					<div class="form-group">
-						<button id="process-button" class="btn btn-primary ">Process</button>
+						<button id="process-button" class="btn btn-primary " style="display:none;">Process</button>
 					</div>
 				</div>
 			</form>			
@@ -81,6 +82,7 @@
 				$("#skill").val(data.skill);
 				$("#link").val(data.link);
 				$("#detail").val(data.detail);
+				$("#process-button").show();
 			}
 		}
 		$("#save-button").click(function(e){
@@ -89,10 +91,14 @@
 			      type: "post",
 			      url: "/FoundITAppServer/managerJob.action",
 			      contentType: 'application/x-www-form-urlencoded',         
-			      data: $("#profile").serializeArray(),
-			      success:function(data) { $("#info").html(data); $("#info").show();},
-			      error: function(xhr,status,error) {}
+			      data: $("#posting").serializeArray(),
+			      success:function(data) { $("#error").hide();$("#info").html(data); $("#info").show();},
+			      error: function(xhr,status,error) {$("#info").hide(); $("#error").html(error); $("#error").show();}
 			    });
+		});
+		$("#process-button").click(function(){
+			window.location="processJob?jobId="+$("#jobId").val();
+			return false;
 		});
 	</script>
 </body>

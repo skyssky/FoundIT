@@ -88,7 +88,7 @@
 		function loadApplicationRequest(userID,jobId){
 			$.ajax({
 			      type: "get",
-			      url: "/FoundITAppServer/loadProfile?userId="+userID+"&jobId="+jobId,
+			      url: "/FoundITAppServer/loadApplication?userId="+userID+"&jobId="+jobId,
 			      success:function(data) { loadApplication(data); },
 			      error: function(xhr,status,error) {}
 			    });
@@ -118,7 +118,7 @@
 				$("#job").html(content);
 			}
 		}
-		function loadApplication(){
+		function loadApplication(data){
 			if(data === "{}"){
 				//alert(data);
 			}else{

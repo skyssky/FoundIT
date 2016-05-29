@@ -29,15 +29,19 @@
 			    });
 		}
 		function loadJobPositions(data){
-			$("#job-positions").html("");
-			var content = "<table class=\"table\">";
-			content += "<th>Job Position</th><th>Job Detail</th><th>Review Job</th>";
-			$.each(data,function(index, element) {
-    			//alert('detail: ' + element.detail + ', location: ' + element.location);
-    			content += '<tr><td>' + element.position + "</td><td>" + element.detail + "</td><td>" +  "<a href=\"managerJob?jobId="+element.jobId+"\"><button type=\"button\" class=\"btn btn-primary\" id=\"process-button\">Review Job</button></a>" + '</td></tr>';				
-			});
-			content += "</table>";
-			$("#job-positions").html(content);
+			if(data === "{}"){
+				//alert(data);
+			}else{
+				$("#job-positions").html("");
+				var content = "<table class=\"table\">";
+				content += "<th>Job Position</th><th>Job Detail</th><th>Review Job</th>";
+				$.each(data,function(index, element) {
+	    			//alert('detail: ' + element.detail + ', location: ' + element.location);
+	    			content += '<tr><td>' + element.position + "</td><td>" + element.detail + "</td><td>" +  "<a href=\"managerJob?jobId="+element.jobId+"\"><button type=\"button\" class=\"btn btn-primary\" id=\"process-button\">Review Job</button></a>" + '</td></tr>';				
+				});
+				content += "</table>";
+				$("#job-positions").html(content);
+			
 		}
 	</script>
 </body>

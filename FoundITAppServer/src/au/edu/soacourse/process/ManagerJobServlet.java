@@ -43,7 +43,7 @@ public class ManagerJobServlet extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		String managerId = (String) request.getSession().getAttribute("managerId");
+		String managerId = (String) request.getSession().getAttribute("userID");
 		String jobId = request.getParameter("jobId");
 		String position = request.getParameter("position");
 		String salary = request.getParameter("salary");
@@ -51,13 +51,14 @@ public class ManagerJobServlet extends HttpServlet {
 		String skill = request.getParameter("skill");
 		String link = request.getParameter("link");
 		String detail = request.getParameter("detail");
-		System.out.println(managerId);
-		System.out.println(location);
+		System.out.println(jobId);
 		String serviceURLString = getServletContext().getInitParameter("RestfulURL") + "jobs";
 		JSONObject job = new JSONObject();
 		if(jobId != null && !jobId.equals("")){
 			//update job use HTTP/PUT
 			serviceURLString += "/"+jobId;
+			System.out.println(serviceURLString);
+			job.put("jobId", jobId);
 			job.put("position", position);
 			job.put("salary", salary);
 			job.put("location", location);

@@ -120,7 +120,7 @@
     <servlet-name>ManagerJobServlet</servlet-name>
     <url-pattern>/managerJob</url-pattern>
   </servlet-mapping>
-    <servlet-mapping>
+  <servlet-mapping>
     <servlet-name>ManagerJobServlet</servlet-name>
     <url-pattern>/managerJob.action</url-pattern>
   </servlet-mapping>
@@ -167,6 +167,22 @@
   <servlet-mapping>
     <servlet-name>LoadApplicationServlet</servlet-name>
     <url-pattern>/loadApplication</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <servlet-name>NewJobPostingServlet</servlet-name>
+    <servlet-class>au.edu.soacourse.process.NewJobPostingServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>NewJobPostingServlet</servlet-name>
+    <url-pattern>/newJob</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <servlet-name>ProcessJobServlet</servlet-name>
+    <servlet-class>au.edu.soacourse.process.ProcessJobServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>ProcessJobServlet</servlet-name>
+    <url-pattern>/processJob</url-pattern>
   </servlet-mapping>
   <context-param>
     <param-name>DBPath</param-name>
