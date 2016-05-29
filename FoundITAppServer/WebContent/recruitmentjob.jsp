@@ -66,24 +66,13 @@
 				//alert(data);
 			}else{
 				//alert(JSON.stringify(data));
-				/*var content = "<h4>Applying For</h4><table class=\"table\">";
-				content += "<tr><td>Position</td><td>"+data.position+"</td></tr>";
-				content += "<tr><td>Salary</td><td>"+data.salary+"</td></tr>";
-				content += "<tr><td>Location</td><td>"+data.location+"</td></tr>";
-				content += "<tr><td>Require Skill</td><td>"+data.skill+"</td></tr>";
-				content += "<tr><td>Detail</td><td>"+data.detail+"</td></tr>";
-				content += "<tr><td>Link</td><td>"+data.link+"</td></tr>";
-				content += "<tr><td>Company</td><td>XX</td></tr>";
-				content += "</table>";
-				$("#job").html(content);*/
-				
-				
 				$("#managerId").val(data.managerId);
 				$("#position").val(data.position);
 				$("#salary").val(data.salary);
 				$("#location").val(data.location);
 				$("#skill").val(data.skill);
 				$("#link").val(data.link);
+				$("#detail").val(data.detail);
 			}
 		}
 		
