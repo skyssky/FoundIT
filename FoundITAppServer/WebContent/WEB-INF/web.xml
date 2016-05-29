@@ -192,6 +192,22 @@
     <servlet-name>BackgroundCheckServlet</servlet-name>
     <url-pattern>/backgroundCheck</url-pattern>
   </servlet-mapping>
+  <servlet>
+    <servlet-name>ApplicationListServlet</servlet-name>
+    <servlet-class>au.edu.soacourse.process.ApplicationListServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>ApplicationListServlet</servlet-name>
+    <url-pattern>/applicationList</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <servlet-name>LoadApplicationListServlet</servlet-name>
+    <servlet-class>au.edu.soacourse.process.LoadApplicationListServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>LoadApplicationListServlet</servlet-name>
+    <url-pattern>/loadApplicationList</url-pattern>
+  </servlet-mapping>
   <context-param>
     <param-name>DBPath</param-name>
     <param-value>${catalina.base}/webapps/FoundIT/FoundITApp/DB/</param-value>
@@ -200,7 +216,7 @@
     <param-name>ACPath</param-name>
     <param-value>${catalina.base}/webapps/FoundIT/FoundITApp/autocheck/</param-value>
   </context-param>
-    <context-param>
+  <context-param>
     <param-name>ALERTPath</param-name>
     <param-value>${catalina.base}/webapps/FoundIT/FoundITApp/jobalert/</param-value>
   </context-param>
