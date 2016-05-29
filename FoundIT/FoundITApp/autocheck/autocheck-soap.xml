@@ -1,3 +1,3 @@
 <?xml version="1.0" encoding="UTF-8"?><soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/"><soapenv:Body><AutoCheckResponse xmlns="http://autocheck" xmlns:tns="http://autocheck" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-		  						<tns:result>true</tns:result>
-							</AutoCheckResponse></soapenv:Body></soapenv:Envelope>
+			  						<tns:result>true</tns:result>
+								</AutoCheckResponse></soapenv:Body></soapenv:Envelope>

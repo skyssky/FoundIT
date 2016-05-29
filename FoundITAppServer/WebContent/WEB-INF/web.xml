@@ -184,6 +184,14 @@
     <servlet-name>ProcessJobServlet</servlet-name>
     <url-pattern>/processJob</url-pattern>
   </servlet-mapping>
+  <servlet>
+    <servlet-name>BackgroundCheckServlet</servlet-name>
+    <servlet-class>au.edu.soacourse.process.BackgroundCheckServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>BackgroundCheckServlet</servlet-name>
+    <url-pattern>/backgroundCheck</url-pattern>
+  </servlet-mapping>
   <context-param>
     <param-name>DBPath</param-name>
     <param-value>${catalina.base}/webapps/FoundIT/FoundITApp/DB/</param-value>

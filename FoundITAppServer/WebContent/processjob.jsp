@@ -13,9 +13,10 @@
 		<div id="job-applicants">
 		
 		</div>
-		<button id="autocheck-button" class="btn btn-primary " style="display:none;">Process</button>	
+		<button id="autocheck-button" class="btn btn-primary" style="text-align:center; margin: 0 40%; display:none;">Auto Check</button>	
 	</div>
 	<script>
+		var applicants;
 		$(document).ready(function() {
 		    loadJobapplicantsRequest("<% if(request.getAttribute("jobId") != null){
 	      										out.print(request.getAttribute("jobId"));
@@ -33,8 +34,8 @@
 			if(data === "{}"){
 				//alert(data);
 			}else{
+				applicants = data;
 				$("#job-applicants").html("");
-				//console.log(JSON.stringify(data));
 				var content = "<table class=\"table\">";
 				content += "<th>Applicant Name</th><th>Skill</th><th>Experience</th><th>Education</th><th>Current Position</th>";
 				$.each(data,function(index, element) {
@@ -46,9 +47,21 @@
 				$("#autocheck-button").show();
 			}
 		}
-		$("#autocheck-button").onclick(function(){
-			
-		})
+		$("#autocheck-button").click(function(){	
+			console.log(JSON.stringify(applicants));
+			$.ajax({
+				  url: "/FoundITAppServer/backgroundCheck",
+		          contentType: 'application/json',
+		          type: "POST",
+		          datatype: "json",
+			      data: JSON.stringify(applicants),
+			      success:function(data) { reload(data); },
+			      error: function(xhr,status,error) {}
+			    });
+		});
+		function reload(data){
+			console.log(JSON.stringify(data));
+		}
 	</script>
 </body>
 </html>

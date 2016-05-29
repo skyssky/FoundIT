@@ -154,7 +154,45 @@ public class BackgroundCheckServlet extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
+		//String candidatesStr = request.getParameter("candidates");				// TODO might need to change
+		BufferedReader br = new BufferedReader(new  InputStreamReader(request.getInputStream()));
+	    String json = "";
+	    if(br != null){
+	        json = br.readLine();
+	    }
+	    System.out.println(json.toString());
+		JSONArray candidatesArray = new JSONArray(json); // this parses the json
+
+		boolean checkResult = false;
+		String license = null, address = null;
+		
+		///JSONArray candidatesArray = new JSONArray(jb.toString());
+		JSONArray candidatesIdentified = new JSONArray();
+		//JSONArray candidatesArray = candidatesJson.getJSONArray("0");
+		for (int i = 0; i < candidatesArray.length(); i++) {
+		    // Get license and address of candidate
+		    JSONObject cand = candidatesArray.getJSONObject(i); 
+		    license = cand.getString("license");
+		    address = cand.getString("address");
+		    // Check identity by license
+		    checkResult = runAutocheck(license);
+		    if (!checkResult) {
+		    	checkResult = runAutocheck(address);
+		    }
+	    	// UPDATE THIS CANDIDATE's Application status to "REJECTED" ==> terminate ==> reject app automatically
+		    if (!checkResult) {
+		    	rejectApplication(response, cand);
+		    } else {
+		    	candidatesIdentified.put(cand);
+		    }
+		}
+		// return list of identified candidates as String
+		String candidatesIdentifiedStr = candidatesIdentified.toString();
+		response.setContentType("application/json");
+		java.io.PrintWriter out = response.getWriter( );
+		out.print(candidatesIdentifiedStr);
+		out.flush();
+		out.close();
 	}
 	
 	

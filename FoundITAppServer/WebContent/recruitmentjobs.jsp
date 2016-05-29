@@ -41,7 +41,7 @@
 				});
 				content += "</table>";
 				$("#job-positions").html(content);
-			
+			}
 		}
 	</script>
 </body>

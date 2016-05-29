@@ -200,11 +200,11 @@ public class ApplicationResource {
 	@Consumes({MediaType.APPLICATION_XML,MediaType.APPLICATION_JSON})
 	public Response putApplication(Application application) throws JAXBException, IOException {
 		Response response;
-		// An application can be updated iff the job posting is opening
-    	if (!jobIsOpening(application)) {
-    		response = Response.status(Response.Status.FORBIDDEN).entity("Application '" + application.getAppId() + "' cannot be updated because the job posting is not opening or does not exist.").build();
-    		return response;
-    	}
+		// TODO An application can be updated iff the job posting is opening
+//    	if (!jobIsOpening(application)) {
+//    		response = Response.status(Response.Status.FORBIDDEN).entity("Application '" + application.getAppId() + "' cannot be updated because the job posting is not opening or does not exist.").build();
+//    		return response;
+//    	}
 		String filename = path.getAppPath() + application.getAppId() + ".xml";
     	File file = new File(filename);	// create the file if does not exist
     	if(!file.exists()) {

@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <user>
-    <education>UNSW BE</education>
-    <experience>No</experience>
-    <name>Boy</name>
-    <position>No One</position>
-    <skill>Java</skill>
+    <address>0A</address>
+    <education>UNSW</education>
+    <experience>No work experience.</experience>
+    <license>0A</license>
+    <name>Edison</name>
+    <position>Senior Engineer</position>
+    <skill>Skilled at Artificial Intelligence.</skill>
     <userId>052a2e06-c5d2-465e-9816-114a523206df</userId>
 </user>
