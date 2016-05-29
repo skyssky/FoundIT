@@ -92,7 +92,46 @@ public class LoadManagerJobServlet extends HttpServlet {
 		}
 		
 		// LIST ALL CANDIDATES ACCORDING TO APPLICATIONS
-		
+		// 
+		String managerId = request.getParameter("userID");
+//		String jobId = request.getParameter("jobId");
+		serviceURLString = getServletContext().getInitParameter("RestfulURL") + "users";
+		System.out.println("1 managerId = *" + managerId + "*");
+//		System.out.println("jobId = *" + jobId + "*");
+
+		if(managerId != null && managerId != ""){
+			serviceURLString += "?managerId=" + managerId;
+			//System.out.println(serviceURLString);
+			URL serviceURL = new URL(serviceURLString);
+			URLConnection connection = serviceURL.openConnection();
+			connection.setRequestProperty("Accept", "application/json");
+			int responseCode = ((HttpURLConnection) connection).getResponseCode();
+			if(responseCode == 200){
+				InputStream serviceResponse = connection.getInputStream();
+				String responseBody = "";		
+				try (Scanner scanner = new Scanner(serviceResponse)) {
+				    responseBody = scanner.useDelimiter("\\A").next();
+				    //System.out.println(responseBody);
+				}
+				response.setContentType("application/json");
+				java.io.PrintWriter out = response.getWriter( );
+				out.print(responseBody);
+				out.flush();
+				out.close();	
+			} else{
+				java.io.PrintWriter out = response.getWriter( );
+				out.print("{}");
+				out.flush();
+				out.close();	
+			}
+
+		} else {
+			// DO NOT HANDLE ==> return empty to user, as manager can only see jobs he created at this recruitment process
+			java.io.PrintWriter out = response.getWriter( );
+			out.print("{}");
+			out.flush();
+			out.close();
+		}
 	}
 
 	/**

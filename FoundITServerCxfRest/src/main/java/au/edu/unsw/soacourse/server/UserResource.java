@@ -58,15 +58,16 @@ public class UserResource {
     	} catch (JAXBException e) {
     		// TODO throw Response/Exception: user profile for user 'userId' does not exist
     		e.printStackTrace();
-    		if (debug) System.out.println("User profile for user '" + userId + "' does not exist");
+    		if (debug) System.out.println("1 User profile for user '" + userId + "' does not exist");
     	}
     	return user;
     }
     
-    @GET																	// the method will handle GET request method on the said path
     // Get user profile by appId
+    @GET																	// the method will handle GET request method on the said path
+    @Path("/app/{appId}")
     @Produces({MediaType.APPLICATION_XML,MediaType.APPLICATION_JSON})									// the response will contain text plain content. (Note: @Produces({MediaType.TEXT_PLAIN}) means the same)
-    public Response getUserByApp(@QueryParam("appId") String appId) throws JAXBException {	// map the path parameter text after /echo to String input.
+    public Response getUserByApp(@PathParam("appId") String appId) throws JAXBException {	// map the path parameter text after /echo to String input.
     	if (appId == null) {
     		return Response.status(Response.Status.NOT_FOUND).entity("Application is null.").build();
     	}
@@ -77,7 +78,7 @@ public class UserResource {
 	  	String userId = null;
 	  	for (au.edu.unsw.soacourse.model.Application app: apps) {
 	  		if (app.getAppId().equals(appId)) {
-	  			if (debug) System.out.println("Application is found: " + appId);
+	  			if (debug) System.out.println("2 Application is found: " + appId);
 	  			userId = app.getUserId();
 	  			break;
 	  		}
@@ -91,7 +92,57 @@ public class UserResource {
 	  	}
 	  	return Response.ok(user).build();
     }
+    
+    public User getUserByAppLocal(String appId) throws JAXBException {	// map the path parameter text after /echo to String input.
+    	if (appId == null) {
+    		return null;
+    	}
+    	// Get all applications
+    	ApplicationResource appResource = new ApplicationResource();
+    	List<au.edu.unsw.soacourse.model.Application> apps = appResource.getApplications();
+    	// Find userId by appId
+	  	String userId = null;
+	  	for (au.edu.unsw.soacourse.model.Application app: apps) {
+	  		if (app.getAppId().equals(appId)) {
+	  			if (debug) System.out.println("3 Application is found: " + appId);
+	  			userId = app.getUserId();
+	  			break;
+	  		}
+		}
+	  	if (userId == null) {
+	  		return null;
+	  	}
+	  	User user = getUserProfile(userId);
+	  	return user;
+    }
 
+    // Get user profile by jobId
+    @GET																	// the method will handle GET request method on the said path
+    @Path("/job/{jobId}")			
+    @Produces({MediaType.APPLICATION_XML,MediaType.APPLICATION_JSON})									// the response will contain text plain content. (Note: @Produces({MediaType.TEXT_PLAIN}) means the same)
+    public List<User> getUserByJob(@PathParam("jobId") String jobId) throws JAXBException {	// map the path parameter text after /echo to String input.
+    	System.out.println("IN ... /job/{jobid}");
+    	List<User> users = new ArrayList<User>();
+    	if (jobId == null) {
+    		return users;
+    	}
+    	
+    	// Get applications by JobId
+    	ApplicationResource appResource = new ApplicationResource();
+    	List<au.edu.unsw.soacourse.model.Application> apps = appResource.getApplicationByJob(jobId,null);
+    	
+    	// Get users by appIds
+    	User user = null;
+    	for (au.edu.unsw.soacourse.model.Application app: apps) {
+    		user = getUserByAppLocal(app.getAppId());
+    		if (user != null) {
+    			System.out.println("/job/{jobid} ==> user is found: " + user.getUserId());
+    			users.add(user);
+    		}
+    	}
+	  	return users;
+    }
+    
     @POST									// the method will handle POST request method on the said path
     @Produces({MediaType.APPLICATION_XML,MediaType.APPLICATION_JSON})	// the response will contain JSON
     @Consumes({MediaType.APPLICATION_XML,MediaType.APPLICATION_JSON})	// applies to the input parameter JsonBean input. map the POST body content (which will contain JSON) to JsonBean input

@@ -99,7 +99,8 @@ reviews/{reviewId}		- delete the review
 
 GET
 users/{userId}			- get the user
-users?appId=X			- get user profile by appId
+users/app/{appId}		- get user profile by appId
+users/job/{jobId}		- get user profile by jobId
 
 POST
 users				- create a user
