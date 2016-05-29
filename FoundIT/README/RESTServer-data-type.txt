@@ -13,6 +13,10 @@ LoadJobServlet
 JobResource
 - PUT, DELETE: disable edit/delete when non-OPEN status
 
+BackgroundCheckServlet
+- this servlet replaces the AutoCheckServlet
+- add a ‘check background’ button on ‘LoadCandidatesServlet’ page, and that button shall link to BackgroundCheckServlet once clicked
+
 
 
 

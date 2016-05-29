@@ -89,7 +89,21 @@ public class ApplicationResource {
     @Produces({MediaType.APPLICATION_XML,MediaType.APPLICATION_JSON})									// the response will contain text plain content. (Note: @Produces({MediaType.TEXT_PLAIN}) means the same)
     public List<Application> getApplicationByJob(@QueryParam("jobId") String jobId, @QueryParam("userId") String userId) throws JAXBException {	// map the path parameter text after /echo to String input.
     	List<Application> apps = new ArrayList<Application>();
-    	if (jobId != null && userId == null) {
+    	if (jobId != null && userId != null) {
+    		Application app = null;
+    	  	Collection<File> files = fop.getFiles(path.getAppPath());
+    	  	for (File file: files) {
+    			// Bind XML to Java object
+    	    	JAXBContext jaxbContext;
+    			jaxbContext = JAXBContext.newInstance(Application.class);
+    			Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();
+    			app = (Application) jaxbUnmarshaller.unmarshal(file);
+    	  		if (debug) System.out.println("1 Application is found: " + app.getAppId());
+    	  		if (app.getJobId().equals(jobId) && app.getUserId().equals(userId)) {
+    	  			apps.add(app);
+    	  		}
+    		}
+    	} else if (jobId != null && userId == null) {
         	Application app = null;
     	  	Collection<File> files = fop.getFiles(path.getAppPath());
     	  	for (File file: files) {

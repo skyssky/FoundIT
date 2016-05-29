@@ -70,6 +70,7 @@ public class BackgroundCheckServlet extends HttpServlet {
 		boolean checkResult = false;
 		String license = null, address = null;
 		JSONObject candidatesJson = new JSONObject(candidatesStr);
+		JSONArray candidatesIdentified = new JSONArray();
 		JSONArray candidatesArray = candidatesJson.getJSONArray("0");
 		for (int i = 0; i < candidatesArray.length(); i++) {
 		    // Get license and address of candidate
@@ -84,8 +85,17 @@ public class BackgroundCheckServlet extends HttpServlet {
 	    	// UPDATE THIS CANDIDATE's Application status to "REJECTED" ==> terminate ==> reject app automatically
 		    if (!checkResult) {
 		    	rejectApplication(response, cand);
-		    } 
+		    } else {
+		    	candidatesIdentified.put(cand);
+		    }
 		}
+		// return list of identified candidates as String
+		String candidatesIdentifiedStr = candidatesIdentified.toString();
+		response.setContentType("application/json");
+		java.io.PrintWriter out = response.getWriter( );
+		out.print(candidatesIdentifiedStr);
+		out.flush();
+		out.close();
 //		
 //		String serviceURLString = getServletContext().getInitParameter("RestfulURL") + "applications/";
 //		URL serviceURL = new URL(serviceURLString);
