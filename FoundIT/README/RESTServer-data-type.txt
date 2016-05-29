@@ -1,5 +1,21 @@
 
 ################################
+########      TODO      ########
+################################
+
+LoadCandidatesServlet
+- update job (by jobId) status to INREVIEW
+- list all candidates by jobId
+
+LoadJobServlet
+- disable the “edit” action when this job “has applications” and “OPEN”
+
+
+
+
+
+
+################################
 ########   Resources    ########
 ################################
 

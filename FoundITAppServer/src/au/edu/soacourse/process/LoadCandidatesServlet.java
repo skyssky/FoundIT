@@ -21,7 +21,7 @@ import org.json.JSONObject;
 /**
  * Servlet implementation class ManagerJobServlet
  */
-@WebServlet("/LoadManagerJobServlet")
+@WebServlet("/LoadCandidatesServlet")
 public class LoadCandidatesServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
