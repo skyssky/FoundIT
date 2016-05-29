@@ -57,7 +57,7 @@ public class CompanyResource {
 		Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();
 		company = (Company) jaxbUnmarshaller.unmarshal(file);
 		if (debug) System.out.println("company is found: " + profileId);
-    	return Response.ok(company, MediaType.APPLICATION_XML).build();
+    	return Response.ok(company).build();
     }
     
     @GET																	
@@ -81,7 +81,7 @@ public class CompanyResource {
     	if (theCompany == null) {
     		return Response.status(Response.Status.NOT_FOUND).entity("Company profile for manager '" + managerId + "' is not found.").build();
     	} else {
-    		return Response.ok(theCompany, MediaType.APPLICATION_XML).build();
+    		return Response.ok(theCompany).build();
     	}
     }
 

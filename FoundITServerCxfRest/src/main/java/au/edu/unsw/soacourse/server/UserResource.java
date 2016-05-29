@@ -86,7 +86,7 @@ public class UserResource {
 	  	if (user == null) {
 	  		return Response.status(Response.Status.NOT_FOUND).entity("User profile for user '" + userId + "' is not found.").build();
 	  	}
-	  	return Response.ok(user, MediaType.APPLICATION_XML).build();
+	  	return Response.ok(user).build();
     }
 
     @POST									// the method will handle POST request method on the said path
