@@ -11,13 +11,15 @@
 	<jsp:include page="navbar.jsp" flush="true" />
 	<div id="content">
 		<div class="profile-form">
-			<h3>Edit your application</h3>
+			
 			<div class="alert alert-success " role="alert" id="info" style="display:none;"></div>
 			<div class="alert alert-danger " role="alert" id="error" style="display:none;"></div>
 			<div id="job"></div>
+			<h3>Your application</h3>
 			<form role="form" id="application">
 			 	<input type="hidden" name="userID" id="userID" />
 			 	<input type="hidden" name="profileId" id="profileId"/>
+			 	<input type="hidden" name="appId" id="appId"/>
 				<fieldset disabled>
 					<div class="form-group">
 						<label for="name">Name</label> <input type="text"
@@ -50,9 +52,7 @@
 	</div>
 	<script type="text/javascript">
 		$(document).ready(function() {
-			loadJobRequest("<%if(session.getAttribute("userID") != null){
-								out.print(session.getAttribute("userID"));
-							}%>","<%if(request.getAttribute("jobId") != null){
+			loadJobRequest("<%if(request.getAttribute("jobId") != null){
 								out.print(request.getAttribute("jobId"));
 							}%>");
 		    loadProfileRequest("<% if(session.getAttribute("userID") != null){
@@ -86,7 +86,12 @@
 			}
 		}
 		function loadApplicationRequest(userID,jobId){
-			//alert(jobId);
+			$.ajax({
+			      type: "get",
+			      url: "/FoundITAppServer/loadProfile?userId="+userID+"&jobId="+jobId,
+			      success:function(data) { loadApplication(data); },
+			      error: function(xhr,status,error) {}
+			    });
 		}
 		function loadJobRequest(jobId){
 			$.ajax({
@@ -97,16 +102,29 @@
 			    });
 		}
 		function loadJob(data){
-			var content = "<table class=\"table\">";
-			content += "<tr><td>Applying For</td><td>"+data.position+"</td></tr>";
-			content += "<tr><td>Salary</td><td>"+data.salary+"</td></tr>";
-			content += "<tr><td>Location</td><td>"+data.location+"</td></tr>";
-			content += "<tr><td>Require Skill</td><td>"+data.skill+"</td></tr>";
-			content += "<tr><td>Detail</td><td>"+data.detail+"</td></tr>";
-			content += "<tr><td>Link</td><td>"+data.link+"</td></tr>";
-			content += "<tr><td>Company</td><td>XX</td></tr>";
-			content += "</table>";
-			$("#job").html(content);
+			if(data === "{}"){
+				//alert(data);
+			}else{
+				//alert(JSON.stringify(data));
+				var content = "<h4>Applying For</h4><table class=\"table\">";
+				content += "<tr><td>Position</td><td>"+data.position+"</td></tr>";
+				content += "<tr><td>Salary</td><td>"+data.salary+"</td></tr>";
+				content += "<tr><td>Location</td><td>"+data.location+"</td></tr>";
+				content += "<tr><td>Require Skill</td><td>"+data.skill+"</td></tr>";
+				content += "<tr><td>Detail</td><td>"+data.detail+"</td></tr>";
+				content += "<tr><td>Link</td><td>"+data.link+"</td></tr>";
+				content += "<tr><td>Company</td><td>XX</td></tr>";
+				content += "</table>";
+				$("#job").html(content);
+			}
+		}
+		function loadApplication(){
+			if(data === "{}"){
+				//alert(data);
+			}else{
+				$("#cover").val(data.cover);
+				$("#appId").val(data.appId);
+			}
 		}
 	</script>
 </body>

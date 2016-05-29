@@ -1,6 +1,7 @@
 package au.edu.soacourse.process;
 
 import java.io.IOException;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -26,7 +27,8 @@ public class ManagerJobServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
+		String jobId = request.getParameter("jobId");
+		request.setAttribute("jobId", jobId);
 		getServletContext().getRequestDispatcher("/recruitmentjob.jsp").forward(request, response);
 	}
 

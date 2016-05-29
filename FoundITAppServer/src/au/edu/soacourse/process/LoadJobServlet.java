@@ -43,13 +43,8 @@ public class LoadJobServlet extends HttpServlet {
 //		String managerId = request.getParameter("userID");
 		
 		// Read jobId from query string
-		String jobId = null;
-		String[] queryStrs = request.getQueryString().split("=");
-		if (queryStrs.length >= 2) {
-			if (queryStrs[0].equals("jobId")) {
-				jobId = queryStrs[1];
-			}
-		}
+		String jobId = request.getParameter("jobId");
+
 
 		
 		String serviceURLString = getServletContext().getInitParameter("RestfulURL") + "jobs";
