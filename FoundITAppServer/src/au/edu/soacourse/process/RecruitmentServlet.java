@@ -1,6 +1,14 @@
 package au.edu.soacourse.process;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.net.URLConnection;
+import java.util.Scanner;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -8,7 +16,10 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
+import org.apache.http.util.EntityUtils;
+import org.json.JSONObject;
 
 import au.edu.soacourse.httprequest.HttpRequestOp;
 
@@ -33,30 +44,8 @@ public class RecruitmentServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// Step1. Get list of jobs by manager
-		String managerId = request.getParameter("managerId");
-		String uri = getServletContext().getInitParameter("RestfulURL") + "jobs?manager=" + managerId;
-		HttpResponse hresponse = reqOp.makeGetRequest(uri);
-		// TODO display list of jobs to client, finally close the response connection by close()
-		
-		
-		// Step2. Get job profile and update its status to "INREVIEW"
-		String jobId = request.getParameter("jobId");
-		uri = getServletContext().getInitParameter("RestfulURL") + "jobs?jobId=" + jobId;
-		HttpResponse hresponse2 = reqOp.makeGetRequest(uri);
-		// TODO display the job profile to client, finally close the response connection by close()
-		
-		// Step3. Get list of applications by jobId
-		uri = getServletContext().getInitParameter("RestfulURL") + "apps?jobId=" + jobId;
-		HttpResponse hresponse3 = reqOp.makeGetRequest(uri);
-		
-		// Step4. Get list of candidates' profiles by list of appIds
-//		TODO for () {
-			String appId = "";
-			uri = getServletContext().getInitParameter("RestfulURL") + "users?appId=" + appId;
-			HttpResponse hresponse4 = reqOp.makeGetRequest(uri);
-//		}
-		
+
+		getServletContext().getRequestDispatcher("/recruitment.jsp").forward(request, response);
 		
 	}
 

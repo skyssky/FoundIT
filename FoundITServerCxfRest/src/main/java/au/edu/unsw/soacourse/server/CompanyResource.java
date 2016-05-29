@@ -36,18 +36,16 @@ import au.edu.unsw.soacourse.model.Review;
 
 // Example URL: http://localhost:8080/FoundITServerCxfRest/companies?managerId=manager1
 
-//@Path("/profile")	// the URL path will be http://localhost:8080/FoundITServerCxfRest/hello
 public class CompanyResource {
 	
 	final boolean debug = true;
-//	final String path = System.getProperty("catalina.home") + "/webapps/server-database/company/";
 	Paths path = new Paths();
 	FileOperations fop = new FileOperations();
 	
-    @GET																	// the method will handle GET request method on the said path
-    @Path("/{profileId}")											// this method will handle request paths http://localhost:8080/FoundITServerCxfRest/hello/echo/{some text input here}
-    @Produces({MediaType.APPLICATION_XML,MediaType.APPLICATION_JSON})									// the response will contain text plain content. (Note: @Produces({MediaType.TEXT_PLAIN}) means the same)
-    public Response getCompanyProfile(@PathParam("profileId") String profileId) throws JAXBException {	// map the path parameter text after /echo to String input.
+    @GET																	
+    @Path("/{profileId}")													
+    @Produces({MediaType.APPLICATION_XML,MediaType.APPLICATION_JSON})									
+    public Response getCompanyProfile(@PathParam("profileId") String profileId) throws JAXBException {	
     	Company company = null;
 		String filename = path.getCompanyPath() + profileId + ".xml";
     	File file = new File(filename);
@@ -62,10 +60,9 @@ public class CompanyResource {
     	return Response.ok(company, MediaType.APPLICATION_XML).build();
     }
     
-    @GET																	// the method will handle GET request method on the said path
-//    @Path("/{profileId}")											// this method will handle request paths http://localhost:8080/FoundITServerCxfRest/hello/echo/{some text input here}
-    @Produces({MediaType.APPLICATION_XML,MediaType.APPLICATION_JSON})									// the response will contain text plain content. (Note: @Produces({MediaType.TEXT_PLAIN}) means the same)
-    public Response getCompanyProfileByManager(@QueryParam("managerId") String managerId) throws JAXBException {	// map the path parameter text after /echo to String input.
+    @GET																	
+    @Produces({MediaType.APPLICATION_XML,MediaType.APPLICATION_JSON})		
+    public Response getCompanyProfileByManager(@QueryParam("managerId") String managerId) throws JAXBException {
     	Company theCompany = null;
     	Company company = null;
     	Collection<File> files = fop.getFiles(path.getCompanyPath());
@@ -88,12 +85,10 @@ public class CompanyResource {
     	}
     }
 
-    @POST									// the method will handle POST request method on the said path
-    @Produces({MediaType.APPLICATION_XML,MediaType.APPLICATION_JSON})	// the response will contain JSON
-    @Consumes({MediaType.APPLICATION_XML,MediaType.APPLICATION_JSON})	// applies to the input parameter JsonBean input. map the POST body content (which will contain JSON) to JsonBean input
-//    @Path("/")								// this method will handle request paths http://localhost:8080/FoundITServerCxfRest/hello/jsonBean
+    @POST								
+    @Produces({MediaType.APPLICATION_XML,MediaType.APPLICATION_JSON})
+    @Consumes({MediaType.APPLICATION_XML,MediaType.APPLICATION_JSON})
     public Response addCompanyProfile(Company company) throws JAXBException, IOException {
-    	
     	// Get next Id to use
     	IdGenerator idGenerator = new IdGenerator(); 
     	IdCounter idCounter = idGenerator.getCounter(path.getCompanyPath());
@@ -122,7 +117,7 @@ public class CompanyResource {
     }
     
 	@PUT
-	@Path("/{profileId}")						// TODO seems to be useless. Just set path to "/" ????
+	@Path("/{profileId}")	
 	@Produces({MediaType.APPLICATION_XML,MediaType.APPLICATION_JSON})
 	@Consumes({MediaType.APPLICATION_XML,MediaType.APPLICATION_JSON})
 	public Response putCompany(Company company) throws JAXBException {
