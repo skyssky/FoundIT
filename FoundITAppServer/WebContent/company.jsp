@@ -13,8 +13,10 @@
 		<div class="profile-form">
 			<h3>Edit Company Profile</h3>
 			<div class="alert alert-success " role="alert" id="info" style="display:none;"></div>
+			<div class="alert alert-danger " role="alert" id="error" style="display:none;"></div>
 			<form role="form" id="profile">
 			 	<input type="hidden" name="userID" id="userID" />
+			 	<input type="hidden" name="profileId" id="profileId"/>
 				<div class="form-group">
 					<label for="name">Company Name</label> <input type="text"
 						class="form-control" name="name" id="name" placeholder="Company Name"/>
@@ -64,6 +66,7 @@
 				$("#hq").val(data.hq);
 				$("#detail").val(data.detail);
 				$("#site").val(data.site);
+				$("#profileId").val(data.profileId);
 			}
 		}
 		$("#save-button").click(function(e){
@@ -74,7 +77,7 @@
 			      contentType: 'application/x-www-form-urlencoded',         
 			      data: $("#profile").serializeArray(),
 			      success:function(data) { $("#info").html(data); $("#info").show();},
-			      error: function(xhr,status,error) {}
+			      error: function(xhr,status,error) {$("#error").html(error); $("#error").show(); }
 			    });
 		});
 	</script>

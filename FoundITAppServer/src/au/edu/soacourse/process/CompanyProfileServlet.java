@@ -43,6 +43,7 @@ public class CompanyProfileServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String managerId = (String) request.getSession().getAttribute("userID");
 		String formManagerID = request.getParameter("userID");
+		String profileId = request.getParameter("profileId");
 		String site = request.getParameter("site");
 		String name = request.getParameter("name");
 		String detail = request.getParameter("detail");
@@ -52,8 +53,9 @@ public class CompanyProfileServlet extends HttpServlet {
 		JSONObject profile = new JSONObject();
 		if(formManagerID != null && !formManagerID.equals("")){
 			//update profile use HTTP/PUT
-			serviceURLString += "/"+formManagerID;
+			serviceURLString += "/"+profileId;
 			profile.put("managerId", formManagerID);
+			profile.put("profileId", profileId);
 			profile.put("hq", hq);
 			profile.put("name", name);
 			profile.put("detail", detail);
@@ -73,7 +75,7 @@ public class CompanyProfileServlet extends HttpServlet {
             in.close();
 		}else{
 			//create profile use HTTP/POST
-			profile.put("managerId", formManagerID);
+			profile.put("managerId", managerId);	
 			profile.put("hq", hq);
 			profile.put("name", name);
 			profile.put("detail", detail);
@@ -92,6 +94,9 @@ public class CompanyProfileServlet extends HttpServlet {
             BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
             in.close();
 		}
+		java.io.PrintWriter out = response.getWriter();
+		out.print("Change successfully saved!");
+		out.flush();
+		out.close();
 	}
-
 }
