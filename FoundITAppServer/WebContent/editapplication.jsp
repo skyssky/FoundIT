@@ -14,6 +14,7 @@
 			<h3>Edit your application</h3>
 			<div class="alert alert-success " role="alert" id="info" style="display:none;"></div>
 			<div class="alert alert-danger " role="alert" id="error" style="display:none;"></div>
+			<div id="job"></div>
 			<form role="form" id="application">
 			 	<input type="hidden" name="userID" id="userID" />
 			 	<input type="hidden" name="profileId" id="profileId"/>
@@ -49,14 +50,19 @@
 	</div>
 	<script type="text/javascript">
 		$(document).ready(function() {
+			loadJobRequest("<%if(session.getAttribute("userID") != null){
+								out.print(session.getAttribute("userID"));
+							}%>","<%if(request.getAttribute("jobId") != null){
+								out.print(request.getAttribute("jobId"));
+							}%>");
 		    loadProfileRequest("<% if(session.getAttribute("userID") != null){
 	      							out.print(session.getAttribute("userID"));
 	      						}%>");
-		    loadApplicationRequest(<%if(session.getAttribute("userID") != null){
+		    loadApplicationRequest("<%if(session.getAttribute("userID") != null){
 						out.print(session.getAttribute("userID"));
-					}%>,<%if(session.getAttribute("jobId") != null){
-						out.print(session.getAttribute("jobId"));
-					}%>);
+					}%>","<%if(request.getAttribute("jobId") != null){
+						out.print(request.getAttribute("jobId"));
+					}%>");
 		});
 		function loadProfileRequest(userID){
 			$.ajax({
@@ -79,8 +85,28 @@
 				$("#skill").val(data.skill);
 			}
 		}
-		loadApplicationRequest(userID,jobId){
-			alert(jobId);
+		function loadApplicationRequest(userID,jobId){
+			//alert(jobId);
+		}
+		function loadJobRequest(jobId){
+			$.ajax({
+			      type: "get",
+			      url: "/FoundITAppServer/loadJob?jobId="+jobId,
+			      success:function(data) { loadJob(data); },
+			      error: function(xhr,status,error) {}
+			    });
+		}
+		function loadJob(data){
+			var content = "<table class=\"table\">";
+			content += "<tr><td>Applying For</td><td>"+data.position+"</td></tr>";
+			content += "<tr><td>Salary</td><td>"+data.salary+"</td></tr>";
+			content += "<tr><td>Location</td><td>"+data.location+"</td></tr>";
+			content += "<tr><td>Require Skill</td><td>"+data.skill+"</td></tr>";
+			content += "<tr><td>Detail</td><td>"+data.detail+"</td></tr>";
+			content += "<tr><td>Link</td><td>"+data.link+"</td></tr>";
+			content += "<tr><td>Company</td><td>XX</td></tr>";
+			content += "</table>";
+			$("#job").html(content);
 		}
 	</script>
 </body>
