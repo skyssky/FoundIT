@@ -18,7 +18,7 @@
 			<h3>Your application</h3>
 			<form role="form" id="application">
 			 	<input type="hidden" name="userID" id="userID" />
-			 	<input type="hidden" name="profileId" id="profileId"/>
+			 	<input type="hidden" name="jobId" id="jobId"/>
 			 	<input type="hidden" name="appId" id="appId"/>
 				<fieldset disabled>
 					<div class="form-group">
@@ -113,9 +113,11 @@
 				content += "<tr><td>Require Skill</td><td>"+data.skill+"</td></tr>";
 				content += "<tr><td>Detail</td><td>"+data.detail+"</td></tr>";
 				content += "<tr><td>Link</td><td>"+data.link+"</td></tr>";
-				content += "<tr><td>Company</td><td>XX</td></tr>";
+				//content += "<tr><td>Company</td><td>XX</td></tr>";
+				content += "<tr><td>Application Status</td><td>"+data.status+"</td></tr>";
 				content += "</table>";
 				$("#job").html(content);
+				$("#jobId").val(data.jobId);
 			}
 		}
 		function loadApplication(data){
@@ -124,8 +126,20 @@
 			}else{
 				$("#cover").val(data.cover);
 				$("#appId").val(data.appId);
+				$("#userID").val(data.userId);			
 			}
 		}
+		$("#save-button").click(function(e){
+			e.preventDefault();
+			$.ajax({
+			      type: "post",
+			      url: "/FoundITAppServer/application.action",
+			      contentType: 'application/x-www-form-urlencoded',         
+			      data: $("#application").serializeArray(),
+			      success:function(data) { $("#info").html(data); $("#info").show();},
+			      error: function(xhr,status,error) {}
+			    });
+		});
 	</script>
 </body>
 </html>
