@@ -26,9 +26,9 @@
 					<label for="jobstatus">Job Status</label>
 					<select class="form-control" name="jobstatus" placeholder="Job Status">
 						<option value="" disabled selected>Select Jobs Status</option>
-					    <option value="all">All</option>
+					    <option value="">All</option>
 					    <option value="open">Open</option>
-					    <option value="closed">Closed</option>
+					    <option value="closed">Unavailable</option>
 					</select>	
 				</div>	
 				<button type="submit" id="search-button" class="btn btn-primary btn-submit">Search</button>
@@ -56,7 +56,7 @@
 			content += "<th>Job detail</th><th>Desire skill</th><th>Salary</th><th>Location</th><th>Apply</th>";
 			$.each(data,function(index, element) {
     			//alert('detail: ' + element.detail + ', location: ' + element.location);
-    			content += '<tr><td>' + element.detail + "</td><td>" +  element.skill + "</td><td>" +  element.salary + "</td><td>" +  element.location + "</td><td>" +  "<a href=\"#\"><button type=\"button\" class=\"btn btn-primary\">Apply</button></a>" + '</td></tr>';				
+    			content += '<tr><td>' + element.detail + "</td><td>" +  element.skill + "</td><td>" +  element.salary + "</td><td>" +  element.location + "</td><td>" +  "<a href=\"application?"+ element.jobId +"\"><button type=\"button\" class=\"btn btn-primary\">Apply</button></a>" + '</td></tr>';				
 			});
 			content += "</table>";
 			$("#search-results").html(content);

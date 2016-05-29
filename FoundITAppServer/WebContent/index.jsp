@@ -21,7 +21,7 @@
 			}
 		%>
 		<div class="welcome">
-			Welcome to Found IT!
+			Welcome to Found IT
 		</div>
 	</div>
 </body>

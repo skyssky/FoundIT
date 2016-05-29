@@ -1,5 +1,6 @@
 body {
 	width: 100%;
+	background-color: #F5F3EE;
 }
 #content {
 	width: 80%;
@@ -22,9 +23,10 @@ body {
 	margin: 0 auto;
 }
 .btn-submit {
-	width: 20%;
-	margin-left: 40%;
+	width: 30%;
+	margin-left: 35%;
 }
+
 #search-results{
 	margin: 10px;
 }
@@ -36,4 +38,5 @@ body {
   	margin-top: 20%;
   	color: black;
   	top: 15%;
+  	-webkit-box-reflect: below -5px -webkit-gradient(linear, left top, left bottom, from(transparent), to(rgba(255, 255, 255, 0.3)));
 }
