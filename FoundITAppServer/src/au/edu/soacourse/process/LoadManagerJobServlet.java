@@ -1,7 +1,10 @@
 package au.edu.soacourse.process;
 
+import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLConnection;
@@ -53,16 +56,27 @@ public class LoadManagerJobServlet extends HttpServlet {
 				String responseBody = "";		
 				try (Scanner scanner = new Scanner(serviceResponse)) {
 				    responseBody = scanner.useDelimiter("\\A").next();
-				    //System.out.println(responseBody);
+				    System.out.println("responseBody ===>" + responseBody);
 				}
 				response.setContentType("application/json");
 				
-				// TODO update status to "INREVIEW"
-				JSONObject profile = new JSONObject();
+				// Update status to "INREVIEW"
+				JSONObject profile = new JSONObject(responseBody);
 				profile.put("status", "INREVIEW");
+//				URL serviceURL = new URL(serviceURLString);
+				HttpURLConnection connection2 = (HttpURLConnection) serviceURL.openConnection();
+				connection2.setRequestMethod("PUT");
+				connection2.setRequestProperty("Content-Type","application/json");
+				connection2.setDoOutput(true);
+				OutputStreamWriter out2 = new OutputStreamWriter(connection2.getOutputStream());
+				//System.out.println("UPDATE\n"+profile.toString());
+	            out2.write(profile.toString());
+	            out2.flush();
+	            out2.close();
+	            BufferedReader in = new BufferedReader(new InputStreamReader(connection2.getInputStream()));
+	            in.close();
 				
-				
-				
+	            // continue: print to jsp page
 				java.io.PrintWriter out = response.getWriter( );
 				out.print(responseBody);
 				out.flush();

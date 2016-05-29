@@ -40,29 +40,29 @@ public class JobResource {
 	Paths path = new Paths();
 	FileOperations fop = new FileOperations();
  
-    @GET																	// the method will handle GET request method on the said path
-//    @Path("posting")														// this method will handle request paths http://localhost:8080/FoundITServerCxfRest/hello/echo/{some text input here}
-    @Produces({MediaType.APPLICATION_XML,MediaType.APPLICATION_JSON})									// the response will contain text plain content. (Note: @Produces({MediaType.TEXT_PLAIN}) means the same)
-    public List<Job> getJobPostings(@QueryParam("sort") String sort) {			// map the path parameter text after /echo to String input.
-    	// Get all jobs, sort by position ????
-    	List<Job> jobs = new ArrayList<Job>();
-    	Job job;
-    	Collection<File> files = fop.getFiles(path.getJobPath());
-    	try {
-    		for (File file: files) {
-				// Bind XML to Java object
-		    	JAXBContext jaxbContext;
-				jaxbContext = JAXBContext.newInstance(Job.class);
-				Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();
-	    		job = (Job) jaxbUnmarshaller.unmarshal(file);
-	    		if (debug) System.out.println("Job posting is found: " + job.getJobId());
-    			jobs.add(job);
-    		}
-    	} catch (JAXBException e) {
-			e.printStackTrace();
-		}
-    	return jobs;
-    }
+//    @GET																	// the method will handle GET request method on the said path
+////    @Path("posting")														// this method will handle request paths http://localhost:8080/FoundITServerCxfRest/hello/echo/{some text input here}
+//    @Produces({MediaType.APPLICATION_XML,MediaType.APPLICATION_JSON})									// the response will contain text plain content. (Note: @Produces({MediaType.TEXT_PLAIN}) means the same)
+//    public List<Job> getJobPostings() {			// map the path parameter text after /echo to String input.
+//    	// Get all jobs, sort by position ????
+//    	List<Job> jobs = new ArrayList<Job>();
+//    	Job job;
+//    	Collection<File> files = fop.getFiles(path.getJobPath());
+//    	try {
+//    		for (File file: files) {
+//				// Bind XML to Java object
+//		    	JAXBContext jaxbContext;
+//				jaxbContext = JAXBContext.newInstance(Job.class);
+//				Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();
+//	    		job = (Job) jaxbUnmarshaller.unmarshal(file);
+//	    		if (debug) System.out.println("1 Job posting is found: " + job.getJobId());
+//    			jobs.add(job);
+//    		}
+//    	} catch (JAXBException e) {
+//			e.printStackTrace();
+//		}
+//    	return jobs;
+//    }
     
     @GET																	// the method will handle GET request method on the said path
     @Path("{jobId}")														// this method will handle request paths http://localhost:8080/FoundITServerCxfRest/hello/echo/{some text input here}
@@ -76,7 +76,7 @@ public class JobResource {
 	    	JAXBContext jaxbContext = JAXBContext.newInstance(Job.class);
     		Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();
     		job = (Job) jaxbUnmarshaller.unmarshal(file);
-    		if (debug) System.out.println("Job posting is found: " + jobId);
+    		if (debug) System.out.println("2 Job posting is found: " + jobId);
     	} catch (JAXBException e) {
     		// TODO throw Response/Exception: job posting for job 'jobId' does not exist
     		e.printStackTrace();
@@ -89,6 +89,7 @@ public class JobResource {
     // Get jobs by managerId
     @Produces({MediaType.APPLICATION_XML,MediaType.APPLICATION_JSON})									// the response will contain text plain content. (Note: @Produces({MediaType.TEXT_PLAIN}) means the same)
     public List<Job> getJobsProfileByManager(@QueryParam("managerId") String managerId) throws JAXBException {	// map the path parameter text after /echo to String input.
+    	System.out.println("managerId = *" + managerId + "*");
     	List<Job> jobs = new ArrayList<Job>();
 	  	Job job = null;
 	  	Collection<File> files = fop.getFiles(path.getJobPath());
@@ -98,8 +99,8 @@ public class JobResource {
 			jaxbContext = JAXBContext.newInstance(Job.class);
 			Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();
 			job = (Job) jaxbUnmarshaller.unmarshal(file);
-	  		if (debug) System.out.println("Job profile is found: " + job.getJobId());
-	  		if (job.getManagerId().equals(managerId)) {
+	  		if (debug) System.out.println("3 Job profile is found: " + job.getJobId());
+	  		if (job.getManagerId() != null && job.getManagerId().equals(managerId)) {
 	  			jobs.add(job);
 	  		}
 		}
@@ -228,7 +229,7 @@ public class JobResource {
 				jaxbContext = JAXBContext.newInstance(Job.class);
 				Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();
 	    		job = (Job) jaxbUnmarshaller.unmarshal(file);
-	    		if (debug) System.out.println("Job posting is found: " + job.getJobId());
+	    		if (debug) System.out.println("4 Job posting is found: " + job.getJobId());
 	    		addFlag = true;
 	    		if (keywordIsSpecified) {
 	    			jobPosition = job.getPosition();
