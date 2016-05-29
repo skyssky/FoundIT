@@ -14,7 +14,8 @@ jobalerts?keyword=X&sort_by=jobtitle
 GET
 applications			- get all applications
 applications/{appId}		- get specific application
-applications/{userId}		- get applications by userId
+applications?userId=X		- get applications by userId
+applications?jobId=X
 
 POST
 applications			- create a new application
