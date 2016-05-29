@@ -11,7 +11,33 @@
 <body>
 <jsp:include page="navbar.jsp" flush="true" />
 	<div id="content">	
-		<div id="job-profile">
+		<div class="job-form">
+			<h3>Job Posting</h3>
+			<div class="alert alert-success " role="alert" id="info" style="display:none;"></div>
+			<form role="form" id="posting">
+			 	<input type="hidden" name="userID" id="userID" />
+				<div class="form-group">
+					<label for="name">Name</label> <input type="text"
+						class="form-control" name="name" id="name" placeholder="Name"/>
+				</div>
+				<div class="form-group">
+					<label for="position">Current Position</label> <input type="text"
+						class="form-control" name="position" id="position" placeholder="Current Position"/>
+				</div>
+				<div class="form-group">
+					<label for="experience">Past Experience</label> <input type="text"
+						class="form-control" name="experience" id="experience" placeholder="Past Experience"/>
+				</div>
+				<div class="form-group">
+					<label for="education">Education</label> <input type="text"
+						class="form-control" name="education" id="education" placeholder="Education"/>
+				</div>
+				<div class="form-group">
+					<label for="skill">Professional Skill</label> <input type="text"
+						class="form-control" name="skill" id="skill" placeholder="Professional Skill"/>
+				</div>
+				<button type="submit" id="save-button" class="btn btn-primary btn-submit">Save</button>
+			</form>			
 		</div>
 	</div>
 	<script>
@@ -22,7 +48,7 @@
 		});
 		
 		function loadJobProfileRequest(jobId){
-			e.preventDefault();
+			/* e.preventDefault(); */
 			$.ajax({
 				type: "get",
 		      	url: "/FoundITAppServer/loadManagerJob?jobId=" + jobId,	// TODO ????? hardcoded for testing
@@ -35,12 +61,14 @@
 			$("#job-profile").html("");
 			var content = "<table class=\"table\">";
 			content += "<th>Job detail</th><th>Desire skill</th><th>View Candidates</th>";
-			$.each(data,function(index, element) {
+		
+			
+/* 			$.each(data,function(index, element) {
     			//alert('detail: ' + element.detail + ', location: ' + element.location);
     			content += '<tr><td>' + element.detail + "</td><td>" +  element.skill + "</td><td>" + "<a href=\"loadCandidates?jobId="+element.jobId+"\"><button type=\"button\" class=\"btn btn-primary\" id=\"view-candidates-button\">View candidates</button></a>" + '</td></tr>';				
-			});
+			}); */
 			content += "</table>";
-			$("#job-profile").html(content);
+			$("#job-form").html(content);
 		} 
 		
 		
