@@ -2,11 +2,11 @@
 <job>
     <detail>Java Engineer</detail>
     <jobId>job4</jobId>
-    <managerId>3b36cff5-f1ee-4047-8e0c-7ff6245bf56d</managerId>
     <link>http://www.baidu.com</link>
     <location>Sydney</location>
+    <managerId>3b36cff5-f1ee-4047-8e0c-7ff6245bf56d</managerId>
     <position>Java Developer</position>
     <salary>5000</salary>
     <skill>Java and C++</skill>
-    <status>OPEN</status>
+    <status>INREVIEW</status>
 </job>
