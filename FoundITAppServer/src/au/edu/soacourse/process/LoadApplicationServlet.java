@@ -33,15 +33,16 @@ public class LoadApplicationServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String jobId = request.getParameter("jobId");
-		String userID = request.getParameter("userID");
+		String userID = request.getParameter("userId");
 		String appId = request.getParameter("appId");
-		String serviceURLString = getServletContext().getInitParameter("RestfulURL")+"companies?";
+		String serviceURLString = getServletContext().getInitParameter("RestfulURL")+"applications?";
 		if(userID != null && userID != "" && jobId != null && jobId != ""){
 			serviceURLString += "jobId="+jobId;
 			serviceURLString += "&userId="+userID;
 		}else if(appId != null && appId != ""){
 			serviceURLString += "appId="+appId;			
 		}
+		//System.out.println(serviceURLString);
 		URL serviceURL = new URL(serviceURLString);
 		URLConnection connection = serviceURL.openConnection();
 		connection.setRequestProperty("Accept", "application/json");

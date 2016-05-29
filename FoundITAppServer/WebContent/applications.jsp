@@ -33,12 +33,13 @@
 		if(data === "{}"){
 			//alert(data);
 		}else{
+			//console.log(JSON.stringify(data));
 			$("#application-results").html("");
 			var content = "<table class=\"table\">";
-			content += "<th>Job Position</th><th>Job Detail</th><th>Review Job</th>";
+			content += "<th>Job Position</th><th>Job Detail</th><th>Salary</th><th>Job Location</th><th>Status</th><th>Review Application</th>";
 			$.each(data,function(index, element) {
     			//alert('detail: ' + element.detail + ', location: ' + element.location);
-    			content += '<tr><td>' + element.jobId + "</td><td>" + element.cover + "</td><td>" +  "<a href=\"managerJob?jobId="+element.appId+"\"><button type=\"button\" class=\"btn btn-primary\" id=\"process-button\">Review Job</button></a>" + '</td></tr>';				
+    			content += '<tr><td>' + element.position + "</td><td>" + element.detail + "</td><td>" + element.salary + "</td><td>" + element.location + "</td><td>" + element.status + "</td><td>" +  "<a href=\"application?jobId="+element.jobId+"\"><button type=\"button\" class=\"btn btn-primary\" id=\"process-button\">Review Application</button></a>" + '</td></tr>';				
 			});
 			content += "</table>";
 			$("#application-results").html(content);

@@ -123,10 +123,10 @@
 		function loadApplication(data){
 			if(data === "{}"){
 				//alert(data);
-			}else{
-				$("#cover").val(data.cover);
-				$("#appId").val(data.appId);
-				$("#userID").val(data.userId);			
+			}else{				
+				$("#cover").val(data[0].cover);
+				$("#appId").val(data[0].appId);
+				$("#userID").val(data[0].userId);			
 			}
 		}
 		$("#save-button").click(function(e){
