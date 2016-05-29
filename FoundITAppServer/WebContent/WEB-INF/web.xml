@@ -50,7 +50,7 @@
   </servlet>
   <servlet-mapping>
     <servlet-name>JobAlertServlet</servlet-name>
-    <url-pattern>/jobalert</url-pattern>
+    <url-pattern>/jobAlert</url-pattern>
   </servlet-mapping>
   <servlet>
     <servlet-name>SearchJobsServlet</servlet-name>
@@ -191,6 +191,10 @@
   <context-param>
     <param-name>ACPath</param-name>
     <param-value>${catalina.base}/webapps/FoundIT/FoundITApp/autocheck/</param-value>
+  </context-param>
+    <context-param>
+    <param-name>ALERTPath</param-name>
+    <param-value>${catalina.base}/webapps/FoundIT/FoundITApp/jobalert/</param-value>
   </context-param>
   <context-param>
     <param-name>RestfulURL</param-name>

@@ -59,7 +59,6 @@ public class JobAlertServlet extends HttpServlet {
      */
     public JobAlertServlet() {
         super();
-        // TODO Auto-generated constructor stub
     }
 
 	/**
@@ -71,9 +70,9 @@ public class JobAlertServlet extends HttpServlet {
 		String keyword = request.getParameter("keyword");
 		String sort_by = request.getParameter("sort_by");
 		
-		// TODO For Testing
-		keyword = "Java";
-		sort_by = "jobtitle";
+		// For Testing
+//		keyword = "Java";
+//		sort_by = "jobtitle";
 		
 		System.out.println("keyword = " + keyword);
 		System.out.println("sort_by = " + sort_by);
@@ -81,8 +80,7 @@ public class JobAlertServlet extends HttpServlet {
 		String uri = getServletContext().getInitParameter("RestfulURL")+"jobalerts?keyword=" + keyword + "&sort_by=" + sort_by;
 		HttpResponse hresponse = reqOp.makeGetRequest(uri);
 		
-		// TODO Hardcode the path here, need to FIX
-		String jobalertFilename = getServletContext().getInitParameter("DBPath")+"alert/jobalert.xml";
+		String jobalertFilename = getServletContext().getInitParameter("ALERTPath")+"jobalert.xml";
 		String entityString = null;
 		
 		HttpEntity entity = hresponse.getEntity();
@@ -106,27 +104,21 @@ public class JobAlertServlet extends HttpServlet {
 	            transformer.transform(source, streamResult);
 	            
 	        } catch (ParserConfigurationException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			} catch (ParseException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			} catch (SAXException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			} catch (TransformerConfigurationException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			} catch (TransformerException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			} finally {
 	            instream.close();
 	        }
 	    }
-
 		
-		// TODO Send RSS/Atom feed to user's email, i.e., jobalertFile
+		// Send RSS/Atom feed to user's email, i.e., jobalertFile
 		 // SMTP server information
         String host = "smtp.live.com";
         String port = "25";	// 25 or 465
@@ -139,19 +131,20 @@ public class JobAlertServlet extends HttpServlet {
  
         // message contains HTML markups
         String message = entityString;
- 
+        
         MailSender mailer = new MailSender();
- 
         try {
-            mailer.sendRssEmail(host, port, mailFrom, password, mailTo,
-                    subject, message);
+            mailer.sendRssEmail(host, port, mailFrom, password, mailTo, subject, message);
             System.out.println("Email sent.");
         } catch (Exception ex) {
             System.out.println("Failed to sent email.");
             ex.printStackTrace();
         }    
-			      
-		getServletContext().getRequestDispatcher("/FoundIT/FoundITApp/temp/jobalert.xml").forward(request, response);
+
+        // TODO may need to fix the path
+		getServletContext().getRequestDispatcher("/FoundIT/FoundITApp/jobalert/jobalert.xml").forward(request, response);
+		
+		// TODO give a feedback to client: email sent
 	}
 
 	/**
@@ -159,10 +152,6 @@ public class JobAlertServlet extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		System.out.println("JobAlertServlet......doPost");
-
-		
-		getServletContext().getRequestDispatcher("/jobalert.jsp").forward(
-				request, response);
 	}
 
 }
