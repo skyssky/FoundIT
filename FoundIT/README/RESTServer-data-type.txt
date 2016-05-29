@@ -62,7 +62,6 @@ teams/{teamId}			- delete a hiring team
 #### JobResource
 
 GET
-jobs/				- get all jobs
 jobs/{jobId}			- get specific job
 jobs?managerId={managerId}	- get jobs by managerId
 jobs/search?keyword=X&skill=X&status=X
