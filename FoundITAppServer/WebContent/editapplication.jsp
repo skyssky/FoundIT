@@ -46,7 +46,7 @@
 					<label for="cover">Cover Letter</label> <textarea type=""
 						class="form-control" name="cover" id="cover" placeholder="Cover Letter"/></textarea>
 				</div>
-				<button type="submit" id="save-button" class="btn btn-primary btn-submit">Save & Apply</button>
+				<button type="submit" id="save-button" class="btn btn-primary btn-submit">Save & Apply</button>								
 			</form>	
 		</div>
 	</div>

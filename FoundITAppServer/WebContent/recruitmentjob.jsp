@@ -42,6 +42,7 @@
 						class="form-control" name="detail" id="detail" placeholder="Job Description"/></textarea>
 				</div>
 				<button type="submit" id="save-button" class="btn btn-primary btn-submit">Save</button>
+				<button id="process-button" class="btn btn-primary btn-submit">Process</button>
 			</form>			
 		</div>
 	</div>
@@ -67,6 +68,7 @@
 			}else{
 				//alert(JSON.stringify(data));
 				$("#managerId").val(data.managerId);
+				$("#jobId").val(data.jobId);
 				$("#position").val(data.position);
 				$("#salary").val(data.salary);
 				$("#location").val(data.location);
@@ -75,8 +77,6 @@
 				$("#detail").val(data.detail);
 			}
 		}
-		
-
 	</script>
 </body>
 </html>

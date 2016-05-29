@@ -31,36 +31,14 @@
 		function loadJobPositions(data){
 			$("#job-positions").html("");
 			var content = "<table class=\"table\">";
-			content += "<th>Job Position</th><th>Job Detail</th><th>Process Applications</th>";
+			content += "<th>Job Position</th><th>Job Detail</th><th>Review Job</th>";
 			$.each(data,function(index, element) {
     			//alert('detail: ' + element.detail + ', location: ' + element.location);
-    			content += '<tr><td>' + element.position + "</td><td>" + element.detail + "</td><td>" +  "<a href=\"managerJob?jobId="+element.jobId+"\"><button type=\"button\" class=\"btn btn-primary\" id=\"process-button\">Process</button></a>" + '</td></tr>';				
+    			content += '<tr><td>' + element.position + "</td><td>" + element.detail + "</td><td>" +  "<a href=\"managerJob?jobId="+element.jobId+"\"><button type=\"button\" class=\"btn btn-primary\" id=\"process-button\">Review Job</button></a>" + '</td></tr>';				
 			});
 			content += "</table>";
 			$("#job-positions").html(content);
 		}
-		
-		/* $("#process-button").click(function(e){
-			var thebuttonclicked =$(this).attr("value");	// identify which button is clicked
-			e.preventDefault();
-			$.ajax({
-			      type: "get",
-			      url: "/FoundITAppServer/loadManagerJob?jobId="+thebuttonclicked,	// TODO ????? hardcoded for testing
-			      success:function(data) { loadJobProfile(data); },
-			      error: function(xhr,status,error) {}
-			    });
-		});
-		function loadJobProfile(data){
-			$("#job-profile").html("");
-			var content = "<table class=\"table\">";
-			content += "<th>Job detail</th><th>Desire skill</th><th>Salary</th><th>Location</th><th>View Candidates</th>";
-			$.each(data,function(index, element) {
-    			//alert('detail: ' + element.detail + ', location: ' + element.location);
-    			content += '<tr><td>' + element.detail + "</td><td>" +  element.skill + "</td><td>" +  element.salary + "</td><td>" +  element.location + "</td><td>" +  "<a href=\"#\"><button type=\"button\" class=\"btn btn-primary\" id=\"view-candidates-button\">View candidates</button></a>" + '</td></tr>';				
-			});
-			content += "</table>";
-			$("#job-profile").html(content);
-		} */
 	</script>
 </body>
 </html>

@@ -120,6 +120,10 @@
     <servlet-name>ManagerJobServlet</servlet-name>
     <url-pattern>/managerJob</url-pattern>
   </servlet-mapping>
+    <servlet-mapping>
+    <servlet-name>ManagerJobServlet</servlet-name>
+    <url-pattern>/managerJob.action</url-pattern>
+  </servlet-mapping>
   <servlet>
     <servlet-name>LoadManagerJobsServlet</servlet-name>
     <servlet-class>au.edu.soacourse.process.LoadManagerJobsServlet</servlet-class>
