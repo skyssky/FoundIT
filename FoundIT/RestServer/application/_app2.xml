@@ -3,6 +3,6 @@
     <appId>app2</appId>
     <cover>Hi</cover>
     <jobId>job2</jobId>
-    <link>/user/profile/user1</link>
     <status>PROCESSED</status>
+    <userId>user2</userId>
 </application>

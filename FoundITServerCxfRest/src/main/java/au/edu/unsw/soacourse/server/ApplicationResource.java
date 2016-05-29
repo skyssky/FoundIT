@@ -47,24 +47,24 @@ public class ApplicationResource {
 	FileOperations fop = new FileOperations();
  
 //    @GET																	// the method will handle GET request method on the said path
-////    @Path("")														// this method will handle request paths http://localhost:8080/FoundITServerCxfRest/hello/echo/{some text input here}
+//    @Path("")														// this method will handle request paths http://localhost:8080/FoundITServerCxfRest/hello/echo/{some text input here}
 //    @Produces({MediaType.APPLICATION_XML,MediaType.APPLICATION_JSON})									// the response will contain text plain content. (Note: @Produces({MediaType.TEXT_PLAIN}) means the same)
-//    public List<Application> getApplications() throws JAXBException {			// map the path parameter text after /echo to String input.
-//    	// Get all applications
-//    	List<Application> applications = new ArrayList<Application>();
-//    	Application application;
-//    	Collection<File> files = getFiles(path.getAppPath());
-//		for (File file: files) {
-//			// Bind XML to Java object
-//	    	JAXBContext jaxbContext;
-//			jaxbContext = JAXBContext.newInstance(Application.class);
-//			Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();
-//			application = (Application) jaxbUnmarshaller.unmarshal(file);
-//    		if (debug) System.out.println("Application is found: " + application.getAppId());
-//    		applications.add(application);
-//		}
-//    	return applications;
-//    }
+    public List<Application> getApplications() throws JAXBException {			// map the path parameter text after /echo to String input.
+    	// Get all applications
+    	List<Application> applications = new ArrayList<Application>();
+    	Application application;
+    	Collection<File> files = fop.getFiles(path.getAppPath());
+		for (File file: files) {
+			// Bind XML to Java object
+	    	JAXBContext jaxbContext;
+			jaxbContext = JAXBContext.newInstance(Application.class);
+			Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();
+			application = (Application) jaxbUnmarshaller.unmarshal(file);
+    		if (debug) System.out.println("Application is found: " + application.getAppId());
+    		applications.add(application);
+		}
+    	return applications;
+    }
     
     @GET																	// the method will handle GET request method on the said path
     @Path("{appId}")														// this method will handle request paths http://localhost:8080/FoundITServerCxfRest/hello/echo/{some text input here}

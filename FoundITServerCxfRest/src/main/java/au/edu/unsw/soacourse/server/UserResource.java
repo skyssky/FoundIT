@@ -67,6 +67,9 @@ public class UserResource {
     // Get user profile by appId
     @Produces({MediaType.APPLICATION_XML,MediaType.APPLICATION_JSON})									// the response will contain text plain content. (Note: @Produces({MediaType.TEXT_PLAIN}) means the same)
     public Response getUserByApp(@QueryParam("appId") String appId) throws JAXBException {	// map the path parameter text after /echo to String input.
+    	if (appId == null) {
+    		return Response.status(Response.Status.NOT_FOUND).entity("Application is null.").build();
+    	}
     	// Get all applications
     	ApplicationResource appResource = new ApplicationResource();
     	List<au.edu.unsw.soacourse.model.Application> apps = appResource.getApplications();

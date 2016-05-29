@@ -10,7 +10,7 @@ public class Application {
 	
 	private String appId;		// application id
 	private String jobId;		// job id
-	private String userId;	// a link to user profile
+	private String userId;		// a link to user profile
 	private String cover;		// cover letter
 	private AppStatus status;
 
