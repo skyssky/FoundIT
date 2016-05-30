@@ -1,0 +1,846 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<!-- Include required JS files -->
+<!-- <script type="text/javascript" src="scripts/shCore.js"></script> -->
+
+<!--
+    At least one brush, here we choose JS. You need to include a brush for every 
+    language you want to highlight
+-->
+<!-- <script type="text/javascript" src="scripts/shBrushXml.js"></script> -->
+
+<!-- Include *at least* the core style and default theme -->
+<!-- <link href="styles/shCore.css" rel="stylesheet" type="text/css" /> -->
+<!-- <link href="styles/shThemeDefault.css" rel="stylesheet" type="text/css" /> -->
+
+<!-- css -->
+<style>
+table {
+    border-collapse: collapse;
+    font-family: "monaco";
+    font-size: 12px;
+    color: #202020;
+}
+
+table, td, th {
+    border: 1px black;
+}
+
+body {
+    margin-top: 100px;
+    margin-bottom: 50px;
+    margin-right: 100px;
+    margin-left: 100px;
+}
+</style>
+
+</head>
+<p align="right">Zenglin Wang (z3371068)</p>
+<header>
+	<h1>Documentation</h1>
+</header>
+<body>
+<br><br>
+
+<!-- +++++++++++++++++++++++++++++++++++++++++++++++ -->
+
+<h2>1. BPEL service: AutoCheck</h2>
+<p>This BPEL service aims to validate driver license and address of a candidate with simple logic.
+   It returns 'true' iff the input string contains '0' or 'a', otherwise it returns 'false'. Both input and output are string. Notice that it can accept only one input string each time, which means if the driver license is not valid you need to send another request to check the address.</p>
+
+<p>Server: Apache ODE v1.x, Apache Tomcat 6</p>
+
+<p>WSDL link: <a href="http://localhost:6060/ode/processes/AutoCheck?wsdl">http://localhost:6060/ode/processes/AutoCheck?wsdl</a></p>
+
+<p>Sample request: <a href="http://localhost:6060/ode/processes/AutoCheck/process?input=halo">http://localhost:6060/ode/processes/AutoCheck/process?input=halo</a></p>
+
+<br><br>
+
+<!-- +++++++++++++++++++++++++++++++++++++++++++++++ -->
+
+<h2>2. FoundIT RESTful service and Data Service</h2>
+<h3>2.1 Root URL</h3>
+<ul>
+<li><p><a href="http://localhost:8080/FoundITServerCxfRest/">http://localhost:8080/FoundITServerCxfRest/</a></p>
+</li>
+</ul>
+
+
+<h3>2.2 Data Service</h3>
+
+<h4>2.2.1 Sample request</h4>
+<ul>
+<li>
+<p>GET <a href="http://localhost:8080/FoundITServerCxfRest/jobalerts?keyword=Java">http://localhost:8080/FoundITServerCxfRest/jobalerts?keyword=Java</a>
+</p></li><li>
+<p>GET <a href="http://localhost:8080/FoundITServerCxfRest/jobalerts?keyword=Java&sort_by=jobtitle">http://localhost:8080/FoundITServerCxfRest/jobalerts?keyword=Java&sort_by=jobtitle</a>
+</p></li>
+</li>
+</ul>
+
+<h4>2.2.2 XSL</h4>
+<ul>
+<li><p>job2Rss.xsl extracts job information from rssquery.xml. Running command on terminal: java -jar saxon9he.jar rssquery.xml job2Rss.xsl keyword=Java > job2RssResult.xml</p></li>
+<li><p>job2RssSearch.xsl extracts job alerts by keyword from rssquery.xml. Running command on terminal: java -jar saxon9he.jar rssquery.xml job2RssSearch.xsl keyword=Java > job2RssSearchResult.xml</p></li>
+<li><p>job2RssSearchSort.xsl extracts job alerts by keyword from rssquery.xml and the results are sorted by job title/positon before being returned. Running command on terminal: java -jar saxon9he.jar rssquery.xml job2RssSearchSort.xsl keyword=Java > job2RssSearchSortResult.xml</p></li>
+</ul>
+
+
+<h4>2.2.3 Job Alert</h4>
+
+<table style="width:80%">
+  <tr style="font-weight:bold">
+    <td>Name</td>
+    <td>Type</td>
+    <td>Note</td>   
+  </tr>
+  <tr>
+    <td>guid</td>
+    <td>String</td>
+    <td>a unique id</td>
+  </tr>
+  <tr>
+    <td>position</td>
+    <td>String</td>
+    <td>position type</td>
+  </tr>
+  <tr>
+    <td>detail</td>
+    <td>String</td>
+    <td>job description</td>
+  </tr>
+  <tr>
+    <td>link</td>
+    <td>String</td>
+    <td>link to more details</td>
+  </tr>
+  <tr>
+    <td>pubDate</td>
+    <td>String</td>
+    <td>date of publication</td>
+  </tr>
+</table>
+
+<h4>2.2.4 Job Alerts</h4>
+
+<table style="width:80%">
+  <tr style="font-weight:bold">
+    <td>Name</td>
+    <td>Type</td>
+    <td>Note</td>   
+  </tr>
+  <tr>
+    <td>jobAlerts</td>
+    <td>List&gt;JobAlert&lt;</td>
+    <td>list of job alert</td>
+  </tr>
+</table>
+<br>
+
+<table style="width:80%">
+  <tr style="font-weight:bold">
+    <td>GET</td>
+    <td>Function</td>
+    <td>Return</td>   
+  </tr>
+  <tr>
+    <td>jobalerts?keyword=X</td>
+    <td>search job alerts by keyword</td>
+    <td>List&gt;JobAlert&lt;</td>
+  </tr>
+  <tr>
+    <td>jobalerts?keyword=X&sort_by=jobtitle</td>
+    <td>search job alerts by keyword and sort results by jobtitle</td>
+    <td>List&gt;JobAlert&lt;</td>
+  </tr>
+</table>
+
+<br>
+<br>
+
+<h3>2.3 RESTful service</h3>
+
+<h4>2.3.1 Application</h4>
+
+<table style="width:80%">
+  <tr style="font-weight:bold">
+    <td>Name</td>
+    <td>Type</td>
+    <td>Note</td>   
+  </tr>
+  <tr>
+    <td>appId</td>
+    <td>String</td>
+    <td>application id</td>
+  </tr>
+  <tr>
+    <td>jobId</td>
+    <td>String</td>
+    <td>job profile id</td>
+  </tr>
+  <tr>
+    <td>userId</td>
+    <td>String</td>
+    <td>user profile id</td>
+  </tr>
+  <tr>
+    <td>cover</td>
+    <td>String</td>
+    <td>cover letter</td>
+  </tr>
+  <tr>
+    <td>status</td>
+    <td>AppStatus</td>
+    <td>application status</td>
+  </tr>
+  <tr>
+    <td>AppStatus</td>
+    <td>enum</td>
+    <td>{ OPEN, INREVIEW, REJECTED, ACCEPTED, SENTINVITATION }</td>
+  </tr>
+</table>
+<br>
+
+<table style="width:80%">
+  <tr style="font-weight:bold">
+    <td>GET</td>
+    <td>Function</td>
+    <td>Return</td>   
+  </tr>
+  <tr>
+    <td>applications/{appId}</td>
+    <td>get application by appId</td>
+    <td>Application</td>
+  </tr>
+  <tr>
+    <td>applications?userId=X</td>
+    <td>get applications by userId</td>
+    <td>List of applications</td>
+  </tr>
+  <tr>
+    <td>applications?jobId=X</td>
+    <td>get applications by jobId</td>
+    <td>List of applications</td>
+  </tr>
+</table>
+<br>
+
+<table style="width:80%">
+  <tr style="font-weight:bold">
+    <td>POST</td>
+    <td>Function</td>
+    <td>Return</td>   
+  </tr>
+  <tr>
+    <td>applications</td>
+    <td>create a new application</td>
+    <td>HTTP status code</td>
+  </tr>
+</table>
+<br>
+
+<table style="width:80%">
+  <tr style="font-weight:bold">
+    <td>PUT</td>
+    <td>Function</td>
+    <td>Return</td>   
+  </tr>
+  <tr>
+    <td>applications/{appId}</td>
+    <td>update an application</td>
+    <td>HTTP status code</td>
+  </tr>
+</table>
+<br>
+
+<table style="width:80%">
+  <tr style="font-weight:bold">
+    <td>DELETE</td>
+    <td>Function</td>
+    <td>Return</td>   
+  </tr>
+  <tr>
+    <td>applications/{appId}</td>
+    <td>delete an application</td>
+    <td>HTTP status code</td>
+  </tr>
+</table>
+<br>
+<!-- 0-0-0-0-0-0-0-0-0-0-0-0-0-0-0-0-0-0-0-0-0-0-0 -->
+<h4>2.3.2 Company</h4>
+
+<table style="width:80%">
+  <tr style="font-weight:bold">
+    <td>Name</td>
+    <td>Type</td>
+    <td>Note</td>   
+  </tr>
+  <tr>
+    <td>profileId</td>
+    <td>String</td>
+    <td>company profile id</td>
+  </tr>
+  <tr>
+    <td>managerId</td>
+    <td>String</td>
+    <td>manager id, person who created this profile</td>
+  </tr>
+  <tr>
+    <td>name</td>
+    <td>String</td>
+    <td>company name</td>
+  </tr>
+  <tr>
+    <td>type</td>
+    <td>String</td>
+    <td>company type</td>
+  </tr>
+  <tr>
+    <td>detail</td>
+    <td>String</td>
+    <td>company description</td>
+  </tr>
+  <tr>
+    <td>site</td>
+    <td>String</td>
+    <td>company web site</td>
+  </tr>
+  <tr>
+    <td>hq</td>
+    <td>String</td>
+    <td>company head quarter</td>
+  </tr>
+</table>
+<br>
+
+<table style="width:80%">
+  <tr style="font-weight:bold">
+    <td>GET</td>
+    <td>Function</td>
+    <td>Return</td>   
+  </tr>
+  <tr>
+    <td>companies/{profileId}</td>
+    <td>get company profile by profileId</td>
+    <td>Company profile</td>
+  </tr>
+  <tr>
+    <td>companies?managerId=X</td>
+    <td>get company profile by managerId</td>
+    <td>Company profile</td>
+  </tr>
+</table>
+<br>
+
+<table style="width:80%">
+  <tr style="font-weight:bold">
+    <td>POST</td>
+    <td>Function</td>
+    <td>Return</td>   
+  </tr>
+  <tr>
+    <td>companies</td>
+    <td>create a new company profile</td>
+    <td>HTTP status code</td>
+  </tr>
+</table>
+<br>
+
+<table style="width:80%">
+  <tr style="font-weight:bold">
+    <td>PUT</td>
+    <td>Function</td>
+    <td>Return</td>   
+  </tr>
+  <tr>
+    <td>companies/{profileId}</td>
+    <td>update a company profile</td>
+    <td>HTTP status code</td>
+  </tr>
+</table>
+<br>
+
+<table style="width:80%">
+  <tr style="font-weight:bold">
+    <td>DELETE</td>
+    <td>Function</td>
+    <td>Return</td>   
+  </tr>
+  <tr>
+    <td>companies/{profileId}</td>
+    <td>delete a company profile</td>
+    <td>HTTP status code</td>
+  </tr>
+</table>
+<br>
+<!-- 0-0-0-0-0-0-0-0-0-0-0-0-0-0-0-0-0-0-0-0-0-0-0 -->
+<h4>2.3.3 Hiring Team</h4>
+<p>In this project, we assume each hiring team will contain exactly two reviewers.</p>
+<table style="width:80%">
+  <tr style="font-weight:bold">
+    <td>Name</td>
+    <td>Type</td>
+    <td>Note</td>   
+  </tr>
+  <tr>
+    <td>teamId</td>
+    <td>String</td>
+    <td>hiring team id</td>
+  </tr>
+  <tr>
+    <td>appId</td>
+    <td>String</td>
+    <td>application id</td>
+  </tr>
+  <tr>
+    <td>reviewId1</td>
+    <td>String</td>
+    <td>first review id</td>
+  </tr>
+  <tr>
+    <td>reviewId2</td>
+    <td>String</td>
+    <td>second review id</td>
+  </tr>
+</table>
+<br>
+
+<table style="width:80%">
+  <tr style="font-weight:bold">
+    <td>GET</td>
+    <td>Function</td>
+    <td>Return</td>   
+  </tr>
+  <tr>
+    <td>teams/{teamId}</td>
+    <td>get team by teamId</td>
+    <td>Hiring team</td>
+  </tr>
+  <tr>
+    <td>teams?appId=X</td>
+    <td>get team by appId</td>
+    <td>Hiring team</td>
+  </tr>
+  <tr>
+    <td>teams/finished</td>
+    <td>get all finished teams, i.e., teams whose review decisions are all YES</td>
+    <td>List of hiring team</td>
+  </tr>
+</table>
+<br>
+
+<table style="width:80%">
+  <tr style="font-weight:bold">
+    <td>POST</td>
+    <td>Function</td>
+    <td>Return</td>   
+  </tr>
+  <tr>
+    <td>teams</td>
+    <td>create a new hiring team</td>
+    <td>HTTP status code</td>
+  </tr>
+</table>
+<br>
+
+<table style="width:80%">
+  <tr style="font-weight:bold">
+    <td>PUT</td>
+    <td>Function</td>
+    <td>Return</td>   
+  </tr>
+  <tr>
+    <td>teams/{teamId}</td>
+    <td>update a hiring team</td>
+    <td>HTTP status code</td>
+  </tr>
+</table>
+<br>
+
+<table style="width:80%">
+  <tr style="font-weight:bold">
+    <td>DELETE</td>
+    <td>Function</td>
+    <td>Return</td>   
+  </tr>
+  <tr>
+    <td>teams/{teamId}</td>
+    <td>delete a hiring team</td>
+    <td>HTTP status code</td>
+  </tr>
+</table>
+<br>
+
+<!-- 0-0-0-0-0-0-0-0-0-0-0-0-0-0-0-0-0-0-0-0-0-0-0 -->
+<h4>2.3.4 Job Posting</h4>
+
+  <table style="width:80%">
+  <tr style="font-weight:bold">
+    <td>Name</td>
+    <td>Type</td>
+    <td>Note</td>   
+  </tr>
+  <tr>
+    <td>jobId</td>
+    <td>String</td>
+    <td>job id</td>
+  </tr>
+  <tr>
+    <td>link</td>
+    <td>String</td>
+    <td>company web site</td>
+  </tr>
+  <tr>
+    <td>salary</td>
+    <td>int</td>
+    <td>salary rate</td>
+  </tr>
+  <tr>
+    <td>position</td>
+    <td>String</td>
+    <td>job title/position</td>
+  </tr>
+  <tr>
+    <td>detail</td>
+    <td>String</td>
+    <td>job description</td>
+  </tr>
+  <tr>
+    <td>skill</td>
+    <td>String</td>
+    <td>skills required</td>
+  </tr>
+  <tr>
+    <td>managerId</td>
+    <td>String</td>
+    <td>manager id</td>
+  </tr>
+  <tr>
+    <td>status</td>
+    <td>JobStatus</td>
+    <td>application status</td>
+  </tr>
+  <tr>
+    <td>JobStatus</td>
+    <td>enum</td>
+    <td>{ OPEN, INREVIEW, PROCESSED, SENTINVITATION }</td>
+  </tr>
+</table>
+<br>
+
+<table style="width:80%">
+  <tr style="font-weight:bold">
+    <td>GET</td>
+    <td>Function</td>
+    <td>Return</td>   
+  </tr>
+  <tr>
+    <td>jobs/{jobId}</td>
+    <td>get job posting by jobId</td>
+    <td>Job</td>
+  </tr>
+  <tr>
+    <td>jobs?managerId={managerId}</td>
+    <td>get jobs by managerId</td>
+    <td>List of job</td>
+  </tr>
+  <tr>
+    <td>jobs/search?keyword=X&skill=X&status=X</td>
+    <td>search jobs by keyword,skill,status</td>
+    <td>List of job</td>
+  </tr>
+</table>
+<br>
+
+<table style="width:80%">
+  <tr style="font-weight:bold">
+    <td>POST</td>
+    <td>Function</td>
+    <td>Return</td>   
+  </tr>
+  <tr>
+    <td>jobs</td>
+    <td>create a job</td>
+    <td>HTTP status code</td>
+  </tr>
+</table>
+<br>
+
+<table style="width:80%">
+  <tr style="font-weight:bold">
+    <td>PUT</td>
+    <td>Function</td>
+    <td>Return</td>   
+  </tr>
+  <tr>
+    <td>jobs/{jobId}</td>
+    <td>update an existing job</td>
+    <td>HTTP status code</td>
+  </tr>
+</table>
+<br>
+
+<table style="width:80%">
+  <tr style="font-weight:bold">
+    <td>DELETE</td>
+    <td>Function</td>
+    <td>Return</td>   
+  </tr>
+  <tr>
+    <td>jobs/{jobId}</td>
+    <td>delete/archive a job</td>
+    <td>HTTP status code</td>
+  </tr>
+</table>
+<br>
+
+<!-- 0-0-0-0-0-0-0-0-0-0-0-0-0-0-0-0-0-0-0-0-0-0-0 -->
+<h4>2.3.5 Review</h4>
+
+  <table style="width:80%">
+  <tr style="font-weight:bold">
+    <td>Name</td>
+    <td>Type</td>
+    <td>Note</td>   
+  </tr>
+  <tr>
+    <td>reviewId</td>
+    <td>String</td>
+    <td>review id</td>
+  </tr>
+  <tr>
+    <td>appId</td>
+    <td>String</td>
+    <td>application id</td>
+  </tr>
+  <tr>
+    <td>reviewerId</td>
+    <td>String</td>
+    <td>reviewer id</td>
+  </tr>
+  <tr>
+    <td>comment</td>
+    <td>String</td>
+    <td>comments from reviewer</td>
+  </tr>
+  <tr>
+    <td>decision</td>
+    <td>ReviewDecision</td>
+    <td>review decision</td>
+  </tr>
+  <tr>
+    <td>ReviewDecision</td>
+    <td>enum</td>
+    <td>{ YES, NO }</td>
+  </tr>
+</table>
+<br>
+
+<table style="width:80%">
+  <tr style="font-weight:bold">
+    <td>GET</td>
+    <td>Function</td>
+    <td>Return</td>   
+  </tr>
+  <tr>
+    <td>reviews</td>
+    <td>get all reviews ==> shall be avoided</td>
+    <td>List of review</td>
+  </tr>
+  <tr>
+    <td>reviews/{reviewId}</td>
+    <td>get review by reviewId</td>
+    <td>Review</td>
+  </tr>
+  <tr>
+    <td>reviews/search?reviewerId=X</td>
+    <td>get reviews by reviewerId</td>
+    <td>List of job</td>
+  </tr>
+</table>
+<br>
+
+<table style="width:80%">
+  <tr style="font-weight:bold">
+    <td>POST</td>
+    <td>Function</td>
+    <td>Return</td>   
+  </tr>
+  <tr>
+    <td>reviews</td>
+    <td>create a review</td>
+    <td>HTTP status code</td>
+  </tr>
+</table>
+<br>
+
+<table style="width:80%">
+  <tr style="font-weight:bold">
+    <td>PUT</td>
+    <td>Function</td>
+    <td>Return</td>   
+  </tr>
+  <tr>
+    <td>reviews/{reviewId}</td>
+    <td>update the review</td>
+    <td>HTTP status code</td>
+  </tr>
+</table>
+<br>
+
+<table style="width:80%">
+  <tr style="font-weight:bold">
+    <td>DELETE</td>
+    <td>Function</td>
+    <td>Return</td>   
+  </tr>
+  <tr>
+    <td>reviews/{reviewId}</td>
+    <td>delete/archive the review</td>
+    <td>HTTP status code</td>
+  </tr>
+</table>
+<br>
+
+<!-- 0-0-0-0-0-0-0-0-0-0-0-0-0-0-0-0-0-0-0-0-0-0-0 -->
+<h4>2.3.6 User</h4>
+
+  <table style="width:80%">
+  <tr style="font-weight:bold">
+    <td>Name</td>
+    <td>Type</td>
+    <td>Note</td>   
+  </tr>
+  <tr>
+    <td>userId</td>
+    <td>String</td>
+    <td>user id</td>
+  </tr>
+  <tr>
+    <td>skill</td>
+    <td>String</td>
+    <td>professional skills</td>
+  </tr>
+  <tr>
+    <td>experience</td>
+    <td>String</td>
+    <td>working experience</td>
+  </tr>
+  <tr>
+    <td>name</td>
+    <td>String</td>
+    <td>user name</td>
+  </tr>
+  <tr>
+    <td>position</td>
+    <td>Strinf</td>
+    <td>previous position</td>
+  </tr>
+  <tr>
+    <td>education</td>
+    <td>String</td>
+    <td>education</td>
+  </tr>
+  <tr>
+    <td>address</td>
+    <td>String</td>
+    <td>address</td>
+  </tr>
+  <tr>
+    <td>license</td>
+    <td>String</td>
+    <td>driver license</td>
+  </tr>
+</table>
+<br>
+
+
+
+<table style="width:80%">
+  <tr style="font-weight:bold">
+    <td>GET</td>
+    <td>Function</td>
+    <td>Return</td>   
+  </tr>
+  <tr>
+    <td>users/{userId}</td>
+    <td>get user profile by userId</td>
+    <td>User profile</td>
+  </tr>
+  <tr>
+    <td>users/app/{appId}</td>
+    <td>get user profile by appId</td>
+    <td>User profile</td>
+  </tr>
+  <tr>
+    <td>users/job/{jobId}</td>
+    <td>get user profile by jobId</td>
+    <td>User profile</td>
+  </tr>
+</table>
+<br>
+
+<table style="width:80%">
+  <tr style="font-weight:bold">
+    <td>POST</td>
+    <td>Function</td>
+    <td>Return</td>   
+  </tr>
+  <tr>
+    <td>users</td>
+    <td>create a user</td>
+    <td>HTTP status code</td>
+  </tr>
+</table>
+<br>
+
+<table style="width:80%">
+  <tr style="font-weight:bold">
+    <td>PUT</td>
+    <td>Function</td>
+    <td>Return</td>   
+  </tr>
+  <tr>
+    <td>users/{userId}</td>
+    <td>update the user</td>
+    <td>HTTP status code</td>
+  </tr>
+</table>
+<br>
+
+<table style="width:80%">
+  <tr style="font-weight:bold">
+    <td>DELETE</td>
+    <td>Function</td>
+    <td>Return</td>   
+  </tr>
+  <tr>
+    <td>users/{userId}</td>
+    <td>delete/archive the user</td>
+    <td>HTTP status code</td>
+  </tr>
+</table>
+<br>
+
+<br><br>
+
+<!-- +++++++++++++++++++++++++++++++++++++++++++++++ -->
+
+<h2>3. FoundIT App</h2>
+<p><a href="http://localhost:8080/FoundITAppServer/">http://localhost:8080/FoundITAppServer/</a></p>
+<br><br>
+
+
+
+<!-- +++++++++++++++++++++++++++++++++++++++++++++++ -->
+<!-- Finally, to actually run the highlighter, you need to include this JS on your page -->
+<!-- 
+<script type="text/javascript">
+     SyntaxHighlighter.all()
+</script>
+ -->
+
+</body>
+</html>
